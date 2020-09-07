@@ -1,6 +1,6 @@
 # Workflows Samples
 
-[Workflows](https://cloud.google.com/workflows) allows you to orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
+[Workflows](https://cloud.google.com/workflows) allow you to orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.
 
 In this sample, you will orchestrate multiple Cloud Functions, Cloud Run and
 external services in a workflow.
@@ -28,8 +28,10 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 Inside [randomgen](randomgen) folder, deploy a function that generates a random number:
 
 ```sh
-gcloud functions deploy randomgen --runtime python37 --trigger-http
---allow-unauthenticated
+gcloud functions deploy randomgen \
+    --runtime python37 \
+    --trigger-http \
+    --allow-unauthenticated
 ```
 
 Test:
@@ -43,8 +45,10 @@ curl https://us-central1-workflows-atamel.cloudfunctions.net/randomgen
 Inside [multiply](multiply) folder, deploy a function that multiplies a given number:
 
 ```sh
-gcloud functions deploy multiply --runtime python37 --trigger-http
---allow-unauthenticated
+gcloud functions deploy multiply \
+    --runtime python37 \
+    --trigger-http \
+    --allow-unauthenticated
 ```
 
 Test:
@@ -88,8 +92,9 @@ gcloud run deploy ${SERVICE_NAME} \
 Deploy workflow:
 
 ```sh
-gcloud beta workflows deploy workflow --source=workflow.yaml \
---service-account=${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com
+gcloud beta workflows deploy workflow \
+    --source=workflow.yaml \
+    --service-account=${SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com
 ```
 
 Execute workflow:
