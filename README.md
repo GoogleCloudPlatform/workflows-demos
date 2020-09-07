@@ -54,7 +54,9 @@ gcloud functions deploy multiply \
 Test:
 
 ```sh
-curl -X POST https://us-central1-workflows-atamel.cloudfunctions.net/multiply -H "content-type: application/json" -d '{"input":5}'
+curl -X POST https://us-central1-workflows-atamel.cloudfunctions.net/multiply \
+    -H "content-type: application/json" \
+    -d '{"input":5}'
 ```
 
 ## External Function - MathJS
@@ -85,6 +87,14 @@ gcloud run deploy ${SERVICE_NAME} \
   --image gcr.io/${PROJECT_ID}/${${SERVICE_NAME}} \
   --platform managed \
   --allow-unauthenticated
+```
+
+Test:
+
+```sh
+curl -X POST https://floor-wvdg6hhtla-ew.a.run.app \
+    -H "content-type: application/json" \
+    -d '{"input": "6.86"}'
 ```
 
 ## Workflow
