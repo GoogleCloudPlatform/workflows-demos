@@ -35,6 +35,8 @@
     call: http.post
     args:
         url: https://floor-wvdg6hhtla-ew.a.run.app
+        auth:
+            type: OIDC
         body:
             input: ${divideResult.body}
     result: floorResult
