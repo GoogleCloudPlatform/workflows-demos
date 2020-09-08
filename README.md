@@ -10,7 +10,7 @@ external services in a workflow.
 Create a service account for Workflows:
 
 ```sh
-export SERVICE_ACCOUNT=workflow-sa
+export SERVICE_ACCOUNT=workflows-sa
 gcloud iam service-accounts create ${SERVICE_ACCOUNT}
 ```
 
