@@ -48,7 +48,7 @@ For an external function, use [MathJS](https://api.mathjs.org/).
 Test:
 
 ```sh
-curl https://api.mathjs.org/v4/?expr=2/3&precision=3
+curl https://api.mathjs.org/v4/?expr=log(56)
 ```
 
 ## Cloud Run - Floor
