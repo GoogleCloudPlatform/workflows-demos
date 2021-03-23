@@ -1,0 +1,74 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+main:
+  params: [args]
+  steps:
+  - init:
+      assign:
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - zone: "europe-west1-b"
+      - machineType: "e2-small"
+      - instanceName: "${args.instanceName}"
+  - insert_machine:
+      call: googleapis.compute.v1.instances.insert
+      args:
+        project: ${project}
+        zone: ${zone}
+        body:
+          name: ${instanceName}
+          machineType: ${"zones/" + zone + "/machineTypes/" + machineType}
+          disks:
+          - initializeParams:
+              sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v20201112"
+            boot: true
+            autoDelete: true
+          networkInterfaces:
+          - network: "global/networks/default"
+  - assert_running:
+      call: assert_machine_status
+      args:
+        expected_status: "RUNNING"
+        project: ${project}
+        zone: ${zone}
+        instanceName: ${instanceName}
+  - stop_machine:
+      call: googleapis.compute.v1.instances.stop
+      args:
+        instance: ${instanceName}
+        project: ${project}
+        zone: ${zone}
+  - assert_terminated:
+      call: assert_machine_status
+      args:
+        expected_status: "TERMINATED"
+        project: ${project}
+        zone: ${zone}
+        instanceName: ${instanceName}
+
+assert_machine_status:
+  params: [expected_status, project, zone, instanceName]
+  steps:
+  - get_instance:
+      call: googleapis.compute.v1.instances.get
+      args:
+        instance: ${instanceName}
+        project: ${project}
+        zone: ${zone}
+      result: instance
+  - compare:
+      switch:
+      - condition: ${instance.status == expected_status}
+        next: end
+  - fail:
+      raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}

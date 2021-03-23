@@ -5,6 +5,7 @@
 This repo contains samples for Workflows:
 
 * [Service chaining](service-chaining)
+* [Connector - Compute](connector-compute)
 
 -------
 

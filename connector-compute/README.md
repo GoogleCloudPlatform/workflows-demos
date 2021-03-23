@@ -1,0 +1,91 @@
+# Connector - Compute
+
+In this sample, you will see how to use [Workflows Connectors](https://cloud.google.com/workflows/docs/reference/googleapis/).
+
+More specifically, you will use Compute Engine Connector's [insert](https://cloud.google.com/workflows/docs/reference/googleapis/compute/v1/instances/insert) to create and start a VM and [stop](https://cloud.google.com/workflows/docs/reference/googleapis/compute/v1/instances/stop) to stop the running VM.
+
+## Create a VM - Compute Engine API
+
+Before trying Workflows, let's take a look at how to create a VM with Compute Engine [insert](https://cloud.google.com/compute/docs/reference/rest/v1/instances/insert) API directly for project `workflows-atamel` in zone `europe-west1-b`:
+
+```sh
+POST https://compute.googleapis.com/compute/v1/projects/workflows-atamel/zones/europe-west1-b/instances?key=[YOUR_API_KEY] HTTP/1.1
+
+Authorization: Bearer [YOUR_ACCESS_TOKEN]
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "my-vm1",
+  "machineType": "projects/workflows-atamel/zones/europe-west1-b/machineTypes/e2-small",
+  "disks": [
+    {
+      "initializeParams": {
+        "sourceImage": "projects/debian-cloud/global/images/debian-10-buster-v20210316"
+      },
+      "boot": true,
+      "autoDelete": true
+    }
+  ],
+  "networkInterfaces": [
+    {
+      "network": "global/networks/default"
+    }
+  ]
+}
+```
+
+## Create a VM - Workflows without connector
+
+First, let's try creating the same VM with Workflows but without the compute connector.
+
+You can see the [create-vm.yaml](create-vm.yaml) for the workflow definition that makes the `http.post` call with `OAuth2` authentication.
+
+Deploy workflow:
+
+```sh
+gcloud workflows deploy create-vm --source=create-vm.yaml
+```
+
+Execute workflow:
+
+```sh
+gcloud workflows execute create-vm --data='{"instanceName":"my-vm2"}'
+```
+
+## Create a VM - Workflows with compute connector
+
+Next, let's try creating the same VM with Workflows and the compute connector.
+
+You can see the [create-vm-connector.yaml](create-vm-connector.yaml) for the workflow definition.
+
+Deploy workflow:
+
+```sh
+gcloud workflows deploy create-vm-connector --source=create-vm-connector.yaml
+```
+
+Execute workflow:
+
+```sh
+gcloud workflows execute create-vm-connector --data='{"instanceName":"my-vm3"}'
+```
+
+## Create and stop a VM - Workflows with compute connector
+
+Finally, let's try to stop the created & running VM with the connector. Also,
+add some checks for `RUNNING` and `TERMINATED` status of the VM.
+
+You can see the [create-stop-vm-connector.yaml](create-stop-vm-connector.yaml) for the workflow definition.
+
+Deploy workflow:
+
+```sh
+gcloud workflows deploy create-stop-vm-connector --source=create-stop-vm-connector.yaml
+```
+
+Execute workflow:
+
+```sh
+gcloud workflows execute create-stop-vm-connector --data='{"instanceName":"my-vm4"}'
+```
