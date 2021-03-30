@@ -1,3 +1,8 @@
+# Node.js
+**/node_modules/**
+npm-debug.log
+package-lock.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

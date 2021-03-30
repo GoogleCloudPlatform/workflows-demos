@@ -1,0 +1,28 @@
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - headers: ${args.headers}
+          - body: ${args.body}
+    - log1:
+        call: sys.log
+        args:
+            text: Workflows received request
+            severity: INFO
+    - log2:
+        call: sys.log
+        args:
+            text: ${args}
+            severity: INFO
+    - log3:
+        call: sys.log
+        args:
+            text: Decoded Pub/Sub message data
+            severity: INFO
+    - log4:
+        call: sys.log
+        args:
+            text: ${text.decode(base64.decode(args.body.message.data))}
+            severity: INFO
+
