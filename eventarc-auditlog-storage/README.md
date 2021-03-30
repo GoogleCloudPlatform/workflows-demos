@@ -16,9 +16,9 @@ logs out the bucket and file name for the storage event.
 Deploy workflow:
 
 ```sh
-export WORKFLOW_NAME=trigger-workflow-auditlog-storage
+export WORKFLOW_NAME=workflow-auditlog-storage
 export REGION=us-central1
-gcloud workflows deploy ${WORKFLOW_NAME} --source=${WORKFLOW_NAME}.yaml --location=${REGION}
+gcloud workflows deploy ${WORKFLOW_NAME} --source=workflow.yaml --location=${REGION}
 ```
 
 ## Deploy a Cloud Run service to execute the workflow
@@ -38,6 +38,8 @@ gcloud builds submit --tag gcr.io/${PROJECT_ID}/${SERVICE_NAME} .
 Deploy the service:
 
 ```sh
+gcloud config set run/region ${REGION}
+gcloud config set run/platform managed
 gcloud run deploy ${SERVICE_NAME} \
   --image gcr.io/${PROJECT_ID}/${SERVICE_NAME} \
   --region=${REGION} \
@@ -53,7 +55,7 @@ AuditLog trigger for Cloud Storage.
 First, one-time Eventarc setup:
 
 ```sh
-export PROJECT_NUMBER="$(gcloud projects list --filter=$(gcloud config get-value project) --format='value(PROJECT_NUMBER)')"
+export PROJECT_NUMBER="$(gcloud projects describe $(gcloud config get-value project) --format='value(projectNumber)')"
 
 gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
     --member=serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com \
@@ -67,9 +69,10 @@ gcloud projects add-iam-policy-binding $(gcloud config get-value project) \
 Create the trigger:
 
 ```sh
-gcloud eventarc triggers create trigger-${SERVICE_NAME} \
+gcloud eventarc triggers create ${SERVICE_NAME} \
   --destination-run-service=${SERVICE_NAME} \
   --destination-run-region=${REGION} \
+  --location=${REGION} \
   --event-filters="type=google.cloud.audit.log.v1.written" \
   --event-filters="serviceName=storage.googleapis.com" \
   --event-filters="methodName=storage.objects.create" \
