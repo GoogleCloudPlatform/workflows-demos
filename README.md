@@ -6,6 +6,8 @@ This repo contains samples for Workflows:
 
 * [Service chaining](service-chaining)
 * [Connector - Compute](connector-compute)
+* [Eventarc Pub/Sub integration](eventarc-pubsub)
+* [Eventarc AuditLog-Storage integration](eventarc-auditlog-storage)
 
 -------
 
