@@ -1,5 +1,5 @@
 {
-  "name": "cloud-eventarc-generic",
+  "name": "trigger-workflow-pubsub",
   "version": "1.0.0",
   "private": true,
   "main": "index.js",

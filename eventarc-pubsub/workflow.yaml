@@ -15,14 +15,9 @@ main:
         args:
             text: ${args}
             severity: INFO
-    - log3:
+    - pubSubMessageStep:
         call: sys.log
         args:
-            text: Decoded Pub/Sub message data
-            severity: INFO
-    - log4:
-        call: sys.log
-        args:
-            text: ${text.decode(base64.decode(args.body.message.data))}
+            text: ${"Decoded Pub/Sub message data is " + text.decode(base64.decode(args.body.message.data))}
             severity: INFO
 
