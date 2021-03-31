@@ -35,3 +35,27 @@ main:
             autoDelete: true
           networkInterfaces:
           - network: "global/networks/default"
+  - assert_running:
+      call: assert_machine_status
+      args:
+        expected_status: "RUNNING"
+        project: ${project}
+        zone: ${zone}
+        instanceName: ${instanceName}
+
+assert_machine_status:
+  params: [expected_status, project, zone, instanceName]
+  steps:
+  - get_instance:
+      call: googleapis.compute.v1.instances.get
+      args:
+        instance: ${instanceName}
+        project: ${project}
+        zone: ${zone}
+      result: instance
+  - compare:
+      switch:
+      - condition: ${instance.status == expected_status}
+        next: end
+  - fail:
+      raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}

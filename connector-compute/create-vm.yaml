@@ -36,3 +36,20 @@ main:
             autoDelete: true
           networkInterfaces:
           - network: "global/networks/default"
+  - get_instance:
+      call: http.get
+      args:
+        url: ${"https://compute.googleapis.com/compute/v1/projects/" + project + "/zones/" + zone + "/instances/" + instanceName}
+        auth:
+          type: OAuth2
+      result: getInstanceResult
+  - assert_running:
+      switch:
+        - condition: ${getInstanceResult.body.status == "RUNNING"}
+          next: end
+      next: sleep
+  - sleep:
+      call: sys.sleep # Polling through sleep
+      args:
+        seconds: 3
+      next: get_instance
