@@ -62,7 +62,33 @@ gcloud workflows deploy create-vm --source=create-vm.yaml
 Execute workflow:
 
 ```sh
-gcloud workflows execute create-vm --data='{"instanceName":"my-vm2"}'
+gcloud workflows execute create-vm --data='{"instanceName":"my-vm"}'
+```
+
+## Stop a VM - Workflows without connector
+
+Next, stop the VM with Workflows but without the compute connector.
+
+You can see the [stop-vm.yaml](stop-vm.yaml) for the workflow definition
+that makes the `http.post` call with `OAuth2` authentication.
+
+The workflow uses the default retry policy for HTTP calls: retry requests on
+status codes 429 Too Many Requests, 502 Bad Gateway, and 503 Service Unavailable.
+
+The `instances.stop` API is a long running operation. This workflow polls the
+operation status periodically until either the operation is successfully
+completed or an error occurs.
+
+Deploy workflow:
+
+```sh
+gcloud workflows deploy stop-vm --source=stop-vm.yaml
+```
+
+Execute workflow:
+
+```sh
+gcloud workflows execute stop-vm --data='{"instanceName":"my-vm"}'
 ```
 
 ## Create a VM - Workflows with compute connector
@@ -83,7 +109,7 @@ gcloud workflows deploy create-vm-connector --source=create-vm-connector.yaml
 Execute workflow:
 
 ```sh
-gcloud workflows execute create-vm-connector --data='{"instanceName":"my-vm3"}'
+gcloud workflows execute create-vm-connector --data='{"instanceName":"my-vm"}'
 ```
 
 ## Create and stop a VM - Workflows with compute connector
@@ -102,5 +128,5 @@ gcloud workflows deploy create-stop-vm-connector --source=create-stop-vm-connect
 Execute workflow:
 
 ```sh
-gcloud workflows execute create-stop-vm-connector --data='{"instanceName":"my-vm4"}'
+gcloud workflows execute create-stop-vm-connector --data='{"instanceName":"my-vm"}'
 ```

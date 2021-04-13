@@ -48,6 +48,12 @@ main:
         instance: ${instanceName}
         project: ${project}
         zone: ${zone}
+        # Optional connector parameters
+        connector_params:
+            timeout: 100 # total time is 100s
+            polling_policy:  # optional polling parameters for LRO polling.
+                initial_delay: 1
+                multiplier: 1.25
   - assert_terminated:
       call: assert_machine_status
       args:
