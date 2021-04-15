@@ -6,8 +6,8 @@ This repo contains samples for Workflows:
 
 * [Service chaining](service-chaining)
 * [Connector - Compute](connector-compute)
-* [Eventarc Pub/Sub integration](eventarc-pubsub)
-* [Eventarc AuditLog-Storage integration](eventarc-auditlog-storage)
+* [Eventarc AuditLog-Cloud Storage and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-auditlog-storage-workflows.md)
+* [Eventarc Pub/Sub and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-pubsub-workflows.md)
 
 -------
 
