@@ -1,6 +1,6 @@
 # Workflows Samples
 
-![Workflows Logo](images/Workflows-128-color.png)
+![Workflows Logo](Workflows-128-color.png)
 
 [Workflows](https://cloud.google.com/workflows) allow you to orchestrate and
 automate Google Cloud and HTTP-based API services with serverless workflows.
@@ -15,7 +15,7 @@ There's a
 that explains Workflows.
 
 <a href="https://speakerdeck.com/meteatamel/serverless-orchestration-with-workflows">
-    <img alt="Workflows presentation" src="images/serverless-orchestration-with-workflows.png" width="50%" height="50%">
+    <img alt="Workflows presentation" src="serverless-orchestration-with-workflows.png" width="50%" height="50%">
 </a>
 
 ## Samples
