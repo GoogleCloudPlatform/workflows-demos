@@ -1,6 +1,6 @@
 # Workflows Samples
 
-![Workflows Logo](docs/images/Workflows-128-color.png)
+![Workflows Logo](images/Workflows-128-color.png)
 
 [Workflows](https://cloud.google.com/workflows) allow you to orchestrate and
 automate Google Cloud and HTTP-based API services with serverless workflows.
@@ -15,17 +15,17 @@ There's a
 that explains Workflows.
 
 <a href="https://speakerdeck.com/meteatamel/serverless-orchestration-with-workflows">
-    <img alt="Workflows presentation" src="docs/images/serverless-orchestration-with-workflows.png" width="50%" height="50%">
+    <img alt="Workflows presentation" src="images/serverless-orchestration-with-workflows.png" width="50%" height="50%">
 </a>
 
 ## Samples
 
-* [Service chaining](docs/service-chaining.md)
-* [Connector - Compute](docs/connector-compute.md)
+* [Service chaining](service-chaining)
+* [Connector - Compute](connector-compute)
 * [Eventarc AuditLog-Cloud Storage and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-auditlog-storage-workflows.md)
 * [Eventarc Pub/Sub and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-pubsub-workflows.md)
-* [Workflows Terraform sample](docs/terraform.md)
-* [Workflows Terraform with multiple external YAMLs](docs/terraform-multiple-yamls.md)
+* [Workflows Terraform sample](terraform)
+* [Workflows Terraform with multiple external YAMLs](terraform-multiple-yamls)
 
 -------
 
