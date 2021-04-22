@@ -22,10 +22,12 @@ that explains Workflows.
 
 * [Service chaining](service-chaining)
 * [Connector - Compute](connector-compute)
-* [Eventarc AuditLog-Cloud Storage and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-auditlog-storage-workflows.md)
-* [Eventarc Pub/Sub and Workflows Integration](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/docs/eventarc-pubsub-workflows.md)
-* [Workflows Terraform sample](terraform)
-* [Workflows Terraform with multiple external YAMLs](terraform-multiple-yamls)
+* Eventarc and Workflows Integration
+  * [Eventarc AuditLog-Cloud Storage and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage)
+  * [Eventarc Pub/Sub and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub)
+* Terraform samples
+  * [Basic Terraform sample](terraform)
+  * [Terraform with multiple external YAMLs](terraform-multiple-yamls)
 
 -------
 
