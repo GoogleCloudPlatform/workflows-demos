@@ -8,7 +8,7 @@ automate Google Cloud and HTTP-based API services with serverless workflows.
 This repository contains a collection of samples for Workflows for various use
 cases.
 
-## Workflows Slides
+## Slides
 
 There's a
 [presentation](https://speakerdeck.com/meteatamel/serverless-orchestration-with-workflows)
@@ -26,8 +26,9 @@ that explains Workflows.
   * [Eventarc AuditLog-Cloud Storage and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage)
   * [Eventarc Pub/Sub and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub)
 * Terraform samples
-  * [Basic Terraform sample](terraform)
-  * [Terraform with multiple external YAMLs](terraform-multiple-yamls)
+  * [Basic Terraform](terraform/basic)
+  * [Terraform with imported YAML](terraform/import-yaml)
+  * [Terraform with multiple imported YAMLs](terraform/import-multiple-yamls)
 
 -------
 

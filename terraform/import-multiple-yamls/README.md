@@ -1,19 +1,15 @@
-# Workflows Terraform
+# Workflows Terraform with multiple external YAMLs
 
 This sample shows how to use Terraform's [google_workflows_workflow](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/workflows_workflow)
-resource to deploy a Workflow.
-
-More specifically, this sample:
-
-1. Enables Workflows API.
-1. Creates a service account for Workflows to use.
-1. Deploys a workflow using Terraform.
-1. Executes the workflow with gcloud.
+resource to deploy a Workflow split across a main workflow YAML file and a
+subflow YAML file.
 
 ## Terraform
 
-You can see [main.tf](../terraform/main.tf) for the definition. Run the
-following commands inside [terraform](../terraform) folder.
+You can see [main.tf](main.tf) for Terraform,
+[workflow.yaml](workflow.yaml) for the main workflow YAML file and
+[subworkflow.yaml](subworkflow.yaml) for the subworkflow YAML file used by the
+main workflow.
 
 1. Initialize terraform:
 
@@ -52,3 +48,7 @@ You can optionally execute the workflow using gcloud:
 ```sh
 gcloud workflows execute sample-workflow
 ```
+
+---
+
+Thanks to Jamie Thomson [@jamiet](https://twitter.com/jamiet) for the `templatefile` idea.
