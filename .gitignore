@@ -140,3 +140,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .DS_Store
+
+run-dlp/LocalTestingFunctions/*
+run-dlp/supporting-documents/*
