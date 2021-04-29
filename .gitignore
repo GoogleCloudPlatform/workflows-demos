@@ -141,5 +141,5 @@ dmypy.json
 .pyre/
 .DS_Store
 
-run-dlp/LocalTestingFunctions/*
-run-dlp/supporting-documents/*
+gcs-dlp/LocalTestingFunctions/*
+gcs-dlp/supporting-documents/*
