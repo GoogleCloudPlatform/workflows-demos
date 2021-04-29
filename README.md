@@ -29,7 +29,7 @@ that explains Workflows.
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
   * [Terraform with multiple imported YAMLs](terraform/import-multiple-yamls)
-
+* [Run a DLP job when a file is uploaded to GCS](gcs-dlp)
 -------
 
 This is not an official Google product.
