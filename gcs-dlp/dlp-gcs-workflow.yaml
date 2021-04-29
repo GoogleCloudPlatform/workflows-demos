@@ -1,0 +1,78 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+main:
+    params: [args]
+    steps:
+    - initVariables:
+        assign:
+        - project: '${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}'
+        - topic: 'workflows-demo'
+        - timeInterval: '10'
+    - Create DLP Job:
+        call: http.post
+        args:
+            url: https://us-central1-uri-test.cloudfunctions.net/DlpInspectGcsFile
+            auth:
+                type: OIDC
+            body:
+                project: ${project}
+                bucket: ${args.bucket}
+                filename: ${args.name}
+        result: ResultCreate
+    - Get DLP Job Status:
+        call: http.post
+        args:
+            url: https://us-central1-uri-test.cloudfunctions.net/DlpInspectJobStatus
+            auth:
+                type: OIDC
+            body:
+                name: ${ResultCreate.body.name}
+        result: ResultStatus    
+    - Check Job Status:
+        switch:
+            - condition: ${ResultStatus.body.state=="DONE"}
+              next: Found DLP Results?
+        next: Wait for Job Result      
+    - Wait for Job Result:
+        call: sys.sleep
+        args:
+            seconds: ${int(timeInterval)}
+        next: Publish wait message To PubSub
+    - Publish wait message To PubSub:
+        call: googleapis.pubsub.v1.projects.topics.publish
+        args:
+            topic: ${"projects/" + project + "/topics/" + topic}
+            body:
+                messages:
+                    # - data: ${base64.encode(text.encode(message))}
+                    - data: ${base64.encode(text.encode("Waiting " + timeInterval + " seconds message"))}
+        result: publishResult
+        next: Get DLP Job Status    
+    - Found DLP Results?:
+        switch:
+            - condition: ${len(ResultStatus.body.inspectDetails.result.infoTypeStats)>0}
+              next: Publish To PubSub
+        next: returnValue
+    - Publish To PubSub:
+        call: googleapis.pubsub.v1.projects.topics.publish
+        args:
+            topic: ${"projects/" + project + "/topics/" + topic}
+            body:
+                messages:
+                    # - data: ${base64.encode(text.encode(message))}
+                    - data: ${base64.encode(text.encode("DLP job " + ResultStatus.body.name + " completed and found DLP issues."))}
+        result: publishResult
+        next: returnValue
+    - returnValue:
+        return: ${ResultStatus.body.state}
