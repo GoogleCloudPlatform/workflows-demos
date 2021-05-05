@@ -22,6 +22,7 @@ that explains Workflows.
 
 * [Service chaining](service-chaining)
 * [Connector - Compute](connector-compute)
+* [Data Loss Prevention workflow](gcs-dlp)
 * Eventarc and Workflows Integration
   * [Eventarc AuditLog-Cloud Storage and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage)
   * [Eventarc Pub/Sub and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub)
@@ -29,7 +30,7 @@ that explains Workflows.
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
   * [Terraform with multiple imported YAMLs](terraform/import-multiple-yamls)
-* [Run a DLP job when a file is uploaded to GCS](gcs-dlp)
+
 -------
 
 This is not an official Google product.
