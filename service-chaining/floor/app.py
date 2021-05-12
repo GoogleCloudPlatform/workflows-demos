@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# [START workflows_run_floor]
 import json
 import logging
 import os
@@ -34,3 +35,4 @@ if __name__ != '__main__':
     app.logger.info('Service started...')
 else:
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
+# [END workflows_run_floor]
