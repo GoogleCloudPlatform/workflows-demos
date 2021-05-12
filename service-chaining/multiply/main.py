@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# [START workflows_functions_multiply]
 import random, json
 from flask import jsonify
 
@@ -18,3 +19,4 @@ def multiply(request):
     request_json = request.get_json()
     output = {"multiplied":2*request_json['input']}
     return jsonify(output)
+# [END workflows_functions_multiply]
