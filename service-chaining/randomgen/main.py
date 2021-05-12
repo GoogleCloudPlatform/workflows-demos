@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# [START workflows_functions_randomgen]
 import random, json
 from flask import jsonify
 
@@ -18,4 +19,4 @@ def randomgen(request):
     randomNum = random.randint(1,100)
     output = {"random":randomNum}
     return jsonify(output)
-
+# [END workflows_functions_randomgen]
