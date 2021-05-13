@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# [START workflows_run_floor_docker]
 # Use an official lightweight Python image.
 # https://hub.docker.com/_/python
 FROM python:3.7-slim
@@ -28,3 +28,4 @@ COPY . .
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 CMD exec gunicorn --bind 0.0.0.0:8080 --workers 1 --threads 8 app:app
+# [END workflows_run_floor_docker]
