@@ -20,7 +20,7 @@ that explains Workflows.
 
 ## Samples
 
-* [Batch Translation using Cloud Translation API connector](batch-translate)
+* [Batch Translation using Cloud Translation API connector](batch-translation)
 * [Create, start, stop VM using Compute Connector](connector-compute)
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
