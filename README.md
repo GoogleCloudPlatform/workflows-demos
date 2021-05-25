@@ -20,9 +20,10 @@ that explains Workflows.
 
 ## Samples
 
-* [Service chaining](service-chaining)
-* [Connector - Compute](connector-compute)
+* [Batch Translation using Cloud Translation API connector](batch-translate)
+* [Create, start, stop VM using Compute Connector](connector-compute)
 * [Data Loss Prevention workflow](gcs-dlp)
+* [Service chaining](service-chaining)
 * Eventarc and Workflows Integration
   * [Eventarc AuditLog-Cloud Storage and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage)
   * [Eventarc Pub/Sub and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub)

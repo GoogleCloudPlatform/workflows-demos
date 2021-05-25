@@ -1,4 +1,4 @@
-# Connector - Compute
+# Create, start, stop VM using Compute Connector
 
 In this sample, you will see how to use [Workflows
 Connectors](https://cloud.google.com/workflows/docs/reference/googleapis/).
