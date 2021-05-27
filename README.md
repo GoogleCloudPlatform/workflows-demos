@@ -20,7 +20,6 @@ that explains Workflows.
 
 ## Samples
 
-* [Batch Translation using Cloud Translation API connector](batch-translation)
 * [Create, start, stop VM using Compute Connector](connector-compute)
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
@@ -31,6 +30,9 @@ that explains Workflows.
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
   * [Terraform with multiple imported YAMLs](terraform/import-multiple-yamls)
+* Machine Learning samples
+  * [Batch Translation using Translation API connector](batch-translation)
+  * [Reddit sentiment analysis using Language API connector](reddit-sentiment)
 
 -------
 
