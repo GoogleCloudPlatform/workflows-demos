@@ -1,0 +1,15 @@
+- init:
+    assign:
+      - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - topic: "workflows-to-eventarc-topic"
+      - message: "Hello world!"
+- publish:
+    call: googleapis.pubsub.v1.projects.topics.publish
+    args:
+      topic: ${"projects/" + project + "/topics/" + topic}
+      body:
+        messages:
+          - data: ${base64.encode(text.encode(message))}
+    result: publish_result
+- last:
+    return: ${publish_result}
