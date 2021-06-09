@@ -180,8 +180,8 @@ Search for the `UPDATE_ME` placeholder value, and update both occurrences.
 ```sh
 export WORKFLOWS_REGION=europe-west2
 
-gcloud workflows deploy translation-callback \
-    --source=stop-vm.yaml \
+gcloud workflows deploy translation_validation \
+    --source=translation-validation.yaml \
     --region=${WORKFLOWS_REGION}
 ```
 
