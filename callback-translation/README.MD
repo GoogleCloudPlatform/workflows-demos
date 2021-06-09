@@ -150,6 +150,7 @@ gcloud functions deploy invokeTranslationWorkflow \
   --source=./functions/invokeTranslationWorkflow \
   --runtime nodejs14 \
   --entry-point=invokeTranslationWorkflow \
+  --set-env-vars PROJECT_ID=${GOOGLE_CLOUD_PROJECT},CLOUD_REGION=${REGION},WORKFLOW_NAME=translation_validation \
   --trigger-http \
   --allow-unauthenticated
 
