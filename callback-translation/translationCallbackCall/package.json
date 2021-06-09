@@ -1,0 +1,9 @@
+{
+  "name": "approve-translation-workflow",
+  "version": "0.0.1",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.1",
+    "google-auth-library": "^7.1.1"
+  }
+}
