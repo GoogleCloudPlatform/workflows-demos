@@ -176,6 +176,8 @@ firebase serve
 > **Note —** The `script.js` file should be updated with the right URL pointing at the two functions used to create the workflow execution, and call the callback. 
 Search for the `UPDATE_ME` placeholder value, and update both occurrences.
 
+> **Note —** The `index.html` file contains the Firebase configuration. If you're deploying on Firebase Hosting, be sure to update the `XXXX` placeholder values withe the right configuration from Firebase.
+
 ### Deploying the workflow definition
 
 ```sh
@@ -185,4 +187,3 @@ gcloud workflows deploy translation_validation \
     --source=translation-validation.yaml \
     --region=${WORKFLOWS_REGION}
 ```
-
