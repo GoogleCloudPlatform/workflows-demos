@@ -1,0 +1,8 @@
+{
+  "name": "launch-translation-workflow",
+  "version": "0.0.1",
+  "dependencies": {
+    "@google-cloud/workflows": "^1.2.0",
+    "cors": "^2.8.5"
+  }
+}

@@ -34,6 +34,7 @@ that explains Workflows.
 * Machine Learning samples
   * [Batch Translation using Translation API connector](batch-translation)
   * [Reddit sentiment analysis using Language API connector](reddit-sentiment)
+  * [Human validation of text translation via Workflows callbacks](callback-translation)
 
 -------
 

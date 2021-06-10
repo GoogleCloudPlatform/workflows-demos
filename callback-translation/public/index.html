@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Frenglish translation — Feature Workflows callbacks</title>
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.42/dist/themes/base.css">
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.42/dist/shoelace.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <h1>Translate from English to French</h1>
+
+    <sl-form class="form-overview">
+        <sl-textarea id="text" placeholder="The quick brown fox jumps over the lazy dog."
+            label="English text to translate"></sl-textarea>
+        <p></p>
+        <sl-button id="translateBtn" type="primary">Translate</sl-button>
+        <p></p>
+        <sl-alert id="translation" type="primary">
+            Le rapide renard brun saute au dessus du chien paresseux.
+        </sl-alert>
+        <p></p>
+        <div id="buttonRow" style="display: none;">
+            <sl-button id="validateBtn" type="success">Validate</sl-button>
+            <sl-button id="rejectBtn" type="danger">Reject</sl-button>
+        </div>
+        <p></p>
+        <sl-alert id="validationAlert" type="success">
+            <sl-icon slot="icon" name="check2-circle"></sl-icon>
+            <strong>The translation has been validated</strong><br>
+            Glad that you liked our translation! We'll save it in our database.
+        </sl-alert>
+        <sl-alert id="rejectionAlert" type="danger">
+            <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
+            <strong>The translation has been rejected</strong><br>
+            A pity the translation isn't good! We'll do better next time!
+        </sl-alert>
+        <p></p>
+        <sl-button id="newBtn" style="display: none;" type="primary">New translation</sl-button>
+    </sl-form>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-firestore.js"></script>
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "XXXX",
+            authDomain: "XXXX",
+            projectId: "XXXX",
+            storageBucket: "XXXX",
+            messagingSenderId: "XXXX",
+            appId: "XXXX",
+            measurementId: "XXXX"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="./script.js" type="module"></script>
+</body>
+
+</html>
