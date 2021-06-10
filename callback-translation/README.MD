@@ -1,9 +1,9 @@
-# Human validation of text translation via Webhooks callbacks
+# Human validation of text translation via Webhooks callback endpoints
 
 In this example, you will take advantage of the **callback** feature of Workflows:
 by creating an HTTP callback, and waiting for some external user or process 
-to call that callback.
-This allows workflow executions to be paused, and then be resumed once the callback is called.
+to call that callback endpoint.
+This allows workflow executions to be paused, and then be resumed once the callback endpoint is called.
 
 The use case in this sample is **human validation of automated translation**.
 On a web page, a user can enter some text in English, and request its translation in French.
@@ -14,11 +14,11 @@ And the workflow execution finishes with the outcome of this validation.
 ## Technical overview
 
 This demo consists of:
-* a Cloud Firestore database to store the text, the translation, the callback URL, the approval status, as those details are available
+* a Cloud Firestore database to store the text, the translation, the callback endpoint, the approval status, as those details are available
 * the web page is using the Firebase SDK to get updates in realtime when data stored in Firestore is updated
 * two Cloud Functions called from the web page:
     * a first function to trigger the workflow execution, passing the input text to translate
-    * a second function to call the callback URL, passing the approval status
+    * a second function to call the callback endpoint, passing the approval status
 * and a workflow is orchestrating the whole process
 
 ## Architecture diagram
@@ -30,9 +30,9 @@ The web page can be hosted anywhere, in a cloud storage bucket, on Firebase host
 The user then fills a textarea with the text they want to translate, and click on the *translate* button.
 2. Clicking on the button will call a Cloud Function, that will launch an execution of the workflow. The text to translate is passed as a parameter of the function, and as a parameter of the workflow too.
 3. The text is saved in Cloud Firestore, and the Translation API is called with the input text, and will return the translation, which will be stored in Firestore as well. The translation appears in the web page.
-4. A step in the workflow creates a callback URL (also saved in Firestore), so that it can be called to validate or reject the automatic translation. When the callback URL is saved in Firestore, the web page displays validation and rejection buttons.
-5. The workflow now explicitly awaits the callback URL to be called. This pauses the workflow execution.
-6. The user decides to either validate or reject the translation. When one of the two buttons is clicked, a Cloud Function is called, with the approval status as parameter, which will in turn call the callback URL created by the workflow, also passing the approval status. The workflow resumes its execution, and saves the approval in Firestore. And this is the end of our workflow.
+4. A step in the workflow creates a callback endpoint (also saved in Firestore), so that it can be called to validate or reject the automatic translation. When the callback endpoint is saved in Firestore, the web page displays validation and rejection buttons.
+5. The workflow now explicitly awaits the callback endpoint to be called. This pauses the workflow execution.
+6. The user decides to either validate or reject the translation. When one of the two buttons is clicked, a Cloud Function is called, with the approval status as parameter, which will in turn call the callback endpoint created by the workflow, also passing the approval status. The workflow resumes its execution, and saves the approval in Firestore. And this is the end of our workflow.
 
 ## Creating a workflow callback and awaiting
 
@@ -58,7 +58,7 @@ As argument, you pass the HTTP method you want the caller to use to call your ca
     result: callback_request
 ```
 
-To explicitly pause the workflow, to await the incoming request on the callback URL, you have to call the `events.await_callback` built-in function, passing the callback details as argument, as well as the duration in seconds that you want to wait for the callback to arrive.
+To explicitly pause the workflow, to await the incoming request on the callback endpoint, you have to call the `events.await_callback` built-in function, passing the callback details as argument, as well as the duration in seconds that you want to wait for the callback to arrive.
 
 ## Triggering the execution of a workflow
 
@@ -90,9 +90,9 @@ You can pass an argument to the workflow execution, in the form of a JSON object
 
 The result of this execution creation will return an object that identifies a workflow execution, including its execution ID.
 
-## Calling a workflow callback URL
+## Calling a workflow callback endpoint
 
-The second cloud function is responsible for calling the callback URL. This snippets below show the call made with the `node-fetch` NPM module. But it is also using the `google-auth-library` to make an authenticated call, thanks to an access token.
+The second cloud function is responsible for calling the callback endpoint. This snippets below show the call made with the `node-fetch` NPM module. But it is also using the `google-auth-library` to make an authenticated call, thanks to an access token.
 
 ```javascript
 const fetch = require('node-fetch');
@@ -102,7 +102,7 @@ const {GoogleAuth} = require('google-auth-library');
 const auth = new GoogleAuth();
 const token = await auth.getAccessToken();
 
-// call the callback URL
+// call the callback endpoint URL
 const resp = await fetch(url, {
     method: 'POST',
     headers: {
