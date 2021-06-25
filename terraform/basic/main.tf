@@ -18,19 +18,21 @@ provider "google" {
   project = var.project_id
 }
 
-# Enable Workflows API
+# [START workflows_api_enable]
 resource "google_project_service" "workflows" {
   service            = "workflows.googleapis.com"
   disable_on_destroy = false
 }
+# [END workflows_api_enable]
 
-# Create a service account for Workflows
+# [START workflows_serviceaccount_create]
 resource "google_service_account" "workflows_service_account" {
   account_id   = "workflows-service-account"
   display_name = "Workflows Service Account"
 }
+# [END workflows_serviceaccount_create]
 
-# Define and deploy a workflow
+# [START workflows_workflow_deploy]
 resource "google_workflows_workflow" "workflows_example" {
   name            = "sample-workflow"
   region          = var.region
@@ -64,5 +66,6 @@ resource "google_workflows_workflow" "workflows_example" {
       return: $${WikiResult.body[1]}
 EOF
 
-  #depends_on = [google_project_service.workflows]
+  depends_on = [google_project_service.workflows]
 }
+# [END workflows_workflow_deploy]
