@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# [START workflows_translation_validation]
 main:
     params: [translation_request]
     steps:
@@ -119,3 +119,4 @@ main:
                 text: ${text_to_translate}
                 translation: ${translation}
                 approved: ${approved}
+# [END workflows_translation_validation]
