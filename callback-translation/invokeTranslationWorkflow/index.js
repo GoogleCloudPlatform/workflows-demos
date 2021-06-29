@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+// [START workflows_invoke_translation]
 const cors = require('cors')({origin: true});
 const {ExecutionsClient} = require('@google-cloud/workflows');
 const client = new ExecutionsClient();
@@ -40,3 +40,4 @@ exports.invokeTranslationWorkflow = async (req, res) => {
     res.status(200).json({executionId: execName});
   });
 };
+// [END workflows_invoke_translation]
