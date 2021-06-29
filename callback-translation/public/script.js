@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.const cors = require('cors')({origin: true});
-
+// [START workflows_callback_script]
 document.addEventListener("DOMContentLoaded", async function (event) {
     const textArea = document.getElementById("text");
     textArea.focus();
@@ -146,3 +146,4 @@ async function callCallbackUrl(url, approved) {
         console.log(e);
     }
 }
+// [END workflows_callback_script]
