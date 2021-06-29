@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+// [START workflows_callback_translation]
 const cors = require('cors')({origin: true});
 const fetch = require('node-fetch');
 
@@ -51,3 +51,4 @@ exports.translationCallbackCall = async (req, res) => {
     }
   });
 };
+// [END workflows_callback_translation]
