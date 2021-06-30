@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+// [START workflows_callback_translation]
 const cors = require('cors')({origin: true});
 const fetch = require('node-fetch');
 
@@ -22,7 +22,7 @@ exports.translationCallbackCall = async (req, res) => {
     const {url, approved} = req.body;
     console.log("Approved? ", approved);
     console.log("URL = ", url);
-
+    // [START workflows_oauth_token]
     const {GoogleAuth} = require('google-auth-library');
     const auth = new GoogleAuth();
     const token = await auth.getAccessToken();
@@ -42,6 +42,7 @@ exports.translationCallbackCall = async (req, res) => {
       
       const result = await resp.json();
       console.log("Outcome = ", JSON.stringify(result));
+      // [END workflows_oauth_token]
 
       res.status(200).json({status: 'OK'});
     } catch(e) {
@@ -51,3 +52,4 @@ exports.translationCallbackCall = async (req, res) => {
     }
   });
 };
+// [END workflows_callback_translation]
