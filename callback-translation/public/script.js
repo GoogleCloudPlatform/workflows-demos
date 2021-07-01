@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function (event) {
 
         console.log("Text to translate = ", textArea.value);
 
-        var fnUrl = UPDATE_ME;
+        const fnUrl = UPDATE_ME;
 
         try {
             console.log("Calling workflow executor function...");
