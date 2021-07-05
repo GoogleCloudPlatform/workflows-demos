@@ -27,8 +27,8 @@ resource "google_project_service" "workflows" {
 
 # [START workflows_serviceaccount_create]
 resource "google_service_account" "workflows_service_account" {
-  account_id   = "workflows-service-account"
-  display_name = "Workflows Service Account"
+  account_id   = "sample-workflows-service-account"
+  display_name = "Sample Workflows Service Account"
 }
 # [END workflows_serviceaccount_create]
 
