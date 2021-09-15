@@ -1,0 +1,54 @@
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - bearerToken: ${args.bearerToken}
+          - twitterHandle: ${args.twitterHandle}
+          - maxResults: ${args.maxResults}
+          - totalSentimentScore: 0
+    - searchTweets:
+        call: http.get
+        args:
+          url: ${"https://api.twitter.com/2/tweets/search/recent?query=from:" + twitterHandle + "&max_results=" + maxResults}
+          headers:
+            Authorization: ${"Bearer " + bearerToken}
+        result: searchTweetsResult
+    - logTweets:
+        call: sys.log
+        args:
+          text: ${searchTweetsResult}
+    - processPosts:
+        for:
+          value: tweet
+          in: ${searchTweetsResult.body.data}
+          steps:
+            - analyzeSentiment:
+                call: googleapis.language.v1.documents.analyzeSentiment
+                args:
+                    body:
+                      document:
+                        content: ${tweet.text}
+                        type: "PLAIN_TEXT"
+                result: sentimentResult
+            - updateTotalSentimentScore:
+                assign:
+                    - currentScore: ${sentimentResult.documentSentiment.score}
+                    - totalSentimentScore: ${totalSentimentScore + currentScore}
+            - logTweetScore:
+                call: sys.log
+                args:
+                  text: ${text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
+    - assignResult:
+        assign:
+          - numberOfTweets: ${len(searchTweetsResult.body.data)}
+          - averageSentiment: ${totalSentimentScore / numberOfTweets}
+    - logResult:
+        call: sys.log
+        args:
+          text: ${"Total score:" + string(totalSentimentScore) + " for n:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment)}
+    - returnResult:
+        return:
+          numberOfTweets: ${numberOfTweets}
+          totalSentimentScore: ${totalSentimentScore}
+          averageSentiment: ${averageSentiment}

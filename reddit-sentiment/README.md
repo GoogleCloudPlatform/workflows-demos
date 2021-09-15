@@ -1,4 +1,4 @@
-# Reddit sentiment analysis using Language API connector
+# Reddit sentiment analysis using for-in and Language API connector
 
 In this sample, you will see how to use [Cloud Natural Language API
 connector](https://cloud.google.com/workflows/docs/reference/googleapis/language/Overview)
@@ -49,7 +49,7 @@ gcloud services enable \
 
 Create a `workflow.yaml` to define the workflow.
 
-In the init step, read subreddit name and number of posts to read as runtime
+In the `init` step, read subreddit name and number of posts to read as runtime
 arguments and initialize totalScore to keep track of total sentiment:
 
 ```yaml
