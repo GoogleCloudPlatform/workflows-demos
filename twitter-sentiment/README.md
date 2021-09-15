@@ -17,7 +17,7 @@ from [@GoogleCloudTech](https://twitter.com/googlecloudtech):
 
 ```sh
 BEARER_TOKEN=...
-TWITTER_HANDLE=@GoogleCloudTech
+TWITTER_HANDLE=GoogleCloudTech
 MAX_RESULTS=100
 
 curl -X GET -H "Authorization: Bearer $BEARER_TOKEN" "https://api.twitter.com/2/tweets/search/recent?query=from:$TWITTER_HANDLE&max_results=$MAX_RESULTS"
