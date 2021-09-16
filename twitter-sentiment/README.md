@@ -2,8 +2,8 @@
 
 In this sample, you will see how to use [Cloud Natural Language API
 connector](https://cloud.google.com/workflows/docs/reference/googleapis/language/Overview)
-and [for-in](https://cloud.google.com/workflows/docs/reference/syntax#for-in)
-iteration syntax to analyze sentiments of latest Twitter posts of a Twitter handle.
+and [iteration](https://cloud.google.com/workflows/docs/reference/syntax/iteration)
+syntax to analyze sentiments of latest tweets of a Twitter handle.
 
 ## Twitter API
 
@@ -39,8 +39,7 @@ You will use `score` of `documentSentiment` to identify the sentiment of each
 post. Score ranges between -1.0 (negative) and 1.0 (positive) and corresponds to
 the overall emotional leaning of the text.
 
-You will also calculate and average score for the sentiment of all processed
-tweets.
+You will also calculate average and minimum sentiment score of all processed tweets.
 
 ## Enable services
 
@@ -54,10 +53,10 @@ gcloud services enable \
 
 ## Define workflow
 
-Create a `workflow.yaml` to define the workflow.
+Create a [workflow.yaml](workflow.yaml) to define the workflow.
 
-In the `init` step, read the bearer token, twitter handle, max results and
-initialize a total sentiment score:
+In the `init` step, read the bearer token, twitter handle, max results for the
+Twitter API. We also keep track of some sentiment variables:
 
 ```yaml
 main:
@@ -69,6 +68,8 @@ main:
           - twitterHandle: ${args.twitterHandle}
           - maxResults: ${args.maxResults}
           - totalSentimentScore: 0
+          - minSentimentScore: 1
+          - minSentimentIndex: -1
 ```
 
 In the `searchTweets` step, fetch Tweets using the Twitter API:
@@ -84,7 +85,8 @@ In the `searchTweets` step, fetch Tweets using the Twitter API:
 ```
 
 In `processPosts` steps, analyze each Tweet in a `for-in` loop using the
-Language API connector and keep track of the current and total sentiment score:
+Language API connector and keep track of the current, total and min sentiment
+score:
 
 ```yaml
     - processPosts:
@@ -104,10 +106,18 @@ Language API connector and keep track of the current and total sentiment score:
                 assign:
                     - currentScore: ${sentimentResult.documentSentiment.score}
                     - totalSentimentScore: ${totalSentimentScore + currentScore}
+            - updateMinSentiment:
+                switch:
+                  - condition: ${currentScore < minSentimentScore}
+                    steps:
+                      - assignMinSentiment:
+                          assign:
+                            - minSentimentScore: ${currentScore}
+                            - minSentimentIndex: ${tweetIndex}
 ```
 
-In the last steps, calculate the total and average sentiment scores and return
-the result:
+In the last steps, calculate the average sentiment score and return
+the results:
 
 ```yaml
     - assignResult:
@@ -117,12 +127,14 @@ the result:
     - logResult:
         call: sys.log
         args:
-          text: ${"Total score:" + string(totalSentimentScore) + " for n:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment)}
+          text: ${"N:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment) + " min sentiment:" + string(minSentimentScore) + " at index:" + string(minSentimentIndex)}
     - returnResult:
         return:
           numberOfTweets: ${numberOfTweets}
           totalSentimentScore: ${totalSentimentScore}
           averageSentiment: ${averageSentiment}
+          minSentimentScore: ${minSentimentScore}
+          minSentimentIndex: ${minSentimentIndex}
 ```
 
 You can see the full [workflow.yaml](workflow.yaml).
@@ -149,8 +161,6 @@ After a minute or so, you should see the see the result:
 gcloud workflows executions describe bcf52313-4ce9-4c4f-9b5e-2f461223923f twitter-sentiment
 
 ...
-result: '{"averageSentiment":0.26562499999999983,"numberOfTweets":64,"totalSentimentScore":16.99999999999999}'
-startTime: '2021-09-15T14:49:59.682689084Z'
+result: '{"averageSentiment":0.2707692307692307,"minSentimentIndex":57,"minSentimentScore":-0.2,"numberOfTweets":65,"totalSentimentScore":17.599999999999994}'
 state: SUCCEEDED
-workflowRevisionId: 000008-c75
 ```

@@ -7,6 +7,8 @@ main:
           - twitterHandle: ${args.twitterHandle}
           - maxResults: ${args.maxResults}
           - totalSentimentScore: 0
+          - minSentimentScore: 1
+          - minSentimentIndex: -1
     - searchTweets:
         call: http.get
         args:
@@ -21,6 +23,7 @@ main:
     - processPosts:
         for:
           value: tweet
+          index: tweetIndex
           in: ${searchTweetsResult.body.data}
           steps:
             - analyzeSentiment:
@@ -35,10 +38,18 @@ main:
                 assign:
                     - currentScore: ${sentimentResult.documentSentiment.score}
                     - totalSentimentScore: ${totalSentimentScore + currentScore}
+            - updateMinSentiment:
+                switch:
+                  - condition: ${currentScore < minSentimentScore}
+                    steps:
+                      - assignMinSentiment:
+                          assign:
+                            - minSentimentScore: ${currentScore}
+                            - minSentimentIndex: ${tweetIndex}
             - logTweetScore:
                 call: sys.log
                 args:
-                  text: ${text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
+                  text: ${string(tweetIndex) + ". " + text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
     - assignResult:
         assign:
           - numberOfTweets: ${len(searchTweetsResult.body.data)}
@@ -46,9 +57,11 @@ main:
     - logResult:
         call: sys.log
         args:
-          text: ${"Total score:" + string(totalSentimentScore) + " for n:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment)}
+          text: ${"N:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment) + " min sentiment:" + string(minSentimentScore) + " at index:" + string(minSentimentIndex)}
     - returnResult:
         return:
           numberOfTweets: ${numberOfTweets}
           totalSentimentScore: ${totalSentimentScore}
           averageSentiment: ${averageSentiment}
+          minSentimentScore: ${minSentimentScore}
+          minSentimentIndex: ${minSentimentIndex}
