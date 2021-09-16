@@ -1,4 +1,4 @@
-# Reddit sentiment analysis using for-in and Language API connector
+# Reddit sentiment analysis using Language API connector and iteration syntax
 
 In this sample, you will see how to use [Cloud Natural Language API
 connector](https://cloud.google.com/workflows/docs/reference/googleapis/language/Overview)

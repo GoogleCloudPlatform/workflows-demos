@@ -33,8 +33,8 @@ that explains Workflows.
   * [Terraform with multiple imported YAMLs](terraform/import-multiple-yamls)
 * Machine Learning and iteration samples
   * [Batch Translation using Translation API connector](batch-translation)
-  * [Reddit sentiment analysis using for-in and Language API connector](reddit-sentiment)
-  * [Twitter sentiment analysis using for-in and Language API connector](twitter-sentiment)
+  * [Reddit sentiment analysis using Language API connector and iteration syntax](reddit-sentiment)
+  * [Twitter sentiment analysis using Language API connector and iteration syntax](twitter-sentiment)
 * Callback samples
   * [Basic callback endpoint sample](callback-basic)
   * [Human validation of text translation via Workflows callback](callback-translation)
