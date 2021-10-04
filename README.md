@@ -24,9 +24,10 @@ that explains Workflows.
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
 * Eventarc and Workflows
+  * [Eventarc (Cloud Storage) and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-storage)
   * [Eventarc (AuditLog-Cloud Storage), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage-cloudrun)
-  * [Eventarc (Pub/Sub), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub-cloudrun)
   * [Workflows and Eventarc (Pub/Sub)](workflows-eventarc-integration/workflows-pubsub)
+  * [Eventarc (Pub/Sub), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub-cloudrun)
 * Terraform samples
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
