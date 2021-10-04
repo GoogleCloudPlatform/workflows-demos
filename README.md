@@ -26,8 +26,9 @@ that explains Workflows.
 * Eventarc and Workflows
   * [Eventarc (Cloud Storage) and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-storage)
   * [Eventarc (AuditLog-Cloud Storage), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage-cloudrun)
-  * [Workflows and Eventarc (Pub/Sub)](workflows-eventarc-integration/workflows-pubsub)
+  * [Eventarc (Pub/Sub) and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub)
   * [Eventarc (Pub/Sub), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-pubsub-cloudrun)
+  * [Workflows and Eventarc (Pub/Sub)](workflows-eventarc-integration/workflows-pubsub)
 * Terraform samples
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
