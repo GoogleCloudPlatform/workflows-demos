@@ -23,13 +23,13 @@ You can see [main.tf](main.tf) for the definition.
 1. See the planned changes:
 
     ```sh
-    terraform plan -var="project_id=YOUR-PROJECT-ID" -var="region=YOUR-GCP-REGION"
+    terraform plan -var="project_id=YOUR-PROJECT-ID"
     ```
 
 1. Create workflow:
 
     ```sh
-    terraform apply -var="project_id=YOUR-PROJECT-ID" -var="region=YOUR-GCP-REGION"
+    terraform apply -var="project_id=YOUR-PROJECT-ID"
     ```
 
 1. Once workflow is created, you can see it in the list:
@@ -41,7 +41,7 @@ You can see [main.tf](main.tf) for the definition.
 1. Cleanup:
 
     ```sh
-    terraform destroy -var="project_id=YOUR-PROJECT-ID" -var="region=YOUR-GCP-REGION"
+    terraform destroy -var="project_id=YOUR-PROJECT-ID"
     ```
 
 ## Execute

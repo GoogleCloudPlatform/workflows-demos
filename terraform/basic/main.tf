@@ -35,7 +35,7 @@ resource "google_service_account" "workflows_service_account" {
 # [START workflows_workflow_deploy]
 resource "google_workflows_workflow" "workflows_example" {
   name            = "sample-workflow"
-  region          = var.region
+  region          = "us-central1"
   description     = "A sample workflow"
   service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
