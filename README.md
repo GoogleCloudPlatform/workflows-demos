@@ -20,6 +20,7 @@ that explains Workflows.
 
 ## Samples
 
+* [Workflows syntax cheat sheet](syntax-cheat-sheet)
 * [Create, start, stop VM using Compute Connector](connector-compute)
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
