@@ -39,6 +39,7 @@ main:
           - to_double: double("2.7") # string, integer to double
           - to_int: int(2.7)         # string, double to integer
           - to_string: string(1.7)   # int, double, boolean to string
+    # Boolean
     - logical_ops:
         assign:
           - my_true: true
@@ -162,7 +163,53 @@ main:
             first_name: "Sherlock"
             last_name: "Holmes"
         result: output
-    # Standard library reference
+    # Raise errors
+    - raise_custom_string_error:
+        raise: "Something went wrong."
+    - raise_custom_map_error:
+        raise:
+            code: 55
+            message: "Something went wrong."
+    # Catch errors
+    - try_retry_except:
+        try:
+          steps: # steps is only needed if multiple steps
+              - step_a:
+                  call: http.get
+                  args:
+                      url: https://host.com/api
+                  result: api_response1
+              - step_b:
+                  call: http.get
+                  args:
+                      url: https://host.com/api2
+                  result: api_response2
+        # retry is optional
+        # Either, you can use a retry with default policy
+        # retry: ${http.default_retry}
+        # Or, you can use more fine grained policy
+        # retry:
+        #   predicate: ${http.default_retry_predicate}
+        #   max_retries: 10
+        #   backoff:
+        #       initial_delay: 1
+        #       max_delay: 90
+        #       multiplier: 3
+        except:
+            as: e
+            steps:
+                - known_errors:
+                    switch:
+                    - condition: ${not("HttpError" in e.tags)}
+                      return: "Connection problem."
+                    - condition: ${e.code == 404}
+                      return: "Sorry, URL wasn’t found."
+                    - condition: ${e.code == 403}
+                      return: "Authentication error."
+                - unhandled_exception:
+                    raise: ${e}
+    # Standard library
+    # https://cloud.google.com/workflows/docs/reference/stdlib/overview
     ## http
     - http_get:
         call: http.get
@@ -204,13 +251,24 @@ main:
         call: sys.sleep
         args:
             seconds: 10
-    # Handle errors
-    - raise_custom_string_error:
-        raise: "Something went wrong."
-    - raise_custom_map_error:
-        raise:
-            code: 55
-            message: "Something went wrong."
+    # Connectors
+    # https://cloud.google.com/workflows/docs/reference/googleapis
+    ## googleapis.compute.v1
+    - insert_machine:
+        call: googleapis.compute.v1.instances.insert
+        args:
+            project: ${projectID}
+            zone: europe-west1-b
+            body:
+              name: my-machine
+              machineType: zones/europe-west1-b/e2-small
+              disks:
+              - initializeParams:
+                  sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v20201112"
+                boot: true
+                autoDelete: true
+              networkInterfaces:
+              - network: "global/networks/default"
     # Return from workflow
     - return_multiple_values:
         return:
