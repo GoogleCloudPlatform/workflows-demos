@@ -187,7 +187,7 @@ main:
         # retry is optional
         # Either, you can use a retry with default policy
         # retry: ${http.default_retry}
-        # Or, you can use more fine grained policy
+        # Or, you can use a more fine-grained policy
         # retry:
         #   predicate: ${http.default_retry_predicate}
         #   max_retries: 10
