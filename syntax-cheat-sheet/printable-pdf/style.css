@@ -1,0 +1,145 @@
+/* Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
+
+@media print {
+  .page_break {page-break-before: always;}
+}
+
+section {
+  margin-top: 10px;
+}
+
+.margin_wide {
+  margin-left: 8px;
+}
+
+.margin_narrow {
+  margin-left: 0px;
+}
+
+.row {
+  display: flex;
+}
+
+.column {
+  flex: auto;
+}
+
+table {
+  border-spacing: 8px;
+  margin-bottom: -10px;
+}
+
+td {
+  border-radius: 4px;
+  padding-left: 8px;
+  padding-bottom: -5px;
+}
+
+.td_sm {
+  width: 500px;
+}
+
+.td_med {
+  width: 500px;
+}
+
+.td_lg {
+  width: 650px;
+}
+
+.codeblock {
+  background: #F1F3F4;
+  vertical-align: top;
+}
+
+.pre {
+  margin: 0px 0px -10px 0px;
+  font-family: 'Roboto Mono', monospace;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  color: #000000;
+}
+
+.comment {
+  color: #1A73E8;
+}
+
+.syntax_title {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: #5F6368;
+}
+
+.cheat_title {
+  display: inline;
+  vertical-align: bottom;
+  font-family: Google Sans Display;
+  font-weight: 500;
+  font-size: 40px;
+  color: #202124;
+}
+
+.link_url {
+  font-family: Google Sans Display;
+  font-weight: 500;
+  font-size: 16px;
+  color: #185ABC;
+  text-decoration: none;
+}
+
+.blue_header {
+  background: #4285F4;
+  font-family: Google Sans Display;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.green_header {
+  background: #34A853;
+  font-family: Google Sans Display;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.red_header {
+  background: #EA4335;
+  font-family: Google Sans Display;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.yellow_header {
+  background: #F9AB00;
+  font-family: Google Sans Display;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+.continue {
+  width: 220px;
+  background: #F9AB00;
+  font-family: Google Sans Display;
+  font-size: 16px;
+  color: #FFFFFF;
+}
