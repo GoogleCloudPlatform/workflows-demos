@@ -143,3 +143,23 @@ dmypy.json
 
 gcs-dlp/LocalTestingFunctions/*
 gcs-dlp/supporting-documents/*
+
+# .NET stuff
+
+# User-specific files
+*.vs/
+*.vscode/
+*.suo
+*.user
+*.sln.docstates
+*log.txt
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+# build/
+bld/
+[Bb]in/
+[Oo]bj/
