@@ -23,7 +23,7 @@ public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
 
-    private static int requestCount = 0;
+    private static int requestCount = -1;
 
     public CustomerController(ILogger<CustomerController> logger)
     {
@@ -40,19 +40,22 @@ public class CustomerController : ControllerBase
     [HttpPost("sometimes-works")]
     public ActionResult<Credit> ReserveCreditSometimesWorks(Credit credit)
     {
-        if (requestCount++ % 2 == 0)
+        requestCount = ++requestCount == 3 ? 0 : requestCount;
+
+        if (requestCount % 3 == 0)
         {
-            _logger.LogInformation($"Reserving credit: {credit.Amount} for customer: {credit.CustomerId}");
+            // Credit reserved successfully
+            _logger.LogInformation($"Credit reserved: {credit.Amount} for customer: {credit.CustomerId}");
             return Ok(credit);
         }
-        _logger.LogInformation($"Failed: Reserving credit: {credit.Amount} for customer: {credit.CustomerId}");
-        return StatusCode(StatusCodes.Status503ServiceUnavailable);
-    }
-
-    [HttpPost("always-fails")]
-    public ActionResult<Credit> ReserveCreditAlwaysFails(Credit credit)
-    {
-        _logger.LogInformation($"Failed: Reserving credit: {credit.Amount} for customer: {credit.CustomerId}");
-        return StatusCode(StatusCodes.Status500InternalServerError);
+        if (requestCount % 3 == 1)
+        {
+            // Unrecoverable error
+            _logger.LogInformation($"Failed: Not enough credit: {credit.Amount} for customer: {credit.CustomerId}");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Not enough credit");
+        }
+        // Possibly recoverable error with a retry
+        _logger.LogInformation($"Failed: Service unavailable");
+        return StatusCode(StatusCodes.Status503ServiceUnavailable, "Service unavailable");
     }
 }

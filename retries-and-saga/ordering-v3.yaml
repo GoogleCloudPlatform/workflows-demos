@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is a workflow that tries to show all possible syntax in Workflows.
+# This is a workflow where reserve_credit step fails with transient (HTTP 503)
+# and non-transient (HTTP 500) errors. The transient error is recovered with
+# a simple retry policy and the non-transient error is handled with a
+# compensation step (reject_pending_order).
 main:
   steps:
     - init:
@@ -37,11 +40,32 @@ main:
                     customerId: ${pending_order.body.customerId}
                     amount: 10.50
             result: the_credit
+        # Retries with max_retries of 5 on HTTP 503 (Service unavailable) (along
+        # with HTTP 429, 502, 503, 504) to recover from transient error.
         retry: ${http.default_retry}
+        except:
+            as: e
+            steps:
+                - check_nonrecoverable_error:
+                    switch:
+                    # HTTP 500 (Internal Server Error) indicates the credit
+                    # cannot be reserved. Apply the compensation step to reject
+                    # the order.
+                    - condition: ${e.code == 500}
+                      next: reject_pending_order
+                - raiseError:
+                    raise: ${e}
     - approve_pending_order:
         call: http.put
         args:
             url: ${url_order_service+"/approve/"+pending_order.body.id}
-        result: approved_order
+        result: order
     - return_approved_order:
-        return: ${approved_order}
+        return: ${order}
+    - reject_pending_order:
+        call: http.put
+        args:
+            url: ${url_order_service+"/reject/"+pending_order.body.id}
+        result: order
+    - return_rejected_order:
+        return: ${order}

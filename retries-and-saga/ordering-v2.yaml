@@ -12,14 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is a workflow that tries to show all possible syntax in Workflows.
+# This is a workflow where reserve_credit step fails with transient (HTTP 503)
+# and non-transient (HTTP 500) errors. The transient error is recovered with
+# a simple retry policy.
 main:
   steps:
     - init:
         assign:
           # Replace with your service URLs
           - url_order_service: https://order-service-wvdg6hhtla-uc.a.run.app
-          - url_customer_service: https://customer-service-wvdg6hhtla-uc.a.run.app/always-works
+          - url_customer_service: https://customer-service-wvdg6hhtla-uc.a.run.app/sometimes-works
     - create_pending_order:
         call: http.post
         args:
@@ -29,13 +31,17 @@ main:
                 description: "My order"
         result: pending_order
     - reserve_credit:
-        call: http.post
-        args:
-            url: ${url_customer_service}
-            body:
-                customerId: ${pending_order.body.customerId}
-                amount: 10.50
-        result: the_credit
+        try:
+            call: http.post
+            args:
+                url: ${url_customer_service}
+                body:
+                    customerId: ${pending_order.body.customerId}
+                    amount: 10.50
+            result: the_credit
+        # Retries with max_retries of 5 on HTTP 503 (Service unavailable) (along
+        # with HTTP 429, 502, 503, 504) to recover from transient error.
+        retry: ${http.default_retry}
     - approve_pending_order:
         call: http.put
         args:

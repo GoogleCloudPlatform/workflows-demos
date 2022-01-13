@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This is a workflow that tries to show all possible syntax in Workflows.
+# This is a workflow where all the steps execute with no errors, hence
+# no error checking or retries (but it's not realistic)
 main:
   steps:
     - init:
         assign:
           # Replace with your service URLs
           - url_order_service: https://order-service-wvdg6hhtla-uc.a.run.app
-          - url_customer_service: https://customer-service-wvdg6hhtla-uc.a.run.app/always-fails
+          - url_customer_service: https://customer-service-wvdg6hhtla-uc.a.run.app/always-works
     - create_pending_order:
         call: http.post
         args:
@@ -29,35 +30,17 @@ main:
                 description: "My order"
         result: pending_order
     - reserve_credit:
-        try:
-            call: http.post
-            args:
-                url: ${url_customer_service}
-                body:
-                    customerId: ${pending_order.body.customerId}
-                    amount: 10.50
-            result: the_credit
-        retry: ${http.default_retry}
-        except:
-            as: e
-            steps:
-                - check_nonrecoverable_error:
-                    switch:
-                    - condition: ${e.code == 500}
-                      next: reject_pending_order
-                - raiseError:
-                    raise: ${e}
+        call: http.post
+        args:
+            url: ${url_customer_service}
+            body:
+                customerId: ${pending_order.body.customerId}
+                amount: 10.50
+        result: the_credit
     - approve_pending_order:
         call: http.put
         args:
             url: ${url_order_service+"/approve/"+pending_order.body.id}
-        result: order
+        result: approved_order
     - return_approved_order:
-        return: ${order}
-    - reject_pending_order:
-        call: http.put
-        args:
-            url: ${url_order_service+"/reject/"+pending_order.body.id}
-        result: order
-    - return_rejected_order:
-        return: ${order}
+        return: ${approved_order}
