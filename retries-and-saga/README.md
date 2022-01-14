@@ -95,7 +95,7 @@ gcloud run deploy $SERVICE_NAME \
 
 The source of the `CustomerService` is in [CustomerService](CustomerService) folder. It's
 a web app to reserve credit for a customer. You can see the
-[CustomerController](OrderService/Controllers/CustomerController.cs) for the Web
+[CustomerController](CustomerService/Controllers/CustomerController.cs) for the Web
 API. It has two main APIs that will be useful to test retries and saga pattern later:
 
 * `/always-works`: Always reserves credit (HTTP 200).
