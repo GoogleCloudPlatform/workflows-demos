@@ -24,13 +24,9 @@ order.
 In a naive implementation, you might have you have 2 services,
 `OrderService` to receive orders and `CustomerService` to manage customer's credit:
 
-```
-OrderService --1--> CustomerService --1--> OrderService
--createOrder        -reserveCredit         -approveOrder
- (pending)
-```
+![Naive implementation](image1.png)
 
-This works if services never fail but we know this is never true.
+This works if services never fail but we know this is not always true.
 
 ### Apply retries
 
@@ -38,11 +34,7 @@ If `CustomerService` becomes unavailable once in a while (HTTP 503), the naive
 implementation stops working. One solution is to retry calls to go around the
 transient failure:
 
-```
-OrderService -1 or more-> CustomerService ---> OrderService
--createOrder               -reserveCredit      -approveOrder
- (pending)
-```
+![Retries implementation](image2.png)
 
 This works for transient failures but what if the failure is not transient? What
 if the failure is due to an unrecoverable error like the customer not actually
@@ -52,11 +44,7 @@ having credit?
 
 When the failure in `CustomerService` is permanent, you need to reject the order:
 
-```
-OrderService -1 or more-> CustomerService ---> OrderService
--createOrder               -reserveCredit      -approveOrder
- (pending)                                ---> -rejectOrder
-```
+![Saga implementation](image3.png)
 
 This is the saga pattern where a failed call down the chain triggers a
 compensation call up the chain. Let's see how we can implement this in Google Cloud.
