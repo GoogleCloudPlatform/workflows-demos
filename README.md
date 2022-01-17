@@ -44,7 +44,7 @@ that explains Workflows.
   * [Basic callback endpoint sample](callback-basic)
   * [Human validation of text translation via Workflows callback](callback-translation)
   * [Manager approval of expense reports thanks to Workflows callbacks](https://github.com/GoogleCloudPlatform/smart-expenses)
-
+* [Retries and Saga Pattern in Workflows](retries-and-saga)
 -------
 
 This is not an official Google product.
