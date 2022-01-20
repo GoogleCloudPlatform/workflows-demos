@@ -1,0 +1,105 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+main:
+  params: [args]
+  steps:
+  - init:
+      assign:
+      - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - project_number: ${sys.get_env("GOOGLE_CLOUD_PROJECT_NUMBER")}
+      - zone: "us-central1-a"
+      - machineType: "c2-standard-4"
+      - instanceName: "prime-generator-vm"
+  - insert_machine:
+      call: googleapis.compute.v1.instances.insert
+      args:
+        project: ${project_id}
+        zone: ${zone}
+        body:
+          tags:
+            items:
+            - http-server
+          name: ${instanceName}
+          machineType: ${"zones/" + zone + "/machineTypes/" + machineType}
+          disks:
+          - initializeParams:
+              sourceImage: "projects/cos-cloud/global/images/cos-stable-93-16623-39-40"
+            boot: true
+            autoDelete: true
+          # Needed to make sure the VM has an external IP
+          networkInterfaces:
+          - accessConfigs:
+            - name: "External NAT"
+              networkTier: "PREMIUM"
+            #subnetwork: "projects/workflows-atamel/regions/us-central1/subnetworks/default"
+          # The container to run
+          metadata:
+              items:
+              - key: "gce-container-declaration"
+                #value: "spec:\n  containers:\n  - name: primve-generator-vm-console\n    image: gcr.io/workflows-atamel/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n# This container declaration format is not public API and may change without notice. Please\n# use gcloud command-line tool or Google Cloud Console to run Containers on Google Compute Engine."
+                value: "spec:\n  containers:\n  - name: primve-generator-vm-console\n    image: gcr.io/workflows-atamel/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"
+          # Needed to be able to pull down and run the container
+          serviceAccounts:
+            #email: "1011272509317-compute@developer.gserviceaccount.com"
+          - email: ${project_number + "-compute@developer.gserviceaccount.com"} 
+            scopes:
+            - https://www.googleapis.com/auth/devstorage.read_only
+            - https://www.googleapis.com/auth/logging.write
+            - https://www.googleapis.com/auth/monitoring.write
+            - https://www.googleapis.com/auth/servicecontrol
+            - https://www.googleapis.com/auth/service.management.readonly
+            - https://www.googleapis.com/auth/trace.append
+#   - assert_running:
+#       call: assert_machine_status
+#       args:
+#         expected_status: "RUNNING"
+#         project: ${project}
+#         zone: ${zone}
+#         instanceName: ${instanceName}
+#   - stop_machine:
+#       call: googleapis.compute.v1.instances.stop
+#       args:
+#         instance: ${instanceName}
+#         project: ${project}
+#         zone: ${zone}
+#         # Optional connector parameters
+#         connector_params:
+#             timeout: 100 # total time is 100s
+#             polling_policy:  # optional polling parameters for LRO polling.
+#                 initial_delay: 1
+#                 multiplier: 1.25
+#   - assert_terminated:
+#       call: assert_machine_status
+#       args:
+#         expected_status: "TERMINATED"
+#         project: ${project}
+#         zone: ${zone}
+#         instanceName: ${instanceName}
+
+# assert_machine_status:
+#   params: [expected_status, project, zone, instanceName]
+#   steps:
+#   - get_instance:
+#       call: googleapis.compute.v1.instances.get
+#       args:
+#         instance: ${instanceName}
+#         project: ${project}
+#         zone: ${zone}
+#       result: instance
+#   - compare:
+#       switch:
+#       - condition: ${instance.status == expected_status}
+#         next: end
+#   - fail:
+#       raise: ${"Expected VM status is " + expected_status + ". Got " + instance.status + " instead."}

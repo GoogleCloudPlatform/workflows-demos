@@ -1,0 +1,103 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+main:
+  params: [args]
+  steps:
+  - init:
+      assign:
+      - projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+      - projectNumber: ${sys.get_env("GOOGLE_CLOUD_PROJECT_NUMBER")}
+      - zone: "us-central1-a"
+      - machineType: "c2-standard-4"
+      - instanceName: ${args.instanceName}
+      - waitSeconds: ${args.waitSeconds}
+  - create_and_start_vm:
+      call: googleapis.compute.v1.instances.insert
+      args:
+        project: ${projectId}
+        zone: ${zone}
+        body:
+          tags:
+            items:
+            - http-server
+          name: ${instanceName}
+          machineType: ${"zones/" + zone + "/machineTypes/" + machineType}
+          disks:
+          - initializeParams:
+              sourceImage: "projects/cos-cloud/global/images/cos-stable-93-16623-39-40"
+            boot: true
+            autoDelete: true
+          # Needed to make sure the VM has an external IP
+          networkInterfaces:
+          - accessConfigs:
+            - name: "External NAT"
+              networkTier: "PREMIUM"
+          # The container to run
+          metadata:
+              items:
+              - key: "gce-container-declaration"
+                value: "spec:\n  containers:\n  - name: primve-generator-vm-console\n    image: gcr.io/workflows-atamel/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"
+                #value: ${"spec:\n  containers:\n  - name: prime-generator\n    image: gcr.io/" + projectId + "/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"}
+          # Needed to be able to pull down and run the container
+          serviceAccounts:
+          - email: ${projectNumber + "-compute@developer.gserviceaccount.com"}
+            scopes:
+            - https://www.googleapis.com/auth/devstorage.read_only
+            - https://www.googleapis.com/auth/logging.write
+            - https://www.googleapis.com/auth/monitoring.write
+            - https://www.googleapis.com/auth/servicecontrol
+            - https://www.googleapis.com/auth/service.management.readonly
+            - https://www.googleapis.com/auth/trace.append
+  - get_instance:
+      call: googleapis.compute.v1.instances.get
+      args:
+        instance: ${instanceName}
+        project: ${projectId}
+        zone: ${zone}
+      result: instance
+  - extract_external_ip_and_construct_urls:
+      assign:
+          - external_ip: ${instance.networkInterfaces[0].accessConfigs[0].natIP}
+          - base_url: ${"http://" + external_ip + "/"}
+          - start_url: ${base_url + "start"}
+          - stop_url: ${base_url + "stop"}
+  - start_work:
+      call: http.get
+      args:
+          url: ${start_url}
+  - log_wait:
+      call: sys.log
+      args:
+        data: ${"Waiting for result for " + waitSeconds + " seconds."}
+  - wait_for_work:
+      call: sys.sleep
+      args:
+          seconds: ${int(waitSeconds)}
+  - stop_work:
+      call: http.get
+      args:
+          url: ${stop_url}
+  - get_result:
+      call: http.get
+      args:
+          url: ${base_url}
+      result: final_result
+  - delete_vm:
+      call: googleapis.compute.v1.instances.delete
+      args:
+          instance: ${instanceName}
+          project: ${projectId}
+          zone: ${zone}
+  - return_result:
+      return: ${final_result.body}
