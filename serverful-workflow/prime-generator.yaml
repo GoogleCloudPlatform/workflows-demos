@@ -21,7 +21,7 @@ main:
       - zone: "us-central1-a"
       - machineType: "c2-standard-4"
       - instanceName: ${args.instanceName}
-      - waitSeconds: ${args.waitSeconds}
+      - workSeconds: ${args.workSeconds}
   - create_and_start_vm:
       call: googleapis.compute.v1.instances.insert
       args:
@@ -47,8 +47,7 @@ main:
           metadata:
               items:
               - key: "gce-container-declaration"
-                value: "spec:\n  containers:\n  - name: primve-generator-vm-console\n    image: gcr.io/workflows-atamel/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"
-                #value: ${"spec:\n  containers:\n  - name: prime-generator\n    image: gcr.io/" + projectId + "/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"}
+                value: '${"spec:\n  containers:\n  - name: primegen-service\n    image: gcr.io/" + projectId + "/primegen-service\n    stdin: false\n    tty: false\n  restartPolicy: Always\n"}'
           # Needed to be able to pull down and run the container
           serviceAccounts:
           - email: ${projectNumber + "-compute@developer.gserviceaccount.com"}
@@ -59,6 +58,14 @@ main:
             - https://www.googleapis.com/auth/servicecontrol
             - https://www.googleapis.com/auth/service.management.readonly
             - https://www.googleapis.com/auth/trace.append
+  - log_wait_for_vm_network:
+      call: sys.log
+      args:
+        data: ${"Waiting for VM network to initialize"}
+  - wait_for_vm_network:
+      call: sys.sleep
+      args:
+          seconds: 10
   - get_instance:
       call: googleapis.compute.v1.instances.get
       args:
@@ -72,6 +79,10 @@ main:
           - base_url: ${"http://" + external_ip + "/"}
           - start_url: ${base_url + "start"}
           - stop_url: ${base_url + "stop"}
+  - log_start_work:
+      call: sys.log
+      args:
+        data: ${"Starting work " + start_url}
   - start_work:
       call: http.get
       args:
@@ -79,11 +90,15 @@ main:
   - log_wait:
       call: sys.log
       args:
-        data: ${"Waiting for result for " + waitSeconds + " seconds."}
+        data: ${"Waiting for result for " + workSeconds + " seconds."}
   - wait_for_work:
       call: sys.sleep
       args:
-          seconds: ${int(waitSeconds)}
+          seconds: ${int(workSeconds)}
+  - log_stop_work:
+      call: sys.log
+      args:
+        data: ${"Stopping work " + stop_url}
   - stop_work:
       call: http.get
       args:
@@ -93,6 +108,10 @@ main:
       args:
           url: ${base_url}
       result: final_result
+  - log_delete_vm:
+      call: sys.log
+      args:
+        data: ${"Deleting VM"}
   - delete_vm:
       call: googleapis.compute.v1.instances.delete
       args:
