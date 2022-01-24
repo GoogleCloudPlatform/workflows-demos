@@ -10,7 +10,7 @@ container, almost serverlessly, using Workflows and Compute Engine.
 
 ## Idea in a nutshell
 
-The idea is to as follows:
+The idea is:
 
 1. Containerize the long-running task, so it can run anywhere.
 2. Plan to run the container on a Compute Engine VM with no time limitations.
@@ -43,8 +43,7 @@ Let's build and push the container that we'll need later:
 gcloud builds submit --tag gcr.io/$PROJECT_ID/primegen-service
 ```
 
-The container also needs HTTP on port 80, let's make it there's a firewall rule
-open for it:
+The container also needs HTTP on port 80, let's add a firewall rule for it:
 
 ```sh
 gcloud compute firewall-rules create default-allow-http --allow tcp:80
