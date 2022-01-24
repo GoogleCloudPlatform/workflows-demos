@@ -45,6 +45,8 @@ that explains Workflows.
   * [Human validation of text translation via Workflows callback](callback-translation)
   * [Manager approval of expense reports thanks to Workflows callbacks](https://github.com/GoogleCloudPlatform/smart-expenses)
 * [Retries and Saga Pattern in Workflows](retries-and-saga)
+* [Long running containers with Workflows and Compute Engine](long-running-container)
+
 -------
 
 This is not an official Google product.

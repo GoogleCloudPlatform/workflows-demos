@@ -84,6 +84,8 @@ public class PrimeGenController : ControllerBase
         started = false;
     }
 
+    // An inefficient prime number generator
+    // to simulate a long running task.
     private static bool isPrime(BigInteger n)
     {
         if (n == 1)
