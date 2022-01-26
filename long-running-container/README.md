@@ -35,7 +35,7 @@ It also has a simple web API in
 * `/stop`: Stops calculating the largest prime.
 * `/`: Returns the calculated largest prime so far.
 
-There's a [Dockerfile](Dockerfile) to run it as a container.
+There's a [Dockerfile](PrimeGenService/Dockerfile) to run it as a container.
 
 Let's build and push the container that we'll need later:
 
