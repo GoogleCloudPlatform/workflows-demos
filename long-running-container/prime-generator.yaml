@@ -91,6 +91,8 @@ main:
       call: sys.log
       args:
         data: ${"Waiting for result for " + workSeconds + " seconds."}
+  # The end condition here is time based but it could be based polling an API
+  # in the container, or a callback from the container.
   - wait_for_work:
       call: sys.sleep
       args:
