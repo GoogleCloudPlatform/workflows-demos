@@ -1,0 +1,81 @@
+# Experimental: This feature is not available yet
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - bearerToken: ${args.bearerToken}
+          - twitterHandles: ${args.twitterHandles} # list of twitter handles strings
+          - maxResults: ${args.maxResults}
+          - twitterHandleResults : {} # results from branches keyed by twitter handle
+    - processTwitterHandles:
+        parallel:
+          shared: [twitterHandleResults]
+          for:
+              value: twitterHandle
+              in: ${twitterHandles}
+              steps:
+                - initBranch:
+                    assign:
+                      - totalSentimentScore: 0
+                      - minSentimentScore: 1
+                      - minSentimentIndex: -1
+                - searchTweets:
+                    call: http.get
+                    args:
+                      url: ${"https://api.twitter.com/2/tweets/search/recent?query=from:" + twitterHandle + "&max_results=" + maxResults}
+                      headers:
+                        Authorization: ${"Bearer " + bearerToken}
+                    result: searchTweetsResult
+                - logTweets:
+                    call: sys.log
+                    args:
+                      text: ${searchTweetsResult}
+                - processPosts:
+                    for:
+                      value: tweet
+                      index: tweetIndex
+                      in: ${searchTweetsResult.body.data}
+                      steps:
+                        - analyzeSentiment:
+                            call: googleapis.language.v1.documents.analyzeSentiment
+                            args:
+                                body:
+                                  document:
+                                    content: ${tweet.text}
+                                    type: "PLAIN_TEXT"
+                            result: sentimentResult
+                        - updateTotalSentimentScore:
+                            assign:
+                                - currentScore: ${sentimentResult.documentSentiment.score}
+                                - totalSentimentScore: ${totalSentimentScore + currentScore}
+                        - updateMinSentiment:
+                            switch:
+                              - condition: ${currentScore < minSentimentScore}
+                                steps:
+                                  - assignMinSentiment:
+                                      assign:
+                                        - minSentimentScore: ${currentScore}
+                                        - minSentimentIndex: ${tweetIndex}
+                        - logTweetScore:
+                            call: sys.log
+                            args:
+                              text: ${string(tweetIndex) + ". " + text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
+                - assignResult:
+                    assign:
+                      - numberOfTweets: ${len(searchTweetsResult.body.data)}
+                      - averageSentiment: ${totalSentimentScore / numberOfTweets}
+                - logResult:
+                    call: sys.log
+                    args:
+                      text: ${"N:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment) + " min sentiment:" + string(minSentimentScore) + " at index:" + string(minSentimentIndex)}
+                - returnResult:
+                    assign:
+                      - twitterHandleResults[twitterHandle]: {}
+                      - twitterHandleResults[twitterHandle].numberOfTweets: ${numberOfTweets}
+                      - twitterHandleResults[twitterHandle].totalSentimentScore: ${totalSentimentScore}
+                      - twitterHandleResults[twitterHandle].averageSentiment: ${averageSentiment}
+                      - twitterHandleResults[twitterHandle].minSentimentScore: ${minSentimentScore}
+                      - twitterHandleResults[twitterHandle].minSentimentIndex: ${minSentimentIndex}
+    - returnResults:
+        return: ${twitterHandleResults}
