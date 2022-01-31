@@ -1,0 +1,17 @@
+main:
+    params: [input]
+    steps:
+    - assignment:
+        assign:
+            - bucket: YOUR_BUCKET_NAME
+    - write_to_gcs:
+        call: http.post
+        args:
+            url: ${"https://storage.googleapis.com/upload/storage/v1/b/" + bucket + "/o"}
+            auth:
+                type: OAuth2
+            query:
+                name: data.json
+            body:
+                greeting: "Hello World"
+                year: 2022
