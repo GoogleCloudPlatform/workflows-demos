@@ -1,0 +1,31 @@
+main:
+    params: [input]
+    steps:
+    - load_env_details:
+        call: read_env_from_gcs
+        args:
+            bucket: workflow_environment_info
+            object: env-info.json
+        result: env_details
+    - call_service:
+        call: http.get
+        args:
+            url: ${env_details.SERVICE_URL}
+        result: service_result
+    - return_result:
+        return: ${service_result.body}
+
+read_env_from_gcs:
+    params: [bucket, object]
+    steps:
+    - read_from_gcs:
+        call: http.get
+        args:
+            url: ${"https://storage.googleapis.com/download/storage/v1/b/" + bucket + "/o/" + object}
+            auth:
+                type: OAuth2
+            query:
+                alt: media
+        result: env_file_json_content
+    - return_content:
+        return: ${env_file_json_content.body}
