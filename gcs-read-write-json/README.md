@@ -52,3 +52,55 @@ as shown in [gcs-read-workflow.yaml](gcs-read-write-json/gcs-read-workflow.yaml)
 The `data_json_content.body` value is an array or dictionary (your JSON data)
 that you can use directly elsewhere in your workflow definition.
 
+Load environment-specific variables from a JSON file in GCS
+===
+
+Currently, Workflows doesn't (yet!) support custom environment variables.
+To avoid hard-coding environment-specific information like a service URL, 
+you can store and load configuration files as JSON documents in cloud storage,
+and access the keys and values in the JSON file from within your workflow,
+as shown in this [example](gcs-read-write-json/gcs-env-var-workflow.yaml).
+
+You can define a reusable subworkflow tha reads and loads the JSON file from GCS:
+
+```
+read_env_from_gcs:
+    params: [bucket, object]
+    steps:
+    - read_from_gcs:
+        call: http.get
+        args:
+            url: ${"https://storage.googleapis.com/download/storage/v1/b/" + bucket + "/o/" + object}
+            auth:
+                type: OAuth2
+            query:
+                alt: media
+        result: env_file_json_content
+    - return_content:
+        return: ${env_file_json_content.body}
+ ```
+ 
+ Calling this subworkflow will return the JSON content, usable from your workflow.
+ First, you'll need to call this subworkflow, 
+ and store the result in `env-details` variable:
+ 
+ ```
+     - load_env_details:
+        call: read_env_from_gcs
+        args:
+            bucket: workflow_environment_info
+            object: env-info.json
+        result: env_details
+```
+
+And then, if the JSON file contains a `SERVICE_URL` key/value pair,
+you can access as follows thanks to _dollar_ expressions:
+
+```
+    - call_service:
+        call: http.get
+        args:
+            url: ${env_details.SERVICE_URL}
+        result: service_result
+```
+
