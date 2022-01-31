@@ -1,0 +1,18 @@
+main:
+    params: [input]
+    steps:
+    - assignment:
+        assign:
+            - bucket: YOUR_BUCKET_NAME
+            - name: YOUR_FILE_NAME.json
+    - read_from_gcs:
+        call: http.get
+        args:
+            url: ${"https://storage.googleapis.com/download/storage/v1/b/" + bucket + "/o/" + name}
+            auth:
+                type: OAuth2
+            query:
+                alt: media
+        result: data_json_content
+    - return_content:
+        return: ${data_json_content.body}
