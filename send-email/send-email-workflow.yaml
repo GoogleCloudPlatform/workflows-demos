@@ -1,0 +1,23 @@
+- retrieve_api_key:
+    assign:
+        - SENDGRID_API_KEY: "YOUR_SENDGRID_API_KEY"
+- send_email:
+    call: http.post
+    args:
+        url: https://api.sendgrid.com/v3/mail/send
+        headers:
+            Content-Type: "application/json"
+            Authorization: ${"Bearer " + SENDGRID_API_KEY}
+        body:
+            personalizations:
+                - to:
+                    - email: to@example.com
+            from:
+                email: from@example.com
+            subject: Sending an email from Workflows
+            content:
+                - type: text/plain
+                  value: Here's the body of my email
+    result: email_result
+- return_result:
+    return: ${email_result.body}
