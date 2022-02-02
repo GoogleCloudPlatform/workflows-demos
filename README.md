@@ -22,6 +22,8 @@ that explains Workflows.
 
 * [Workflows syntax cheat sheet](syntax-cheat-sheet/workflow.yaml)
 * [Create, start, stop VM using Compute Connector](connector-compute)
+* [Write and read JSON files into GCS](gcs-read-write-json/)
+* [Send an email with SendGrid from a workflow](send-email)
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
 * Eventarc and Workflows
