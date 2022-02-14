@@ -146,6 +146,8 @@ main:
             next: switch_embedded_steps
           - condition: ${my_boolean}
             next: switch_embedded_steps
+          - condition: true # optional, default condition
+            next: switch_embedded_steps
         next: switch_embedded_steps
     - switch_embedded_steps:
         switch:
