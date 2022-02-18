@@ -60,6 +60,7 @@ main:
         assign:
           - my_list: ["zero","one","two"]
           - my_list_len: ${len(my_list)}
+          - key_exists: ${"Key1" in my_list}
           - my_list[0]: 0
           - idx: 0
           - my_list[idx + 1]: 1
