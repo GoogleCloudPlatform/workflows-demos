@@ -18,68 +18,55 @@
 
 main:
   steps:
-    - init:
-        assign:
-          - exec_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
-          - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
     - put_string_value:
         call: firestore_put
         args:
-            doc_name: ${database_root + exec_id}
             key: "key1"
             value: "value1"
     - get_string_value:
         call: firestore_get
         args:
-            doc_name: ${database_root + exec_id}
             key: "key1"
         result: string_value
     - put_boolean_value:
         call: firestore_put
         args:
-            doc_name: ${database_root + exec_id}
             key: "key2"
             value: true
             valueType: "boolean"
     - get_boolean_value:
         call: firestore_get
         args:
-            doc_name: ${database_root + exec_id}
             key: "key2"
             valueType: "boolean"
         result: boolean_value
     - put_integer_value:
         call: firestore_put
         args:
-            doc_name: ${database_root + exec_id}
             key: "key3"
             value: 1
             valueType: "integer"
     - get_integer_value:
         call: firestore_get
         args:
-            doc_name: ${database_root + exec_id}
             key: "key3"
             valueType: "integer"
         result: integer_value
     - put_double_value:
         call: firestore_put
         args:
-            doc_name: ${database_root + exec_id}
             key: "key4"
             value: 1.5
             valueType: "double"
     - get_double_value:
         call: firestore_get
         args:
-            doc_name: ${database_root + exec_id}
             key: "key4"
             valueType: "double"
         result: double_value
     - get_nonexisting_key:
         call: firestore_get
         args:
-            doc_name: ${database_root + exec_id}
             key: "nonexisting"
         result: nonexisting_value
     - return_values:
@@ -92,8 +79,12 @@ main:
 
 # Puts key/value pair.
 firestore_put:
-    params: [doc_name, key, value, valueType: "string"]
+    params: [key, value, valueType: "string"]
     steps:
+        - init:
+            assign:
+            - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
+            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
         - store:
             call: googleapis.firestore.v1.projects.databases.documents.patch
             args:
@@ -108,8 +99,12 @@ firestore_put:
 # Gets the value associated with the key and value type
 # Null if the key does not exist or if the value type does not match
 firestore_get:
-    params: [doc_name, key, valueType: "string"]
+    params: [key, valueType: "string"]
     steps:
+        - init:
+            assign:
+            - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
+            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
         - get:
             call: googleapis.firestore.v1.projects.databases.documents.get
             args:
