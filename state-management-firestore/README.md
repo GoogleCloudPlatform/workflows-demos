@@ -6,5 +6,6 @@ key/value store in Workflows. However, you can use Firestore to store and read
 key/value pairs from Workflows.
 
 In the [workflow.yaml](workflow.yaml), you can see how to store different types
-of key/value pairs to Firestore. It uses execution ID as the document name in
-Firestore and stores each key/value pair in a single document for the execution.
+of key/value pairs to Firestore. It uses the workflow name as the collection
+name and the execution ID as the document name in the collection in Firestore.
+It stores each key/value pair of an execution in a single document in the collection.

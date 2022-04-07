@@ -13,7 +13,8 @@
 # limitations under the License.
 
 # An example that shows how to use Firestore to store Workflows state as
-# key/value pairs. The execution ID is used as the document name in Firestore.
+# key/value pairs. The workflow name is used as the collection name and the
+# execution ID is used as the document name in Firestore.
 
 main:
   steps:
@@ -24,70 +25,61 @@ main:
     - put_string_value:
         call: firestore_put
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key1"
             value: "value1"
     - get_string_value:
         call: firestore_get
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key1"
         result: string_value
     - put_boolean_value:
         call: firestore_put
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key2"
             value: true
             valueType: "boolean"
     - get_boolean_value:
         call: firestore_get
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key2"
             valueType: "boolean"
         result: boolean_value
     - put_integer_value:
         call: firestore_put
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key3"
             value: 1
             valueType: "integer"
     - get_integer_value:
         call: firestore_get
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key3"
             valueType: "integer"
         result: integer_value
     - put_double_value:
         call: firestore_put
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key4"
             value: 1.5
             valueType: "double"
     - get_double_value:
         call: firestore_get
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "key4"
             valueType: "double"
         result: double_value
     - get_nonexisting_key:
         call: firestore_get
         args:
-            exec_id: ${exec_id}
-            database_root: ${database_root}
+            doc_name: ${database_root + exec_id}
             key: "nonexisting"
         result: nonexisting_value
     - return_values:
@@ -100,12 +92,12 @@ main:
 
 # Puts key/value pair.
 firestore_put:
-    params: [database_root, exec_id, key, value, valueType: "string"]
+    params: [doc_name, key, value, valueType: "string"]
     steps:
         - store:
             call: googleapis.firestore.v1.projects.databases.documents.patch
             args:
-                name: ${database_root + exec_id}
+                name: ${doc_name}
                 updateMask:
                     fieldPaths: [${key}]
                 body:
@@ -116,12 +108,12 @@ firestore_put:
 # Gets the value associated with the key and value type
 # Null if the key does not exist or if the value type does not match
 firestore_get:
-    params: [database_root, exec_id, key, valueType: "string"]
+    params: [doc_name, key, valueType: "string"]
     steps:
         - get:
             call: googleapis.firestore.v1.projects.databases.documents.get
             args:
-                name: ${database_root + exec_id}
+                name: ${doc_name}
                 mask:
                     fieldPaths: [${key}]
             result: getResult
