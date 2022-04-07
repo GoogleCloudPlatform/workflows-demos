@@ -1,0 +1,115 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+main:
+  steps:
+    - init:
+        assign:
+          - exec_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+          - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
+    - put_string_value:
+        call: firestore_put
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key1"
+            value: "value1"
+    - get_string_value:
+        call: firestore_get
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key1"
+        result: string_value
+    - put_boolean_value:
+        call: firestore_put
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key2"
+            value: true
+            type: "boolean"
+    - get_boolean_value:
+        call: firestore_get
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key2"
+            type: "boolean"
+        result: boolean_value
+    - put_integer_value:
+        call: firestore_put
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key3"
+            value: 1
+            type: "integer"
+    - get_integer_value:
+        call: firestore_get
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key3"
+            type: "integer"
+        result: integer_value
+    - put_double_value:
+        call: firestore_put
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key4"
+            value: 1.5
+            type: "double"
+    - get_double_value:
+        call: firestore_get
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "key4"
+            type: "double"
+        result: double_value
+    - return_values:
+        return:
+            string_value: ${string_value}
+            boolean_value: ${boolean_value}
+            integer_value: ${integer_value}
+            double_value: ${double_value}
+
+firestore_put:
+    params: [database_root, exec_id, key, value, type: "string"]
+    steps:
+        - store:
+            call: googleapis.firestore.v1.projects.databases.documents.patch
+            args:
+                name: ${database_root + exec_id}
+                updateMask:
+                    fieldPaths: [${key}]
+                body:
+                    fields:
+                        ${key}:
+                            ${type + "Value"}: ${value}
+
+firestore_get:
+    params: [database_root, exec_id, key, type: "string"]
+    steps:
+        - get:
+            call: googleapis.firestore.v1.projects.databases.documents.get
+            args:
+                name: ${database_root + exec_id}
+                mask:
+                    fieldPaths: [${key}]
+            result: getResult
+        - return_value:
+            return: ${getResult.fields[key][type + "Value"]}
