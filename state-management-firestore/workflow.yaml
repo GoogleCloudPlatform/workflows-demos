@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# An example that shows how to use Firestore to store Workflows state as
+# key/value pairs.
 main:
   steps:
     - init:
@@ -39,14 +41,14 @@ main:
             database_root: ${database_root}
             key: "key2"
             value: true
-            type: "boolean"
+            valueType: "boolean"
     - get_boolean_value:
         call: firestore_get
         args:
             exec_id: ${exec_id}
             database_root: ${database_root}
             key: "key2"
-            type: "boolean"
+            valueType: "boolean"
         result: boolean_value
     - put_integer_value:
         call: firestore_put
@@ -55,14 +57,14 @@ main:
             database_root: ${database_root}
             key: "key3"
             value: 1
-            type: "integer"
+            valueType: "integer"
     - get_integer_value:
         call: firestore_get
         args:
             exec_id: ${exec_id}
             database_root: ${database_root}
             key: "key3"
-            type: "integer"
+            valueType: "integer"
         result: integer_value
     - put_double_value:
         call: firestore_put
@@ -71,24 +73,33 @@ main:
             database_root: ${database_root}
             key: "key4"
             value: 1.5
-            type: "double"
+            valueType: "double"
     - get_double_value:
         call: firestore_get
         args:
             exec_id: ${exec_id}
             database_root: ${database_root}
             key: "key4"
-            type: "double"
+            valueType: "double"
         result: double_value
+    - get_nonexisting_key:
+        call: firestore_get
+        args:
+            exec_id: ${exec_id}
+            database_root: ${database_root}
+            key: "nonexisting"
+        result: nonexisting_value
     - return_values:
         return:
             string_value: ${string_value}
             boolean_value: ${boolean_value}
             integer_value: ${integer_value}
             double_value: ${double_value}
+            nonexisting_value: ${nonexisting_value}
 
+# Puts key/value pair.
 firestore_put:
-    params: [database_root, exec_id, key, value, type: "string"]
+    params: [database_root, exec_id, key, value, valueType: "string"]
     steps:
         - store:
             call: googleapis.firestore.v1.projects.databases.documents.patch
@@ -99,10 +110,12 @@ firestore_put:
                 body:
                     fields:
                         ${key}:
-                            ${type + "Value"}: ${value}
+                            ${valueType + "Value"}: ${value}
 
+# Gets the value associated with the key and value type
+# Null if the key does not exist or if the value type does not match
 firestore_get:
-    params: [database_root, exec_id, key, type: "string"]
+    params: [database_root, exec_id, key, valueType: "string"]
     steps:
         - get:
             call: googleapis.firestore.v1.projects.databases.documents.get
@@ -112,4 +125,8 @@ firestore_get:
                     fieldPaths: [${key}]
             result: getResult
         - return_value:
-            return: ${getResult.fields[key][type + "Value"]}
+            switch:
+            - condition: ${not("fields" in getResult)}
+              return: null
+            - condition: true
+              return: ${getResult.fields[key][valueType + "Value"]}
