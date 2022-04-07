@@ -48,6 +48,7 @@ that explains Workflows.
   * [Manager approval of expense reports thanks to Workflows callbacks](https://github.com/GoogleCloudPlatform/smart-expenses)
 * [Retries and Saga Pattern in Workflows](retries-and-saga)
 * [Long running containers with Workflows and Compute Engine](long-running-container)
+* [Workflows state management with Firestore](state-management-firestore)
 
 -------
 

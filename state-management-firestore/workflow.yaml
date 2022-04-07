@@ -13,7 +13,8 @@
 # limitations under the License.
 
 # An example that shows how to use Firestore to store Workflows state as
-# key/value pairs.
+# key/value pairs. The execution ID is used as the document name in Firestore.
+
 main:
   steps:
     - init:
