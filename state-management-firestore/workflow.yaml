@@ -69,6 +69,8 @@ main:
         args:
             key: "nonexisting"
         result: nonexisting_value
+    - clear_keys:
+        call: firestore_clear
     - return_values:
         return:
             string_value: ${string_value}
@@ -118,3 +120,14 @@ firestore_get:
               return: null
             - condition: true
               return: ${getResult.fields[key][valueType + "Value"]}
+
+firestore_clear:
+    steps:
+        - init:
+            assign:
+            - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
+            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+        - drop:
+            call: googleapis.firestore.v1.projects.databases.documents.delete
+            args:
+                name: ${doc_name}
