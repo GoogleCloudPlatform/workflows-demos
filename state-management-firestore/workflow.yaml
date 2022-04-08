@@ -69,8 +69,9 @@ main:
         args:
             key: "nonexisting"
         result: nonexisting_value
-    - clear_keys:
-        call: firestore_clear
+    # Optionally, you can clear the keys
+    # - clear_keys:
+    #     call: firestore_clear
     - return_values:
         return:
             string_value: ${string_value}
@@ -86,7 +87,7 @@ firestore_put:
         - init:
             assign:
             - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
-            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+            - doc_name: ${database_root + "key-value-store"}
         - store:
             call: googleapis.firestore.v1.projects.databases.documents.patch
             args:
@@ -106,7 +107,7 @@ firestore_get:
         - init:
             assign:
             - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
-            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+            - doc_name: ${database_root + "key-value-store"}
         - get:
             call: googleapis.firestore.v1.projects.databases.documents.get
             args:
@@ -126,7 +127,7 @@ firestore_clear:
         - init:
             assign:
             - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_ID") + "/"}
-            - doc_name: ${database_root + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+            - doc_name: ${database_root + "key-value-store"}
         - drop:
             call: googleapis.firestore.v1.projects.databases.documents.delete
             args:
