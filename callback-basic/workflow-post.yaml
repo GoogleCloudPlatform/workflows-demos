@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Note that this feature is currently in private preview
-
 - create_callback:
     call: events.create_callback_endpoint
     args:
-        http_callback_method: "GET"
+        http_callback_method: "POST"
     result: callback_details
 - print_callback_details:
     call: sys.log

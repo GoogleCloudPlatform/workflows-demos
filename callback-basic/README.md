@@ -1,31 +1,40 @@
 # Basic callback endpoint sample
 
 In this sample, you will see to create a callback endpoint within your workflow
-that can receive HTTP requests and in a later step wait for a request to arrive
+that can receive HTTP `GET` or `POST` requests and in a later step wait for a request to arrive
 at that endpoint.
-
-**Note that this feature is currently in private preview**
 
 ## Enable services
 
 First, enable required services:
 
 ```sh
-gcloud services enable \
-  workflows.googleapis.com
+gcloud services enable workflows.googleapis.com
 ```
 
 ## Define workflow
 
-Create a [workflow.yaml](workflow.yaml) to define the workflow:
+Create a [workflow-get.yaml](workflow-get.yaml) and
+[worklow-post.yaml](workflow-post.yaml] to define workflows accepting HTTP `GET`
+or `POST`.
 
-In the `create_callback` step, create an endpoint:
+In the `create_callback` step, create an endpoint with `GET`:
 
 ```yaml
 - create_callback:
     call: events.create_callback_endpoint
     args:
         http_callback_method: "GET"
+    result: callback_details
+```
+
+Or you could create an endpoint with `POST`:
+
+```yaml
+- create_callback:
+    call: events.create_callback_endpoint
+    args:
+        http_callback_method: "POST"
     result: callback_details
 ```
 
@@ -59,17 +68,18 @@ In the last step, print the callback result:
 
 ## Deploy and execute workflow
 
-Deploy workflow:
+Deploy workflows:
 
 ```sh
-gcloud workflows deploy callback-basic \
-    --source=workflow.yaml
+gcloud workflows deploy callback-basic-get --source=workflow-get.yaml
+gcloud workflows deploy callback-basic-post --source=workflow-post.yaml
 ```
 
-Execute workflow:
+Run workflows:
 
 ```sh
-gcloud workflows execute callback-basic
+gcloud workflows run callback-basic-get
+gcloud workflows run callback-basic-post
 ```
 
 The workflow should be in waiting state right now. Check the logs to find the
@@ -78,10 +88,20 @@ url of the callback.
 ## Test
 
 Assuming that you have `Workflows Editor` or `Workflows Admin` roles, you can
-call the workflow with `gcloud`:
+call the workflow with `gcloud`.
+
+To test the workflow waiting for `GET`:
 
 ```sh
-curl -X GET -H "Authorization: Bearer $(gcloud auth print-access-token)" https://workflowexecutions.googleapis.com/v1/projects/...
+CALLBACK_URL=https://workflowexecutions.googleapis.com/v1/projects/...
+curl -X GET -H "Authorization: Bearer $(gcloud auth print-access-token)" $CALLBACK_URL
 ```
 
-You should see the worklow execution succeed.
+To test the workflow waiting for `POST`:
+
+```sh
+CALLBACK_URL=https://workflowexecutions.googleapis.com/v1/projects/...
+curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $(gcloud auth print-access-token)" -d '{"foo" : "bar"}' $CALLBACK_URL
+```
+
+You should see the workflow execution succeed.
