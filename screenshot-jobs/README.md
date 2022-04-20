@@ -39,10 +39,12 @@ Set your project ID and the region you want to deploy the Cloud Run job to. Save
 them as `PROJECT_ID` and `REGION` variables. You can pick a region from one of the
 Cloud Run locations.
 
+```sh
 PROJECT_ID=[YOUR-PROJECT-ID]
 REGION=[YOUR-REGION]
 gcloud config set core/project $PROJECT_ID
 gcloud config set run/region $REGION
+```
 
 ## Get the code
 
@@ -91,8 +93,7 @@ gsutil mb gs://$BUCKET
 Create a service account that you will use to run the job.
 
 ```sh
-gcloud iam service-accounts create screenshot-sa --display-name="Screenshot app
-service account"
+gcloud iam service-accounts create screenshot-sa --display-name="Screenshot app service account"
 ```
 
 Grant `storage.admin` role, so the service account can be used to create buckets and objects:
@@ -146,7 +147,7 @@ Next, read the job file and extract urls from the file into `urls` variable:
             - urls: ${text.split(file_content.body, "\n")}
 ```
 
-Afterwards, create the job with the right parameters and tast count:
+Create the job with the right parameters and test count:
 
 ```yaml
     - create_job:
@@ -258,4 +259,5 @@ You should also see some Cloud Run jobs running:
 
 ![Cloud Run jobs](image3.png)
 
-After a few minutes, you should also see the screenshots uploaded to the bucket.
+After a few minutes, you should also see a new output bucket with name
+`screenshot-<PROJECT_ID>` with screenshots of webpages.

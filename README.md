@@ -50,6 +50,7 @@ that explains Workflows.
 * [Retries and Saga Pattern in Workflows](retries-and-saga)
 * [Long running containers with Workflows and Compute Engine](long-running-container)
 * [Workflows state management with Firestore](state-management-firestore)
+* [Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc](screenshot-jobs)
 
 -------
 
