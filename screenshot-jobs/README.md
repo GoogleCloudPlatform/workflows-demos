@@ -261,3 +261,5 @@ You should also see some Cloud Run jobs running:
 
 After a few minutes, you should also see a new output bucket with name
 `screenshot-<PROJECT_ID>` with screenshots of webpages.
+
+![Screenshots](image4.png)
