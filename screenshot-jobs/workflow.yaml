@@ -64,12 +64,6 @@ main:
                       timeoutSeconds: 300
                       serviceAccountName: ${"screenshot-sa@" + project_id + ".iam.gserviceaccount.com"}
         result: create_job_result
-    # Wait for 10 seconds for jobs to reconcile
-    # TODO: Remove once job creation is a long running operation
-    - wait_job_to_reconcile:
-        call: sys.sleep
-        args:
-            seconds: 10
     # Run the job and cleanup afterwards, if successful.
     # If job fails, the job is not deleted to allow debugging what failed
     # You need to manually delete failed jobs.
