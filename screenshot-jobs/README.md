@@ -88,7 +88,7 @@ BUCKET=screenshot-jobs-$PROJECT_ID
 gsutil mb gs://$BUCKET
 ```
 
-## Create a service account
+## Setup service accounts
 
 Create a service account that you will use to run the job.
 
@@ -104,7 +104,16 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member serviceAccount:screenshot-sa@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
-TODO: You might need to add other roles for Eventarc.
+Grant the `pubsub.publisher` role to the Cloud Storage service account. This is needed for the Eventarc Cloud Storage trigger:
+
+```sh
+PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+SERVICE_ACCOUNT=$(gsutil kms serviceaccount -p $PROJECT_NUMBER)
+
+gcloud projects add-iam-policy-binding $PROJECT_NUMBER \
+    --role roles/pubsub.publisher \
+    --member serviceAccount:$SERVICE_ACCOUNT
+```
 
 ## Define and deploy a workflow
 
