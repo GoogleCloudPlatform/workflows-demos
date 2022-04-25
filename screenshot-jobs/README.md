@@ -48,7 +48,7 @@ gcloud config set run/region $REGION
 
 ## Get the code
 
-Clone the application code from this repo:
+Clone the application code from [source code repo](https://github.com/GoogleCloudPlatform/jobs-demos.git):
 
 ```sh
 git clone https://github.com/GoogleCloudPlatform/jobs-demos.git
@@ -253,7 +253,9 @@ gcloud eventarc triggers create screenshot-jobs-trigger \
 
 ## Test
 
-To test the application, upload some job files to the bucket:
+To test the application, upload some job files to the bucket. You can use the
+[job1.txt](job1.txt) and [job2.txt](job2.txt) in this repo (not the source code
+repo):
 
 ```sh
 gsutil cp job1.txt gs://$BUCKET
