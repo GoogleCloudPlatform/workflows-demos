@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # [START workflows_run_floor]
 import json
 import logging
@@ -21,11 +22,13 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=['POST'])
 def handle_post():
     content = json.loads(request.data)
     input = float(content['input'])
     return f"{math.floor(input)}", 200
+
 
 if __name__ != '__main__':
     # Redirect Flask logs to Gunicorn logs
