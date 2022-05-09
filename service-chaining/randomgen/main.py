@@ -11,12 +11,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # [START workflows_functions_randomgen]
-import random, json
+import functions_framework
+import random
 from flask import jsonify
 
+
+@functions_framework.http
 def randomgen(request):
-    randomNum = random.randint(1,100)
-    output = {"random":randomNum}
+    randomNum = random.randint(1, 100)
+    output = {"random": randomNum}
     return jsonify(output)
 # [END workflows_functions_randomgen]

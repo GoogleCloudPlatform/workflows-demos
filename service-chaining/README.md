@@ -9,8 +9,11 @@ Inside [randomgen](randomgen) folder, deploy a function that generates a random 
 
 ```sh
 gcloud functions deploy randomgen \
-    --runtime python37 \
+    --gen2 \
+    --runtime python39 \
     --trigger-http \
+    --entry-point randomgen \
+    --source . \
     --allow-unauthenticated
 ```
 
@@ -26,8 +29,11 @@ Inside [multiply](multiply) folder, deploy a function that multiplies a given nu
 
 ```sh
 gcloud functions deploy multiply \
-    --runtime python37 \
+    --gen2 \
+    --runtime python39 \
     --trigger-http \
+    --entry-point multiply \
+    --source . \
     --allow-unauthenticated
 ```
 
