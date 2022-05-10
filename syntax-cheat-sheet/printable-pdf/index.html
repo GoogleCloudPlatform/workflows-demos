@@ -152,6 +152,7 @@ main:
       - map_len: ${len(my_map)}
       - key_exists: ${"Key1" in my_map}
       - key_list: ${keys(my_map)}
+      - key_is_null: ${default(map.get(my_map, "Key1"), "Key not found.")}
       - my_map.Key1: "Value1"
       - my_map["Key2"]: "Value2"
       - key_str: "Key"
