@@ -1,0 +1,25 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/batch-atamel/containers/primegen-service:v1"
+            }
+          }
+        ],
+        "environment": {
+          "variables": {
+            "BUCKET": "batch-test-bucket"
+          }
+        }
+      },
+      "taskCount": 2
+    }
+  ],
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
+
