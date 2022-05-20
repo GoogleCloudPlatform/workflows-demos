@@ -24,7 +24,7 @@ main:
   - logCreateBatchJob:
       call: sys.log
       args:
-        data: ${"Creating and running batch job " + jobId}
+        data: ${"Creating and running the batch job " + jobId}
   - createAndRunBatchJob:
       call: http.post
       args:
@@ -52,5 +52,39 @@ main:
           logsPolicy:
             destination: CLOUD_LOGGING
       result: createAndRunBatchJobResponse
+  - getJob:
+      call: http.get
+      args:
+        url: ${batchApiUrl + "/" + jobId}
+        auth:
+          type: OAuth2
+      result: getJobResult
+  - logState:
+      call: sys.log
+      args:
+        data: ${"Current job state " + getJobResult.body.status.state}
+  - assertSucceeded:
+      switch:
+        - condition: ${getJobResult.body.status.state == "SUCCEEDED"}
+          next: logDeleteBatchJob
+      next: sleep
+  - sleep:
+      call: sys.sleep
+      args:
+        seconds: 10
+      next: getJob
+  - logDeleteBatchJob:
+      call: sys.log
+      args:
+        data: ${"Deleting the batch job " + jobId}
+  - deleteBatchJob:
+      call: http.delete
+      args:
+        url: ${batchApiUrl + "/" + jobId}
+        auth:
+          type: OAuth2
+      result: deleteBatchJob
   - returnResult:
-      return: ${createAndRunBatchJobResponse}
+      return:
+        jobId: ${jobId}
+        status: "OK"

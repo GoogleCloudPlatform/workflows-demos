@@ -17,11 +17,14 @@
 echo "Get the project id"
 PROJECT_ID=$(gcloud config get-value project)
 
-echo "Deploy the workflow for any changes"
-SERVICE_ACCOUNT=workflows-batch-sa
-gcloud workflows deploy workflows-batch-busybox \
-  --source workflow-busybox.yaml \
-  --service-account=$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com
+#alias gcurl='curl --header "Content-Type: application/json" --header "Authorization: Bearer $(gcloud auth print-access-token)"'
 
-echo "Execute the workflow"
-gcloud workflows execute batch-test
+BATCH_API=batch.googleapis.com/v1alpha1
+REGION=us-central1
+
+JOB_ID=job-busybox-$RANDOM
+echo "Create and run a job: $JOB_ID"
+curl \
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer $(gcloud auth print-access-token)" \
+  --data @job.json https://$BATCH_API/projects/$PROJECT_ID/locations/$REGION/jobs?job_id=$JOB_ID

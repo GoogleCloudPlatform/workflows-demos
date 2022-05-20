@@ -15,11 +15,10 @@
           }
         }
       },
-      "taskCount": 2
+      "taskCount": 1
     }
   ],
   "logsPolicy": {
     "destination": "CLOUD_LOGGING"
   }
 }
-
