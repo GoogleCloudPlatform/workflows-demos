@@ -61,7 +61,8 @@ static string CalculatePrimesForRange(BigInteger min, BigInteger max)
 
 static async Task OutputPrimesForRangeAsync(string primesForRange, BigInteger min, BigInteger max)
 {
-    var bucket = Environment.GetEnvironmentVariable("BUCKET");
+    // TODO: Remove hardcoded bucket name when the bug is fixed.
+    var bucket = "primegen-service" //Environment.GetEnvironmentVariable("BUCKET");
     Console.WriteLine($"Output: {(string.IsNullOrEmpty(bucket) ? "Console" : bucket)}");
 
     if (string.IsNullOrEmpty(bucket))

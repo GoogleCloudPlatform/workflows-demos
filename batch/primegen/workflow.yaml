@@ -20,7 +20,18 @@ main:
       - region: "us-central1"
       - batchApi: "batch.googleapis.com/v1alpha1"
       - batchApiUrl: ${"https://" + batchApi + "/projects/" + projectId + "/locations/" + region + "/jobs"}
-      - jobId: ${"job-busybox-" + string(int(sys.now()))}
+      - imageUri: ${region + "-docker.pkg.dev/" + projectId + "/containers/primegen-service:v1"}
+      - jobId: ${"job-primegen-" + string(int(sys.now()))}
+      - bucket: "primegen-service"
+  # TODO: Add it in once the bug is fixed
+  #     - bucket: ${projectId + "-" + jobId}
+  # - createBucket:
+  #       call: googleapis.storage.v1.buckets.insert
+  #       args:
+  #         query:
+  #           project: ${projectId}
+  #         body:
+  #           name: ${bucket}
   - logCreateBatchJob:
       call: sys.log
       args:
@@ -40,15 +51,11 @@ main:
           - taskSpec:
               runnables:
               - container:
-                  imageUri: busybox
-                  entrypoint: "/bin/sh"
-                  commands:
-                  - "-c"
-                  - 'echo task index: ${BATCH_TASK_INDEX} bucket: ${BUCKET}'
+                  imageUri: ${imageUri}
               environment:
                 variables:
-                  BUCKET: batch-test-bucket
-            taskCount: 3
+                  BUCKET: ${bucket}
+            taskCount: 1 # TODO: Change to > 1 once the bug is fixed
           logsPolicy:
             destination: CLOUD_LOGGING
       result: createAndRunBatchJobResponse
@@ -87,4 +94,5 @@ main:
   - returnResult:
       return:
         jobId: ${jobId}
+        bucket: ${bucket}
         status: "OK"
