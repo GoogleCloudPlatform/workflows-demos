@@ -51,6 +51,9 @@ that explains Workflows.
 * [Long running containers with Workflows and Compute Engine](long-running-container)
 * [Workflows state management with Firestore](state-management-firestore)
 * [Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc](screenshot-jobs)
+* Batch and Workflows samples
+  * [Batch - simple container](batch/busybox)
+  * [Batch - prime number generator container](batch/primegen)
 
 -------
 
