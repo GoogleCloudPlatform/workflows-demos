@@ -1,9 +1,7 @@
 # Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc
 
-> **Note:** Cloud Run jobs is a feature in *preview*.
-> Only allow-listed projects can currently take advantage of it. Please fill out
-> [this form](https://docs.google.com/forms/d/e/1FAIpQLSdLqffpS3e-KtLJ25GPhkZ653W_aXg-I2UNKbg-jAn316Mj1A/viewform)
-> to get your project allow-listed before attempting this sample.
+> **Note:** Cloud Run jobs is a feature in *preview* only available in
+> `europe-west9` right now.
 
 In this tutorial, you will see how to use Cloud Run jobs to take screenshots of
 webpages, Workflows to manage the lifecycle of Cloud Run jobs and Eventarc to

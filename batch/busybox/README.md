@@ -1,4 +1,4 @@
-# Batch + Workflows - simple container
+# Batch - simple container
 
 > **Note:** Google Batch service is feature in *preview*.
 > Only allow-listed projects can currently take advantage of it. Please fill the
