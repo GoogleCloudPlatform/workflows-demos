@@ -21,12 +21,13 @@ echo "Enable necessary APIs"
 gcloud services enable \
   artifactregistry.googleapis.com \
   batch.googleapis.com \
-  cloudbuild.googleapis.com
+  cloudbuild.googleapis.com \
   workflowexecutions.googleapis.com \
   workflows.googleapis.com
 
 echo "Create a repository for containers"
-REGION=us-central1
+#REGION=us-central1
+REGION=europe-north1
 gcloud artifacts repositories create containers --repository-format=docker --location=$REGION
 
 echo "Build the container"
@@ -40,6 +41,10 @@ echo "Add necessary roles to the service account"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
     --role roles/batch.jobsAdmin
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
+    --role roles/storage.admin
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \

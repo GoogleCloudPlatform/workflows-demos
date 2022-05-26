@@ -17,21 +17,24 @@ main:
   - init:
       assign:
       - projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-      - region: "us-central1"
+      - region: "europe-north1"
+      # - region: "us-central1"
       - batchApi: "batch.googleapis.com/v1alpha1"
       - batchApiUrl: ${"https://" + batchApi + "/projects/" + projectId + "/locations/" + region + "/jobs"}
       - imageUri: ${region + "-docker.pkg.dev/" + projectId + "/containers/primegen-service:v1"}
       - jobId: ${"job-primegen-" + string(int(sys.now()))}
-      - bucket: "primegen-service"
-  # TODO: Add it in once the bug is fixed
-  #     - bucket: ${projectId + "-" + jobId}
-  # - createBucket:
-  #       call: googleapis.storage.v1.buckets.insert
-  #       args:
-  #         query:
-  #           project: ${projectId}
-  #         body:
-  #           name: ${bucket}
+      - bucket: ${projectId + "-" + jobId}
+  - createBucket:
+        call: googleapis.storage.v1.buckets.insert
+        args:
+          query:
+            project: ${projectId}
+          body:
+            name: ${bucket}
+  - logCreateBucket:
+      call: sys.log
+      args:
+        data: ${"Created bucket " + bucket}
   - logCreateBatchJob:
       call: sys.log
       args:
@@ -55,7 +58,7 @@ main:
               environment:
                 variables:
                   BUCKET: ${bucket}
-            taskCount: 1 # TODO: Change to > 1 once the bug is fixed
+            taskCount: 5
           logsPolicy:
             destination: CLOUD_LOGGING
       result: createAndRunBatchJobResponse
@@ -70,16 +73,26 @@ main:
       call: sys.log
       args:
         data: ${"Current job state " + getJobResult.body.status.state}
-  - assertSucceeded:
+  - checkState:
       switch:
         - condition: ${getJobResult.body.status.state == "SUCCEEDED"}
           next: logDeleteBatchJob
+        - condition: ${getJobResult.body.status.state == "FAILED"}
+          next: deleteBucket
       next: sleep
   - sleep:
       call: sys.sleep
       args:
         seconds: 10
       next: getJob
+  - deleteBucket:
+        call: googleapis.storage.v1.buckets.delete
+        args:
+          bucket: ${bucket}
+  - logDeleteBucket:
+      call: sys.log
+      args:
+        data: ${"Deleted bucket " + bucket}
   - logDeleteBatchJob:
       call: sys.log
       args:
@@ -91,8 +104,17 @@ main:
         auth:
           type: OAuth2
       result: deleteBatchJob
+  - failOrReturnResult:
+      switch:
+        - condition: ${getJobResult.body.status.state == "SUCCEEDED"}
+          next: returnResult
+        - condition: ${getJobResult.body.status.state == "FAILED"}
+          next: failExecution
+      next: sleep
   - returnResult:
       return:
         jobId: ${jobId}
         bucket: ${bucket}
-        status: "OK"
+  - failExecution:
+      raise:
+          message: ${"The underlying batch job " + jobId + " failed"}
