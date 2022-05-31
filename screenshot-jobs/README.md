@@ -102,6 +102,15 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member serviceAccount:screenshot-sa@$PROJECT_ID.iam.gserviceaccount.com
 ```
 
+Grant the `workflows.invoker` role, so the service account can be used to invoke
+Workflows from Eventarc:
+
+```sh
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --role roles/workflows.invoker \
+  --member serviceAccount:screenshot-sa@$PROJECT_ID.iam.gserviceaccount.com
+```
+
 Grant the `pubsub.publisher` role to the Cloud Storage service account. This is needed for the Eventarc Cloud Storage trigger:
 
 ```sh
@@ -231,8 +240,9 @@ Deploy the workflow:
 
 ```sh
 WORKFLOW_NAME=screenshot-jobs-workflow
+WORKFLOW_REGION=europe-west1
 gcloud workflows deploy $WORKFLOW_NAME \
-  --source=workflow.yaml --location=$REGION
+  --source=workflow.yaml --location=$WORKFLOW_REGION
 ```
 
 ## Create a trigger
@@ -243,7 +253,7 @@ Finally, connect Cloud Storage events to the worklow by creating a trigger:
 gcloud eventarc triggers create screenshot-jobs-trigger \
   --location=us \
   --destination-workflow=$WORKFLOW_NAME \
-  --destination-workflow-location=$REGION \
+  --destination-workflow-location=$WORKFLOW_REGION \
   --event-filters="type=google.cloud.storage.object.v1.finalized" \
   --event-filters="bucket=$BUCKET" \
   --service-account=screenshot-sa@$PROJECT_ID.iam.gserviceaccount.com
