@@ -1,3 +1,18 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Twitter sentiment analysis using Workflows parallel for-in loop
 main:
   params: [args]
   steps:
@@ -6,7 +21,7 @@ main:
           - bearerToken: ${args.bearerToken}
           - twitterHandles: ${args.twitterHandles} # list of twitter handles strings
           - maxResults: ${args.maxResults}
-          - twitterHandleResults : {} # results from branches keyed by twitter handle
+          - twitterHandleResults : {} # results from each iteration keyed by twitter handle
     - processTwitterHandles:
         parallel:
           shared: [twitterHandleResults]
@@ -14,7 +29,7 @@ main:
               value: twitterHandle
               in: ${twitterHandles}
               steps:
-                - initBranch:
+                - initStep:
                     assign:
                       - totalSentimentScore: 0
                       - minSentimentScore: 1
@@ -30,6 +45,13 @@ main:
                     call: sys.log
                     args:
                       text: ${searchTweetsResult}
+                - assignNumberOfTweets:
+                    assign:
+                      - numberOfTweets: ${int(searchTweetsResult.body.meta.result_count)}
+                - checkNumberOfTweets:
+                    switch:
+                      - condition: ${numberOfTweets == 0}
+                        next: assignResult
                 - processPosts:
                     for:
                       value: tweet
@@ -61,9 +83,17 @@ main:
                             args:
                               text: ${string(tweetIndex) + ". " + text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
                 - assignResult:
-                    assign:
-                      - numberOfTweets: ${len(searchTweetsResult.body.data)}
-                      - averageSentiment: ${totalSentimentScore / numberOfTweets}
+                    switch:
+                      - condition: ${numberOfTweets == 0}
+                        steps:
+                          - assignZero:
+                              assign:
+                                - averageSentiment: 0
+                      - condition: ${numberOfTweets > 0}
+                        steps:
+                          - assignAverage:
+                              assign:
+                                - averageSentiment: ${totalSentimentScore / numberOfTweets}
                 - logResult:
                     call: sys.log
                     args:

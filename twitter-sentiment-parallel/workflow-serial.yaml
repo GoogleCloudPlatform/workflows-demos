@@ -1,0 +1,108 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Twitter sentiment analysis using Workflows regular for-in loop
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - bearerToken: ${args.bearerToken}
+          - twitterHandles: ${args.twitterHandles} # list of twitter handles strings
+          - maxResults: ${args.maxResults}
+          - twitterHandleResults : {} # results from each iteration keyed by twitter handle
+    - processTwitterHandles:
+        for:
+            value: twitterHandle
+            in: ${twitterHandles}
+            steps:
+              - initStep:
+                  assign:
+                    - totalSentimentScore: 0
+                    - minSentimentScore: 1
+                    - minSentimentIndex: -1
+              - searchTweets:
+                  call: http.get
+                  args:
+                    url: ${"https://api.twitter.com/2/tweets/search/recent?query=from:" + twitterHandle + "&max_results=" + maxResults}
+                    headers:
+                      Authorization: ${"Bearer " + bearerToken}
+                  result: searchTweetsResult
+              - logTweets:
+                  call: sys.log
+                  args:
+                    text: ${searchTweetsResult}
+              - assignNumberOfTweets:
+                  assign:
+                    - numberOfTweets: ${int(searchTweetsResult.body.meta.result_count)}
+              - checkNumberOfTweets:
+                  switch:
+                    - condition: ${numberOfTweets == 0}
+                      next: assignResult
+              - processPosts:
+                  for:
+                    value: tweet
+                    index: tweetIndex
+                    in: ${searchTweetsResult.body.data}
+                    steps:
+                      - analyzeSentiment:
+                          call: googleapis.language.v1.documents.analyzeSentiment
+                          args:
+                              body:
+                                document:
+                                  content: ${tweet.text}
+                                  type: "PLAIN_TEXT"
+                          result: sentimentResult
+                      - updateTotalSentimentScore:
+                          assign:
+                              - currentScore: ${sentimentResult.documentSentiment.score}
+                              - totalSentimentScore: ${totalSentimentScore + currentScore}
+                      - updateMinSentiment:
+                          switch:
+                            - condition: ${currentScore < minSentimentScore}
+                              steps:
+                                - assignMinSentiment:
+                                    assign:
+                                      - minSentimentScore: ${currentScore}
+                                      - minSentimentIndex: ${tweetIndex}
+                      - logTweetScore:
+                          call: sys.log
+                          args:
+                            text: ${string(tweetIndex) + ". " + text.substring(tweet.text, 0, 50) + "... -> " + string(currentScore) + " " + string(totalSentimentScore)}
+              - assignResult:
+                  switch:
+                    - condition: ${numberOfTweets == 0}
+                      steps:
+                        - assignZero:
+                            assign:
+                              - averageSentiment: 0
+                    - condition: ${numberOfTweets > 0}
+                      steps:
+                        - assignAverage:
+                            assign:
+                              - averageSentiment: ${totalSentimentScore / numberOfTweets}
+              - logResult:
+                  call: sys.log
+                  args:
+                    text: ${"N:" + string(numberOfTweets) + " tweets with average sentiment:" + string(averageSentiment) + " min sentiment:" + string(minSentimentScore) + " at index:" + string(minSentimentIndex)}
+              - returnResult:
+                  assign:
+                    - twitterHandleResults[twitterHandle]: {}
+                    - twitterHandleResults[twitterHandle].numberOfTweets: ${numberOfTweets}
+                    - twitterHandleResults[twitterHandle].totalSentimentScore: ${totalSentimentScore}
+                    - twitterHandleResults[twitterHandle].averageSentiment: ${averageSentiment}
+                    - twitterHandleResults[twitterHandle].minSentimentScore: ${minSentimentScore}
+                    - twitterHandleResults[twitterHandle].minSentimentIndex: ${minSentimentIndex}
+    - returnResults:
+        return: ${twitterHandleResults}

@@ -8,9 +8,9 @@
 In this sample, you will see how to use [Cloud Natural Language API
 connector](https://cloud.google.com/workflows/docs/reference/googleapis/language/Overview)
 and parallel [iteration](https://cloud.google.com/workflows/docs/reference/syntax/iteration)
-syntax to analyze sentiments of latest tweets of from multiple Twitter handles.
+to analyze sentiments of latest tweets of from multiple Twitter handles.
 
-Each Twitter handle is handled in a parallel branch.
+Each Twitter handle is handled in a parallel iteration step.
 
 ## Twitter API
 
@@ -61,7 +61,7 @@ gcloud services enable \
 
 ## Define workflow
 
-Create a [workflow.yaml](workflow.yaml) to define the workflow.
+Create a [workflow-parallel.yaml](workflow-parallel.yaml) to define the workflow.
 
 In the `init` step, read the bearer token, twitter handles, max results for the
 Twitter API.
@@ -75,7 +75,7 @@ main:
           - bearerToken: ${args.bearerToken}
           - twitterHandles: ${args.twitterHandles} # list of twitter handles strings
           - maxResults: ${args.maxResults}
-          - twitterHandleResults : {} # results from branches keyed by twitter handle
+          - twitterHandleResults : {} # results from each iteration keyed by twitter handle
 ```
 
 Next, we define a step with `parallel` keyword with a for loop. Each iteration
@@ -90,7 +90,7 @@ variable that will hold the results from each parallel iteration:
             value: twitterHandle
             in: ${twitterHandles}
             steps:
-              - initBranch:
+              - initStep:
                   assign:
                     - totalSentimentScore: 0
                     - minSentimentScore: 1
@@ -151,9 +151,17 @@ the results by assigning to the `twitterHandleResults` keyed under the `twitterH
 
 ```yaml
   - assignResult:
-      assign:
-        - numberOfTweets: ${len(searchTweetsResult.body.data)}
-        - averageSentiment: ${totalSentimentScore / numberOfTweets}
+      switch:
+        - condition: ${numberOfTweets == 0}
+          steps:
+            - assignZero:
+                assign:
+                  - averageSentiment: 0
+        - condition: ${numberOfTweets > 0}
+          steps:
+            - assignAverage:
+                assign:
+                  - averageSentiment: ${totalSentimentScore / numberOfTweets}
   - logResult:
       call: sys.log
       args:
@@ -175,7 +183,7 @@ In the last step, return the results from all parallel iterations:
       return: ${twitterHandleResults}
 ```
 
-You can see the full [workflow.yaml](workflow.yaml).
+You can see the full [workflow-parallel.yaml](workflow-parallel.yaml).
 
 ## Deploy and execute workflow
 
@@ -183,18 +191,59 @@ Deploy workflow:
 
 ```sh
 gcloud workflows deploy twitter-sentiment-parallel \
-    --source=workflow.yaml
+    --source=workflow-parallel.yaml
 ```
 
 Run the workflow:
 
 ```sh
-gcloud workflows run twitter-sentiment-parallel --data='{"bearerToken":"", "twitterHandles":["googlecloudtech", "googlecloud","google", "cnn", "bbcworld"],"maxResults":"50"}'
+gcloud workflows run twitter-sentiment-parallel --data='{"bearerToken":"", "twitterHandles":["googlecloud","googlecloudtech", "bbc", "cnn", "twitter"],"maxResults":"100"}'
 ```
 
 After a few minutes, you should see the see the result:
 
-```sh
-...
-result: '{"bbcworld":{"averageSentiment":-0.20000000000000004,"minSentimentIndex":25,"minSentimentScore":-0.9,"numberOfTweets":50,"totalSentimentScore":-10.000000000000002},"cnn":{"averageSentiment":-0.038000000000000006,"minSentimentIndex":41,"minSentimentScore":-0.7,"numberOfTweets":50,"totalSentimentScore":-1.9000000000000001},"google":{"averageSentiment":0.03200000000000001,"minSentimentIndex":45,"minSentimentScore":-0.1,"numberOfTweets":50,"totalSentimentScore":1.6000000000000003},"googlecloud":{"averageSentiment":0.16521739130434782,"minSentimentIndex":32,"minSentimentScore":-0.6,"numberOfTweets":46,"totalSentimentScore":7.6},"googlecloudtech":{"averageSentiment":0.06285714285714286,"minSentimentIndex":26,"minSentimentScore":-0.5,"numberOfTweets":35,"totalSentimentScore":2.2}}'
+```json
+{
+  "bbc": {
+    "averageSentiment": 0.19230769230769226,
+    "minSentimentIndex": 10,
+    "minSentimentScore": -0.1,
+    "numberOfTweets": 13,
+    "totalSentimentScore": 2.4999999999999996
+  },
+  "cnn": {
+    "averageSentiment": -0.020000000000000007,
+    "minSentimentIndex": 72,
+    "minSentimentScore": -0.8,
+    "numberOfTweets": 100,
+    "totalSentimentScore": -2.000000000000001
+  },
+  "googlecloud": {
+    "averageSentiment": 0.1867924528301887,
+    "minSentimentIndex": 26,
+    "minSentimentScore": -0.3,
+    "numberOfTweets": 53,
+    "totalSentimentScore": 9.9
+  },
+  "googlecloudtech": {
+    "averageSentiment": 0.10512820512820512,
+    "minSentimentIndex": 8,
+    "minSentimentScore": -0.4,
+    "numberOfTweets": 39,
+    "totalSentimentScore": 4.1
+  },
+  "twitter": {
+    "averageSentiment": 0.10909090909090911,
+    "minSentimentIndex": 3,
+    "minSentimentScore": 0,
+    "numberOfTweets": 11,
+    "totalSentimentScore": 1.2000000000000002
+  }
+}
 ```
+
+## Compare with non-parallel version
+
+You can deploy and execute [workflow-serial.yaml](workflow-serial.yaml) to
+compare the parallel version of the workflow with the non-parallel version which
+usually takes 2x time.
