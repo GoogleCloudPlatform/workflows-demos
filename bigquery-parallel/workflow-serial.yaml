@@ -1,0 +1,62 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This is a workflow that queries BigQuery tables in a serial loop
+# and returns the top result from each table
+main:
+    steps:
+    - init:
+        assign:
+            - results : {} # result from each iteration keyed by table name
+            - tables:
+                - 201201h
+                - 201202h
+                - 201203h
+                - 201204h
+                - 201205h
+    - runQueries:
+        for:
+            value: table
+            in: ${tables}
+            steps:
+            - logTable:
+                call: sys.log
+                args:
+                    text: ${"Running query for table " + table}
+            - runQuery:
+                call: googleapis.bigquery.v2.jobs.query
+                args:
+                    projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                    body:
+                        useLegacySql: false
+                        useQueryCache: false
+                        timeoutMs: 30000
+                        # Find top 100 titles with most views on Wikipedia
+                        query: ${
+                            "SELECT TITLE, SUM(views)
+                            FROM `bigquery-samples.wikipedia_pageviews." + table + "`
+                            WHERE LENGTH(TITLE) > 10
+                            GROUP BY TITLE
+                            ORDER BY SUM(VIEWS) DESC
+                            LIMIT 100"
+                            }
+                result: queryResult
+            - returnResult:
+                assign:
+                    # Return the top title from each table
+                    - results[table]: {}
+                    - results[table].title: ${queryResult.rows[0].f[0].v}
+                    - results[table].views: ${queryResult.rows[0].f[1].v}
+    - returnResults:
+        return: ${results}
