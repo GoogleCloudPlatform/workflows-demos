@@ -141,6 +141,41 @@ main:
                       - sumRange:
                           assign:
                               - sum: ${sum + v}
+    # Parallel branches
+    - parallel_branches:
+        parallel:
+          shared: [user, notification]
+          branches:
+            - getUser:
+                steps:
+                  - getUserCall:
+                      call: http.get
+                      args:
+                        url: ${"https://example.com/users/" + args.userId}
+                      result: user
+            - getNotification:
+                steps:
+                  - getNotificationCall:
+                      call: http.get
+                      args:
+                        url: ${"https://example.com/notification/" + args.notificationId}
+                      result: notification
+    # Parallel iteration
+    - parallel_loop:
+        parallel:
+          shared: [total]
+          for:
+            value: postId
+            in: ${args.posts}
+            steps:
+              - getPostCommentCount:
+                  call: http.get
+                  args:
+                    url: ${"https://example.com/postComments/" + postId}
+                  result: numComments
+              - add:
+                  assign:
+                    - total: ${total + numComments}                    
     # Conditions
     - switch_basic:
         switch:
