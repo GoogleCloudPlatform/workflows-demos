@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <!-- Copyright 2022 Google LLC
@@ -33,29 +32,29 @@
 
 <!-- FIRST PAGE -->
 <section class="margin_wide">
-  <div class="row">
+<div class="row">
 
 <!-- First page, first column -->
-    <div class="column">
+<div class="column">
 
 <!--Workflow Cheat sheet headers -->
-    <table>
-        <tr><td class="syntax_title">Workflows syntax</td>
-        </tr>
-        <tr><td><img src="images/cloud_icon_color.png" alt="Google Cloud icon"
-          style="width:42px;height:42px;padding:0px 10px 0px 0px;"/><h1 class="cheat_title">Cheat sheet</h1></td>
-        </tr>
-        <tr>
-          <td class="link_url">https://cloud.google.com/workflows/docs/reference/syntax/
-          </td>
-        </tr>
-    </table>
+<table>
+    <tr><td class="syntax_title">Workflows syntax</td>
+    </tr>
+    <tr><td><img src="images/cloud_icon_color.png" alt="Google Cloud icon"
+      style="width:42px;height:42px;padding:0px 10px 0px 0px;"/><h1 class="cheat_title">Cheat sheet</h1></td>
+    </tr>
+    <tr>
+      <td class="link_url">https://cloud.google.com/workflows/docs/reference/syntax/
+      </td>
+    </tr>
+</table>
 
 <!-- Runtime arguments -->
-    <table>
-      <tr><td class="blue_header td_med">Runtime arguments</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="blue_header td_med">Runtime arguments</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 main:
   params: [args]
   steps:
@@ -63,14 +62,14 @@ main:
         assign:
           - arg1: ${args.arg1}
           - arg2: ${args.arg2}
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
 
 <!-- Variables and data types -->
-    <table>
-    <tr><td class="red_header td_med">Variables and data types</td></tr>
-    <tr><td class="codeblock">
-    <pre class="pre">
+<table>
+<tr><td class="red_header td_med">Variables and data types</td></tr>
+<tr><td class="codeblock">
+<pre class="pre">
 - data_types:
     assign:
       - my_integer: 1      <code class="comment"># 64 bit, signed</code>
@@ -88,14 +87,15 @@ main:
       - to_double: double("2.7") <code class="comment"># string, integer to double</code>
       - to_int: int(2.7)         <code class="comment"># string, double to integer</code>
       - to_string: string(1.7)   <code class="comment"># int, double, boolean to string</code>
-    </pre></td></tr>
-    </table>
+
+</pre></td></tr>
+</table>
 
 <!-- Boolean -->
-    <table>
-      <tr><td class="green_header td_med">Boolean</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="green_header td_med">Boolean</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - logical_ops:
     assign:
       - my_true: true
@@ -103,14 +103,14 @@ main:
       - my_false: ${my_true and my_false}
       - my_true: ${my_true or my_false}
       - my_false: ${not my_true}
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
 
 <!-- Strings -->
-    <table>
-      <tr><td class="yellow_header td_med">Strings</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="yellow_header td_med">Strings</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - string_ops:
     assign:
       - my_string: "hello"
@@ -118,14 +118,14 @@ main:
       - string_plus_string: ${my_string+" "+"world"}
       - string_plus_int: ${my_string+" "+string(my_integer)}
       - string_escaped: '${"a: " +my_string}'
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
 
 <!-- Lists -->
-    <table>
-      <tr><td class="blue_header td_med">Lists</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="blue_header td_med">Lists</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - list_ops:
     assign:
       - my_list: ["zero","one","two"]
@@ -138,14 +138,18 @@ main:
       - my_list: ${list.concat(my_list, 3)}
       - my_multi_dimen_list: [[10, 11, 12], [20, 21, 22]]
       - my_multi_dimen_list[0][1]: "Value11"
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
+
+<!-- First page, second column -->
+</div>
+<div class="column">
 
 <!-- Maps -->
-    <table>
-      <tr><td class="red_header td_med">Maps</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="red_header td_lg">Maps</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - map_ops:
     assign:
       - my_map: {"Key1": "hello"}
@@ -159,18 +163,14 @@ main:
       - my_map[key_str + "3"]: "Value3"
       - my_nested_map: {"NestedMapKey": {"Key1":"Value1"}}
       - my_nested_map.NestedMapKey.Key2: "Value2"
-      </pre></td></tr>
-    </table>
-
-<!-- First page, second column -->
-    </div>
-    <div class="column">
+  </pre></td></tr>
+</table>
 
 <!-- Controlling flow -->
-    <table>
-      <tr><td class="green_header td_med">Controlling flow</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="green_header td_lg">Controlling flow</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - step_with_next:
     assign:
       - foo: "bar"
@@ -187,14 +187,14 @@ main:
       - nested_step_2:
           assign:
             - foo: "bar"
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
 
 <!-- Iteration -->
-    <table>
-      <tr><td class="yellow_header td_med">Iteration</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+<table>
+  <tr><td class="yellow_header td_lg">Iteration</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 - for-in-list:
     steps:
       - assignList:
@@ -238,10 +238,100 @@ main:
                     - sum: ${sum + v}
       </pre></td></tr>
     </table>
-    <table>
-      <tr><td class="blue_header td_med">Conditions</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+
+<!-- Continue... -->
+<table style="margin: 3px 0px; float: right">
+  <tr><td class="continue">Continue on back &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i></td></tr>
+</table>
+    </div>
+  </div>
+</section>
+
+<!-- SECOND PAGE -->
+
+<section class="margin_narrow" style="page-break-before: always;">
+
+<!-- ...Continued -->
+<table style="margin: 0px 0px 30px;">
+  <tr><td class="continue"><i style='font-size:18px;' class='fas'>&#xf104;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf104;</i>  &nbsp; &nbsp; &nbsp; &nbsp; Continued from front</td></tr>
+</table>
+
+<!-- Parallel branches -->
+<table>
+  <tr><td class="blue_header td_lg">Parallel branches</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- parallel_branches:
+    parallel:
+      shared: [user, notification]
+      branches:
+        - getUser:
+            steps:
+              - getUserCall:
+                  call: http.get
+                  args:
+                    url: ${"https://example.com/users/" + args.userId}
+                  result: user
+        - getNotification:
+            steps:
+              - getNotificationCall:
+                  call: http.get
+                  args:
+                    url: ${"https://example.com/notification/" + args.notificationId}
+                  result: notification
+  </pre></td></tr>
+</table>
+
+<!-- Parallel iteration -->
+<table>
+  <tr><td class="red_header td_lg">Parallel iteration</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- parallel_loop:
+    parallel:
+      shared: [total]
+      for:
+        value: postId
+        in: ${args.posts}
+        steps:
+          - getPostCommentCount:
+              call: http.get
+              args:
+                url: ${"https://example.com/postComments/" + postId}
+              result: numComments
+          - add:
+              assign:
+                - total: ${total + numComments}
+  </pre></td></tr>
+</table>
+
+<!-- Subworkflows -->
+<table>
+  <tr><td class="green_header td_lg">Subworkflows</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- call_subworkflow:
+    call: subworkflow_name_message
+    args:
+      first_name: "Sherlock"
+      last_name: "Holmes"
+    result: output
+
+subworkflow_name_message:
+  params: [first_name, last_name, country: "England"]
+  steps:
+    - prepareMessage:
+        return: ${"Hello " + first_name + " " + last_name + " from " + country + "."}
+  </pre></td></tr>
+</table>
+
+<!-- Conditions -->
+<table>
+<tr><td class="yellow_header td_lg">Conditions</td></tr>
+<tr><td class="codeblock">
+<pre class="pre">
 - switch_basic:
     switch:
       - condition: ${my_integer < 10}
@@ -261,147 +351,57 @@ main:
           - stepB:
               assign:
                 - foo: "bar"
-      </pre></td></tr>
-    </table>
-
-    <!-- Continue... -->
-    <table style="margin: 3px 0px; float: right">
-      <tr><td class="continue">Continue on back  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i>
-      &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i></td></tr>
-    </table>
-    </div>
-  </div>
-</section>
-
-<!-- SECOND PAGE -->
-
-<section class="margin_narrow">
-  <div class="row">
-
-<!-- Second page, first column -->
-  <div class="column">
-
-<!-- ...Continued -->
-<table style="margin: 0px 0px 30px; float: left">
-  <tr><td class="continue"><i style='font-size:18px;' class='fas'>&#xf104;</i>
-  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf104;</i>  &nbsp; &nbsp; &nbsp;Continued from front</td></tr>
+  </pre></td></tr>
 </table>
 
-<!-- Raise errors -->
-    <table>
-      <tr><td class="red_header td_sm">Raise errors</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
-- raise_custom_string_error:
-    raise: "Something went wrong."
-- raise_custom_map_error:
-    raise:
-      code: 55
-      message: "Something went wrong."
-      </pre></td></tr>
-    </table>
+<!-- Continue... -->
+<table style="margin: 3px 0px; float: right">
+  <tr><td class="continue">Next page &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i></td></tr>
+</table>
 
-<!-- Catch errors -->
-    <table>
-      <tr><td class="green_header td_sm">Catch errors</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
-- try_retry_except:
-    try:
-      steps: <code class="comment"># steps is only needed if multiple steps</code>
-        - step_a:
-            call: http.get
-            args:
-              url: https://host.com/api
-            result: api_response1
-        - step_b:
-            call: http.get
-            args:
-              url: https://host.com/api2
-            result: api_response2
-    <code class="comment"># retry is optional</code>
-    <code class="comment"># Either, you can use a retry with default policy</code>
-    <code class="comment"># retry: ${http.default_retry}</code>
-    <code class="comment"># Or, you can use a more fine-grained policy</code>
-    <code class="comment"># retry:</code>
-    <code class="comment">#   predicate: ${http.default_retry_predicate}</code>
-    <code class="comment">#   max_retries: 10</code>
-    <code class="comment">#   backoff:</code>
-    <code class="comment">#       initial_delay: 1</code>
-    <code class="comment">#       max_delay: 90</code>
-    <code class="comment">#       multiplier: 3</code>
-    except:
-      as: e
-      steps:
-        - known_errors:
-            switch:
-            - condition: ${not("HttpError" in e.tags)}
-              return: "Connection problem."
-            - condition: ${e.code == 404}
-              return: "Sorry, URL wasn’t found."
-            - condition: ${e.code == 403}
-              return: "Authentication error."
-        - unhandled_exception:
-            raise: ${e}
-      </pre></td></tr>
-    </table>
+</section>
 
-<!-- Return from workflow -->
-    <table>
-      <tr><td class="yellow_header td_sm">Return from workflow</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
-- return_multiple_values:
-    return:
-      my_integer: ${my_integer}
-      my_string: ${my_string}
-      my_true: ${my_true}
-      my_false: ${my_false}
-      my_list: ${my_list}
-      my_multi_dimen_list: ${my_multi_dimen_list}
-      my_map: ${my_map}
-      my_nested_map: ${my_nested_map}
-- return_single_value:
-    return: ${my_integer}
-      </pre></td></tr>
-    </table>
+<!-- THIRD PAGE -->
 
-<!--Google Cloud logo -->
-  <div style="text-align:center; margin-top:50px">
-  <img src="images/logo_cloud_horizontal_0120.png" alt="Google Cloud icon"
-            style="width:80%;height:80%;"/>
-  <p class="link_url" style="font-size:14px">https://cloud.google.com/workflows/docs/reference/syntax/</p>
-  </div>
-  </div>
+<section class="margin_narrow" style="page-break-before: always;">
 
-<!-- Second page, second column -->
-  <div class="column">
+<!-- ...Continued -->
+<table style="margin: 0px 0px 30px;">
+  <tr><td class="continue"><i style='font-size:18px;' class='fas'>&#xf104;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf104;</i>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Previous page</td></tr>
+</table>
 
-<!-- Subworkflows -->
-    <table>
-      <tr><td class="blue_header td_lg">Subworkflows</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
-- call_subworkflow:
-    call: subworkflow_name_message
+<!-- Connectors -->
+<table>
+  <tr><td class="blue_header td_lg">Connectors</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+<code class="comment"># https://cloud.google.com/workflows/docs/reference/googleapis</code>
+<code class="comment">## googleapis.compute.v1</code>
+- insert_machine:
+    call: googleapis.compute.v1.instances.insert
     args:
-      first_name: "Sherlock"
-      last_name: "Holmes"
-    result: output
+      project: ${projectID}
+      zone: europe-west1-b
+      body:
+        name: my-machine
+        machineType: zones/europe-west1-b/e2-small
+        disks:
+        - initializeParams:
+            sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v123"
+          boot: true
+          autoDelete: true
+        networkInterfaces:
+        - network: "global/networks/default"
+   </pre></td></tr>
+</table>
 
-subworkflow_name_message:
-  params: [first_name, last_name, country: "England"]
-  steps:
-    - prepareMessage:
-        return: ${"Hello " + first_name + " " + last_name + " from " + country + "."}
-      </pre></td></tr>
-    </table>
-
-<!-- Standard library -->
-    <table>
-      <tr><td class="red_header td_lg">Standard library</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
+  <!-- Standard library -->
+<table>
+  <tr><td class="red_header td_lg">Standard library</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
 <code class="comment"># https://cloud.google.com/workflows/docs/reference/stdlib/overview</code>
 <code class="comment">## http</code>
 - http_get:
@@ -444,35 +444,118 @@ subworkflow_name_message:
     call: sys.sleep
     args:
       seconds: 10
-      </pre></td></tr>
-    </table>
+  </pre></td></tr>
+</table>
 
-<!-- Connectors -->
-    <table>
-      <tr><td class="green_header td_lg">Connectors</td></tr>
-      <tr><td class="codeblock">
-      <pre class="pre">
-<code class="comment"># https://cloud.google.com/workflows/docs/reference/googleapis</code>
-<code class="comment">## googleapis.compute.v1</code>
-- insert_machine:
-    call: googleapis.compute.v1.instances.insert
-    args:
-      project: ${projectID}
-      zone: europe-west1-b
-      body:
-        name: my-machine
-        machineType: zones/europe-west1-b/e2-small
-        disks:
-        - initializeParams:
-            sourceImage: "projects/debian-cloud/global/images/debian-10-buster-v123"
-          boot: true
-          autoDelete: true
-        networkInterfaces:
-        - network: "global/networks/default"
-      </pre></td></tr>
-    </table>
-  </div>
-  </div>
+<!--Google Cloud logo -->
+<div style="text-align:center; margin-top:40px">
+<img src="images/logo_cloud_horizontal_0120.png" alt="Google Cloud icon"
+          style="width:40%;height:40%;"/>
+<p class="link_url" style="font-size:14px">https://cloud.google.com/workflows/docs/reference/syntax/</p>
+
+<!-- Continue... -->
+<table style="margin: 3px 0px; float: right">
+  <tr><td class="continue">Continue on back  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf105;</i></td></tr>
+</table>
+
+</section>
+
+<!-- THIRD PAGE -->
+
+<section class="margin_narrow" style="page-break-before: always;">
+
+<!-- ...Continued -->
+<table style="margin: 0px 0px 30px;">
+  <tr><td class="continue"><i style='font-size:18px;' class='fas'>&#xf104;</i>
+  &nbsp; &nbsp; <i style='font-size:18px;' class='fas'>&#xf104;</i>  &nbsp; &nbsp; &nbsp; &nbsp;Continued from front</td></tr>
+</table>
+
+<!-- Raise errors -->
+<table>
+  <tr><td class="green_header td_sm">Raise errors</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- raise_custom_string_error:
+    raise: "Something went wrong."
+- raise_custom_map_error:
+    raise:
+      code: 55
+      message: "Something went wrong."
+  </pre></td></tr>
+</table>
+
+<!-- Catch errors -->
+<table>
+  <tr><td class="yellow_header td_sm">Catch errors</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- try_retry_except:
+    try:
+      steps: <code class="comment"># steps is only needed if multiple steps</code>
+        - step_a:
+            call: http.get
+            args:
+              url: https://host.com/api
+            result: api_response1
+        - step_b:
+            call: http.get
+            args:
+              url: https://host.com/api2
+            result: api_response2
+    <code class="comment"># retry is optional</code>
+    <code class="comment"># Either, you can use a retry with default policy</code>
+    <code class="comment"># retry: ${http.default_retry}</code>
+    <code class="comment"># Or, you can use a more fine-grained policy</code>
+    <code class="comment"># retry:</code>
+    <code class="comment">#   predicate: ${http.default_retry_predicate}</code>
+    <code class="comment">#   max_retries: 10</code>
+    <code class="comment">#   backoff:</code>
+    <code class="comment">#       initial_delay: 1</code>
+    <code class="comment">#       max_delay: 90</code>
+    <code class="comment">#       multiplier: 3</code>
+    except:
+      as: e
+      steps:
+        - known_errors:
+            switch:
+            - condition: ${not("HttpError" in e.tags)}
+              return: "Connection problem."
+            - condition: ${e.code == 404}
+              return: "Sorry, URL wasn’t found."
+            - condition: ${e.code == 403}
+              return: "Authentication error."
+        - unhandled_exception:
+            raise: ${e}
+  </pre></td></tr>
+</table>
+
+<!-- Return from workflow -->
+<table>
+  <tr><td class="blue_header td_sm">Return from workflow</td></tr>
+  <tr><td class="codeblock">
+  <pre class="pre">
+- return_multiple_values:
+    return:
+      my_integer: ${my_integer}
+      my_string: ${my_string}
+      my_true: ${my_true}
+      my_false: ${my_false}
+      my_list: ${my_list}
+      my_multi_dimen_list: ${my_multi_dimen_list}
+      my_map: ${my_map}
+      my_nested_map: ${my_nested_map}
+- return_single_value:
+    return: ${my_integer}
+  </pre></td></tr>
+</table>
+
+<!--Google Cloud logo -->
+<div style="text-align:center; margin-top:40px">
+<img src="images/logo_cloud_horizontal_0120.png" alt="Google Cloud icon"
+          style="width:40%;height:40%;"/>
+<p class="link_url" style="font-size:14px">https://cloud.google.com/workflows/docs/reference/syntax/</p>
+
 </section>
 
 </body>
