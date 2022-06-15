@@ -1,7 +1,5 @@
 # Human validation of text translation via Webhooks callback endpoints
 
-> **Note —** Workflows callbacks is currently a feature in *private preview*. Only whitelisted projects can currently take advantage of it. Please stay tuned for the public preview!
-
 In this example, you will take advantage of the **callback** feature of Workflows:
 by creating an HTTP callback, and waiting for some external user or process 
 to call that callback endpoint.
