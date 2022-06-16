@@ -6,13 +6,23 @@ In this sample, you will see how to use parallel
 [iteration](https://cloud.google.com/workflows/docs/reference/syntax/iteration)
 to run BigQuery jobs against Wikipedia dataset in parallel.
 
-## Enable services
+## Before you start
 
 First, enable required services:
 
 ```sh
 gcloud services enable \
   workflows.googleapis.com
+```
+
+Give the default compute service account the required logging role:
+
+```sh
+PROJECT_ID=your-project-id
+PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
+    --role roles/logging.logWriter
 ```
 
 ## Define workflow
