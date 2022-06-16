@@ -25,6 +25,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role roles/logging.logWriter
 ```
 
+Note: If you're using another service account, you might need to also give
+`bigquery.jobs.create` role to that account.
+
 ## Define workflow
 
 Create a [workflow-parallel.yaml](workflow-parallel.yaml) to define the workflow.
