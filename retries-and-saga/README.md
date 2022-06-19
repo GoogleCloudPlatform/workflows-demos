@@ -21,7 +21,7 @@ order.
 
 ### Naive implementation
 
-In a naive implementation, you might have you have 2 services,
+In a naive implementation, you might have 2 services,
 `OrderService` to receive orders and `CustomerService` to manage customer's credit:
 
 ![Naive implementation](image1.png)
