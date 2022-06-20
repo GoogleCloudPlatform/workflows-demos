@@ -1,4 +1,4 @@
-# Running BigQuery jobs against Wikipedia dataset in parallel iteration
+# Running BigQuery jobs against Wikipedia dataset with Workflows parallel iteration
 
 > **Note:** Parallel steps/iteration is a feature in *preview*.
 

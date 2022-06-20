@@ -54,7 +54,7 @@ that explains Workflows.
 * Batch and Workflows samples
   * [Batch - simple container](batch/busybox)
   * [Batch - prime number generator container](batch/primegen)
-* [Running BigQuery jobs against Wikipedia dataset in parallel iteration](bigquery-parallel)
+* [Running BigQuery jobs against Wikipedia dataset with Workflows parallel iteration](bigquery-parallel)
 
 -------
 
