@@ -15,18 +15,16 @@ gcloud services enable \
   workflows.googleapis.com
 ```
 
-Give the default compute service account the required logging role:
+Give the default compute service account the required roles:
 
 ```sh
 PROJECT_ID=your-project-id
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
-    --role roles/logging.logWriter
+    --role roles/logging.logWriter \
+    --role roles/bigquery.jobUser
 ```
-
-Note: If you're using another service account, you might need to also give
-`bigquery.jobs.create` role to that account.
 
 ## Define workflow
 
