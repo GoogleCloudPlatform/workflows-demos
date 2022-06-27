@@ -14,6 +14,7 @@
 
 # This is a workflow that queries BigQuery tables in a serial loop
 # and returns the top result from each table
+# [START workflows_serial_bigquery]
 main:
     steps:
     - init:
@@ -60,3 +61,4 @@ main:
                     - results[table].views: ${queryResult.rows[0].f[1].v}
     - returnResults:
         return: ${results}
+# [END workflows_serial_bigquery]
