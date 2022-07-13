@@ -52,8 +52,8 @@ that explains Workflows.
 * [Workflows state management with Firestore](state-management-firestore)
 * [Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc](screenshot-jobs)
 * Batch and Workflows samples
-  * [Batch - simple container](batch/busybox)
-  * [Batch - prime number generator container](batch/primegen)
+  * [Batch - simple container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/busybox)
+  * [Batch - prime number generator container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/primegen)
 * [Running BigQuery jobs against Wikipedia dataset with Workflows parallel iteration](bigquery-parallel)
 
 -------
