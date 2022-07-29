@@ -61,28 +61,43 @@ await_callback_event:
                 fields:
                   ${firestore_key}:
                     stringValue: ${callback_details.url}
-        - log_await_start:
-            call: sys.log
-            args:
-              severity: INFO
-              data: ${"Started waiting for an event from source " + event_source}
-        - await_callback:
-            call: events.await_callback
-            args:
-              callback: ${callback_details}
-              timeout: 3600
-            result: callback_request
-        - log_await_stop:
-            call: sys.log
-            args:
-              severity: INFO
-              data: ${"Stopped waiting for an event from source " + event_source}
+        - log_and_await_callback:
+            try:
+              steps:
+                - log_await_start:
+                    call: sys.log
+                    args:
+                      severity: INFO
+                      data: ${"Started waiting for an event from source " + event_source}
+                - await_callback:
+                    call: events.await_callback
+                    args:
+                      callback: ${callback_details}
+                      timeout: 10
+                    result: callback_request
+                - log_await_stop:
+                    call: sys.log
+                    args:
+                      severity: INFO
+                      data: ${"Stopped waiting for an event from source " + event_source}
+            except:
+                as: e
+                steps:
+                    - log_error:
+                        call: sys.log
+                        args:
+                            severity: "ERROR"
+                            text: ${"Received error " + e.message}
         - delete_callback_url:
             call: googleapis.firestore.v1.projects.databases.documents.patch
             args:
               name: ${doc_name}
               updateMask:
                 fieldPaths: [${firestore_key}]
+        - check_null_event:
+            switch:
+              - condition: ${callback_request == null}
+                return: null
         - log_await_result:
             call: sys.log
             args:
