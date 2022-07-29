@@ -1,0 +1,92 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A sample workflow to wait for an event from a a Pub/Sub topic and a Cloud
+# Storage bucket by creating a callback, storing it to Firestore, waiting for
+# the callback and deleting it from Firestore.
+
+main:
+  steps:
+    - init:
+        assign:
+          - pubsub_topic: topic-callback
+          - storage_bucket: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "-bucket-callback"}
+    - await_pubsub_message:
+        call: await_callback_event
+        args:
+          event_source: ${pubsub_topic}
+        result: pubsub_event
+    - await_storage_bucket:
+        call: await_callback_event
+        args:
+          event_source: ${storage_bucket}
+        result: storage_event
+    - return_events:
+        return:
+            pubsub_event: ${pubsub_event}
+            storage_event: ${storage_event}
+
+await_callback_event:
+    params: [event_source]
+    steps:
+        - init:
+            assign:
+              - database_root: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/databases/(default)/documents/callbacks/"}
+              - doc_name: ${database_root + event_source}
+              - execution_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+              - firestore_key: ${"exec_" + text.split(execution_id, "-")[0]}
+        - create_callback:
+            call: events.create_callback_endpoint
+            args:
+              http_callback_method: POST
+            result: callback_details
+        - save_callback_url:
+            call: googleapis.firestore.v1.projects.databases.documents.patch
+            args:
+              name: ${doc_name}
+              updateMask:
+                fieldPaths: [${firestore_key}]
+              body:
+                fields:
+                  ${firestore_key}:
+                    stringValue: ${callback_details.url}
+        - log_await_start:
+            call: sys.log
+            args:
+              severity: INFO
+              data: ${"Started waiting for an event from source " + event_source}
+        - await_callback:
+            call: events.await_callback
+            args:
+              callback: ${callback_details}
+              timeout: 3600
+            result: callback_request
+        - log_await_stop:
+            call: sys.log
+            args:
+              severity: INFO
+              data: ${"Stopped waiting for an event from source " + event_source}
+        - delete_callback_url:
+            call: googleapis.firestore.v1.projects.databases.documents.patch
+            args:
+              name: ${doc_name}
+              updateMask:
+                fieldPaths: [${firestore_key}]
+        - log_await_result:
+            call: sys.log
+            args:
+              severity: INFO
+              data: ${callback_request.http_request.body.event}
+        - return_event:
+            return: ${callback_request.http_request.body.event}

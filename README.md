@@ -45,6 +45,7 @@ that explains Workflows.
   * [Twitter sentiment analysis using Language API connector and parallel iteration](twitter-sentiment-parallel)
 * Callback samples
   * [Basic callback endpoint sample](callback-basic)
+  * [Event callback sample](callback-event)
   * [Human validation of text translation via Workflows callback](callback-translation)
   * [Manager approval of expense reports thanks to Workflows callbacks](https://github.com/GoogleCloudPlatform/smart-expenses)
 * [Retries and Saga Pattern in Workflows](retries-and-saga)
