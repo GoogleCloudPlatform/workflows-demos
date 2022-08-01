@@ -9,9 +9,9 @@ event callback as well such as a message to a Pub/Sub topic or a new file
 creation in a Cloud Storage bucket?
 
 In this sample, you'll see how to get Workflows listen for event callbacks from
-Pub/Sub and Cloud Storage.
+Pub/Sub and Cloud Storage. The idea is as follows:
 
-The idea is as follows:
+![Architecture](architecture.png)
 
 1. Deploy a `callback-event-listener` workflow that listens for events, checks
    Firestore to see if any callbacks are registered for that event type and if
