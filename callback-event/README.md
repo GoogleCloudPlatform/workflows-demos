@@ -13,15 +13,18 @@ Pub/Sub and Cloud Storage. The idea is as follows:
 
 ![Architecture](architecture.png)
 
-1. Deploy a `callback-event-listener` workflow that listens for events, checks
-   Firestore to see if any callbacks are registered for that event type and if
-   so, call those callbacks.
-1. Connect the `callback-event-listener` to events from a Pub/Sub topic and a Cloud
-   Storage bucket using Eventarc triggers.
-1. Deploy a `callback-event-sample` workflow that creates a callback and registers
-   the callback with an event source in Firestore and waits for an event.
-1. Generate an event (Pub/Sub message or a new file in a Cloud Storage bucket)
-   to see how `callback-event-sample` callback is called.
+1. A `callback-event-sample` workflow creates a callback for an event source
+   that it is interested in waiting events from.
+1. It stores the callback for the event source in a document in Firestore.
+1. It carries on with its workflow and at some point, starts waiting for an
+   event.
+1. In the meantime, `callback-event-listener` is waiting for events from a
+   Pub/Sub topic and a Cloud Storage bucket with Eventarc.
+1. At some point, Eventarc receives an event and passes on the event listener.
+1. Finds the document for the event source in Firestore.
+1. Calls back all the callback URLs registered with that event source.
+1. `callback-event-sample` workflow receives the event and stops waiting.
+1. It deletes the callback url from Firestore and continues with its workflow.
 
 ## Before you begin
 
