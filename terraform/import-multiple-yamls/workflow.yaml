@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# A workflow that calls a subworkflow in a different file. Both this file and
+# the subworkflow file is imported from a Terraform configuration file.
 main:
     steps:
         - call_subworkflow:
@@ -27,4 +29,7 @@ main:
                 last_name: "Lovelace"
             result: output2
         - return_message:
+            # Using the double Terraform escape sequence $${} as Terraform and
+            # Worfklows uses the same ${} syntax for variables.
             return: $${output + output2}
+
