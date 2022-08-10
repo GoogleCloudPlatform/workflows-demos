@@ -56,6 +56,7 @@ that explains Workflows.
   * [Batch - simple container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/busybox)
   * [Batch - prime number generator container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/primegen)
 * [Running BigQuery jobs against Wikipedia dataset with Workflows parallel iteration](bigquery-parallel)
+* [Git-driven development, testing & deployment](gitops)
 
 -------
 
