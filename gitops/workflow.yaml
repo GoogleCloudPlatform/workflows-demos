@@ -16,6 +16,6 @@ main:
   steps:
     - init:
         assign:
-          - message: "Bye World"
+          - message: "Hello World"
     - returnResult:
         return: ${message}
