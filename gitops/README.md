@@ -14,6 +14,8 @@ staging workflow, you merge changes from `staging` branch to `main` branch. This
 triggers the same Cloud Build to deploy a test production workflow, run more
 production tests and if all tests pass, deploy the production workflow.
 
+![Architecture](images/architecture.png)
+
 ### Details
 
 1. You have a workflow defined in [workflow.yaml](workflow.yaml) that simply
@@ -101,15 +103,15 @@ git push
 
 You should see the trigger running:
 
-![Trigger running](image1.png)
+![Trigger running](images/image1.png)
 
 After a few seconds, the build is successful too with its all stages:
 
-![Staging build details](image2.png)
+![Staging build details](images/image2.png)
 
 And a staging workflow has been deployed:
 
-![Workflows staging](image3.png)
+![Workflows staging](images/image3.png)
 
 ## Test production workflow
 
@@ -124,7 +126,7 @@ git push
 
 However, the build fails:
 
-![Production build details](image4.png)
+![Production build details](images/image4.png)
 
 This is because tests for production workflow in
 [test-main.sh](test-master.sh) is expecting to see `Hello World` as output of
@@ -144,4 +146,4 @@ Check in changes to `staging`, see the build succeed, merge to `main` and
 finally, you should also see the build to succeed and a production workflow has
 also been deployed alongside staging:
 
-![Workflows production](image5.png)
+![Workflows production](images/image5.png)
