@@ -315,10 +315,13 @@ main:
 - call_subworkflow:
     call: subworkflow_name_message
     args:
-      first_name: "Sherlock"
-      last_name: "Holmes"
+      first_name: "Ada"
+      last_name: "Lovelace"
     result: output
-
+- call_subworkflow2:
+    assign:
+      - output2: ${subworkflow_name_message("Sherlock","Holmes")}
+          
 subworkflow_name_message:
   params: [first_name, last_name, country: "England"]
   steps:
