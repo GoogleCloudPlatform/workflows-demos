@@ -1,0 +1,30 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A Cloud Build config that replaces the URLs in a workflow definition file
+# before deploying it.
+
+steps:
+- id: 'replace-urls'
+  name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      sed -i -e "s~REPLACE_url1~$_URL1~" workflow2.yaml
+      sed -i -e "s~REPLACE_url2~$_URL2~" workflow2.yaml
+- id: 'deploy-workflow'
+  name: 'gcr.io/cloud-builders/gcloud'
+  args: ['workflows', 'deploy', 'multi-environment2-$_ENV', '--source', 'workflow2.yaml']
+
