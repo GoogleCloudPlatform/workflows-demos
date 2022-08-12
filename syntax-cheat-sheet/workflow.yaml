@@ -200,9 +200,12 @@ main:
     - call_subworkflow:
         call: subworkflow_name_message
         args:
-            first_name: "Sherlock"
-            last_name: "Holmes"
+            first_name: "Ada"
+            last_name: "Lovelace"
         result: output
+    - call_subworkflow2:
+        assign:
+          - output2: ${subworkflow_name_message("Sherlock","Holmes")}
     # Raise errors
     - raise_custom_string_error:
         raise: "Something went wrong."
