@@ -11,6 +11,8 @@ We'll explore 2 different ways of replacing URLs.
 
 ## Option 1: Use URLs as runtime arguments
 
+![Option 1](images/image1.png)
+
 In the first option, you define URLs as runtime arguments and use them whenever
 you need to call a service:
 
@@ -43,6 +45,8 @@ gcloud workflows run multi-env1 --data='{"urls":{"url1": "https://us-central1-pr
 ```
 
 ## Option 2: Use Cloud Build to deploy multiple versions
+
+![Option 2](images/image2.png)
 
 In the second option, you can use Cloud Build to deploy multiple versions of the
 workflow with the appropriate `staging` and `prod` URLs replaced at
