@@ -6,7 +6,7 @@ resource to deploy a Workflow from a main workflow YAML file.
 ## Terraform
 
 You can see [main.tf](main.tf) for Terraform and
-[workflows.yaml](workflows.yaml] for Workflows definitions.
+[workflows.yaml](workflows.yaml) for Workflows definitions.
 
 1. Initialize terraform:
 

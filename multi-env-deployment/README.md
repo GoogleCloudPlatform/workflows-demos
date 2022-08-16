@@ -7,7 +7,7 @@ As a concrete example, instead of hardcoding the URLs called from the workflow,
 we show you how to replace the URLs with `staging` and `prod` URLs depending on
 where the workflow is being deployed.
 
-We'll explore 2 different ways of replacing URLs.
+We'll explore 3 different ways of replacing URLs.
 
 ## Option 1: Use URLs as runtime arguments
 
@@ -102,6 +102,81 @@ gcloud workflows run multi-env2-staging
 gcloud workflows run multi-env2-prod
 ```
 
+## Option 3: Use Terraform to deploy multiple versions
+
+![Option 2](images/image3.png)
+
+In the third option, you can use Terraform to deploy multiple versions of the
+workflow with the appropriate `staging` and `prod` URLs replaced at
+deployment time.
+
+Define [workflow3.yaml](workflow3.yaml) that has placeholder values for URLs:
+
+```yaml
+main:
+  steps:
+    - init:
+        assign:
+          - url1: ${url1}
+          - url2: ${url2}
+```
+
+Define [main.tf](main.tf) that creates `staging` and `prod` workflows:
+
+```terraform
+variable "project_id" {
+  type = string
+}
+
+variable "url1" {
+  type = string
+}
+
+variable "url2" {
+  type = string
+}
+
+locals {
+  env = ["staging", "prod"]
+}
+
+# Define and deploy staging and prod workflows
+resource "google_workflows_workflow" "multi-env3-workflows" {
+  for_each = toset(local.env)
+
+  name            = "multi-env3-${each.key}"
+  project         = var.project_id
+  region          = "us-central1"
+  source_contents = templatefile("${path.module}/workflow3.yaml", { url1 : "${var.url1}-${each.key}", url2 : "${var.url2}-${each.key}" })
+}
+```
+
+Initialize Terraform:
+
+```sh
+terraform init
+```
+
+See planned changes:
+
+```sh
+terraform plan -var="project_id=YOUR-PROJECT-ID" -var="url1=https://us-central1-projectid.cloudfunctions.net/func1" -var="url2=https://us-central1-projectid.cloudfunctions.net/func2"
+```
+
+Deploy the workflow in the `staging` environment with `staging` URLs and `prod`
+environment with `prod` URLs:
+
+```sh
+terraform apply -var="project_id=YOUR-PROJECT-ID" -var="url1=https://us-central1-projectid.cloudfunctions.net/func1" -var="url2=https://us-central1-projectid.cloudfunctions.net/func2"
+```
+
+Now, we have 2 workflows ready to run in `staging` and `prod` environments:
+
+```sh
+gcloud workflows run multi-env3-staging
+gcloud workflows run multi-env3-prod
+```
+
 ## Pros and cons
 
 **Option1** is a simpler setup (a single workflow deployment) but a more complicated
@@ -113,3 +188,5 @@ workflow.
 **Option2** is a more complicated setup with multiple workflow deployments with
 Cloud Build. However, the workflow contains the URLs being called and that
 results in a simpler execution.
+
+**Option3** is pretty much the same as Option 2 but for Terraform users.
