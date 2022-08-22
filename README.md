@@ -34,7 +34,7 @@ that explains Workflows.
   * [Workflows and Eventarc (Pub/Sub)](workflows-eventarc-integration/workflows-pubsub)
   * [Image processing pipeline v2 - Eventarc (Cloud Storage) + Cloud Run + Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/tree/main/processing-pipelines/image-v2)
   * [Image processing pipeline v3 - Eventarc (Cloud Storage) + Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/tree/main/processing-pipelines/image-v3)
-  * [Event payload storer](event-payload-storer)
+  * [Event payload storer](workflows-eventarc-integration/event-payload-storer)
 * Terraform samples
   * [Basic Terraform](terraform/basic)
   * [Terraform with imported YAML](terraform/import-yaml)
