@@ -6,8 +6,9 @@ field of the event) to a Cloud Storage bucket.
 ## Setup
 
 Run [setup.sh](setup.sh) to enable required services, deploy the
-event-payload-storer workflow defined in [workflow.yaml](workflow.yaml) and
-create a bucket for the workflow to save event payloads to.
+event-payload-storer workflow defined in
+[event-payload-storer.yaml](workevent-payload-storerflow.yaml) and create a
+bucket for the workflow to save event payloads to.
 
 ## Test events from Pub/Sub
 
