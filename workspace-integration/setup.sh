@@ -16,10 +16,6 @@
 
 REGION=us-central1
 
-echo "Get the project id and number"
-PROJECT_ID=$(gcloud config get-value project)
-PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
-
 echo "Enable required services"
 gcloud services enable \
   compute.googleapis.com \
