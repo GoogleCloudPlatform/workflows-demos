@@ -60,6 +60,7 @@ that explains Workflows.
 * Workflows lifecycle
   * [Git-driven development, testing & deployment](gitops)
   * [Multi-environment deployment](multi-env-deployment)
+* [Google Workspace and Workflows integration](workspace-integration)
 
 -------
 
