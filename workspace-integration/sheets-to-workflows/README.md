@@ -1,14 +1,13 @@
-# Google Workspace and Workflows integration
+# Triggering Workflows from Google Sheets
 
-In this sample, we show you how to use [Google
-Workspace](https://workspace.google.com/) as a frontend for Workflows.
+In this sample, we show you how to trigger Workflows from Google Sheets.
 
 More specifically:
 
 1. A Google Form captures the Virtual Machine (VM) creation requests.
 1. A Google Sheet saves the responses from the Google Form with an
    approved checkbox.
-1. When the approved checkbox is enabled by a human, an App Script calls a
+1. When the approved checkbox is selected, an App Script calls a
    workflow with the supplied VM parameters from the form.
 1. The workflow calls the Compute Engine API to create the VM for the user.
 
@@ -93,3 +92,7 @@ And finally, in Compute Engine console, you can see that a new VM is being
 created:
 
 ![Compute Engine console](images/image7.png)
+
+From now on, whenever a user fills the form, you’ll see a new entry to the
+Google Sheet. When you approve it by selecting the `Approved` checkbox, the VM
+will be created automatically by Workflows!

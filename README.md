@@ -60,8 +60,8 @@ that explains Workflows.
 * Workflows lifecycle
   * [Git-driven development, testing & deployment](gitops)
   * [Multi-environment deployment](multi-env-deployment)
-* Google Workspace and Workflows integration
-  * [Triggering Workflows executions from Google Workspace](workspace-integration/trigger-workflows-from-workspace)
+* Google Workspace and Workflows
+  * [Triggering Workflows from Google Sheets](workspace-integration/sheets-to-workflows)
 
 -------
 
