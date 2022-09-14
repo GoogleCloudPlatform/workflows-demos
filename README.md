@@ -62,6 +62,7 @@ that explains Workflows.
   * [Multi-environment deployment](multi-env-deployment)
 * Google Workspace and Workflows
   * [Triggering Workflows from Google Sheets](workspace-integration/sheets-to-workflows)
+  * [Writing to Google Sheets from Workflows](workspace-integration/workflows-to-sheets)
 
 -------
 
