@@ -3,6 +3,8 @@
 This samples shows how a workflow can query top names from a public dataset in
 BigQuery and writes the results to a Google Sheets spreadsheet.
 
+![Architecture](images/image0.png)
+
 ## Create a spreadsheet in Google Sheets
 
 First, create a spreadsheet in Google Sheets that the workflow will write results to.
