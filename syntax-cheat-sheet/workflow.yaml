@@ -26,7 +26,7 @@ main:
         assign:
           - my_integer: 1      # 64 bit, signed
           - my_double: 4.1     # 64 bit, signed floating point number
-          - my_string: "hello" # unicode <= 64kB length
+          - my_string: "hello" # unicode <= 256 KB length
           - my_boolean: true   # true/false, True/False, TRUE/FALSE
           - my_null: null
           - my_list: ["zero","one","two"]
