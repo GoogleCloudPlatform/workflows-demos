@@ -146,7 +146,7 @@ gcloud config set project $PROJECT_ID
 Run [setup.sh](setup.sh) to enable required services, and deploy the workflow
 defined in [workflow.yaml](workflow.yaml) with the default compute service account.
 
-## Run the worfklow
+## Run the workflow
 
 You're now ready to test the workflow.
 

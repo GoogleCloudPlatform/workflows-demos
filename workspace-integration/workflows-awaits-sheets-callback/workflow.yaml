@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This workflow can be used as a template to:
-# 1. Run some initial steps.
-# 2. Create a callback to wait for an approval from a human for the rest of the steps.
-# 3. Have the human send his/her approval via a Google Sheets spreadsheet.
-# 4. Run the rest of the steps.
+# This is an example to show how to have a workflow wait for human approval from
+# Google Sheets:
+#
+# 1. A workflow runs some initial steps.
+# 2. The workflow creates a callback, saves the callback info to a Google Sheets
+#    spreadsheet, and starts to wait for an approval from a human for the rest of
+#    the steps.
+# 3. A human sends his/her approval via the Google Sheets spreadsheet.
+# 4. The workflow receives the approval and runs the rest of the steps.
 
 main:
   steps:

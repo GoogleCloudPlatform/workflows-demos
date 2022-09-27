@@ -63,6 +63,7 @@ that explains Workflows.
 * Google Workspace and Workflows
   * [Triggering Workflows from Google Sheets](workspace-integration/sheets-to-workflows)
   * [Writing to Google Sheets from Workflows](workspace-integration/workflows-to-sheets)
+  * [Workflows waits for human approval from Google Sheets](workspace-integration/workflows-awaits-sheets-callback)
 
 -------
 
