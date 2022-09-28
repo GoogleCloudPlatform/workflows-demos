@@ -1,4 +1,4 @@
-# Workflows waits for human approval from Google Sheets
+# Workflows that pause and wait for human approvals from Google Sheets
 
 In this sample, we show you how to have a workflow wait for human approval from
 Google Sheets.
@@ -47,7 +47,7 @@ Create an Apps Script to watch for the `Approved` column.
 
 Go to `Extensions` and `Apps Script` in the spreadsheet. This opens up the App
 Script editor. Replace the default code in `Code.gs` with the code in
-[Code.gs](Code.gs) and press `Save` button.
+[Code.gs](Code.gs) and press the `Save` button.
 
 This code watches for changes for the `Approved` column. When
 it's set to `TRUE`, calls back workflow's callback URL with the approver
@@ -208,7 +208,7 @@ Now, add an approver name/email and change `Approved` colum to `TRUE`:
 
 ![Approval spreadsheet with approved true](images/image5.png)
 
-You should see the workflow is not succeeded:
+You should see the workflow is now succeeded:
 
 ![Workflow in succeeded state](images/image6.png)
 
