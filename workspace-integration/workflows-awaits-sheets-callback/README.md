@@ -47,7 +47,7 @@ Create an Apps Script to watch for the `Approved` column.
 
 Go to `Extensions` and `Apps Script` in the spreadsheet. This opens up the App
 Script editor. Replace the default code in `Code.gs` with the code in
-[Code.gs](Code.gs).
+[Code.gs](Code.gs) and press `Save` button.
 
 This code watches for changes for the `Approved` column. When
 it's set to `TRUE`, calls back workflow's callback URL with the approver

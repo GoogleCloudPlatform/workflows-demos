@@ -19,6 +19,7 @@ REGION=us-central1
 echo "Enable required services"
 gcloud services enable \
   compute.googleapis.com \
+  sheets.googleapis.com \
   workflows.googleapis.com
 
 WORKFLOW_NAME=read-bigquery-write-sheets

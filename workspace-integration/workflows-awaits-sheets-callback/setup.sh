@@ -17,6 +17,7 @@
 echo "Enable required services"
 gcloud services enable \
   compute.googleapis.com \
+  sheets.googleapis.com \
   workflows.googleapis.com
 
 WORKFLOW_NAME=workflows-awaits-callback-sheets

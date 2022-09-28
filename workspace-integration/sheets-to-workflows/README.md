@@ -45,8 +45,8 @@ Create an Apps Script to watch for the `Approved` checkbox.
 Go to `Extensions` and `Apps Script` in the spreadsheet. This opens up the App
 Script editor. Replace the default code in `Code.gs` with the code in
 [Code.gs](Code.gs). Make sure you replace the `PROJECT_ID` with your own project
-id. This code watches for changes for the checkbox in the approved column. When
-it's checked, calls a workflow to create the VM.
+id and press `Save` button. This code watches for changes for the checkbox in the
+approved column. When it's checked, calls a workflow to create the VM.
 
 In App Script editor, go to `Settings` and check `Show appsscript.json manifest
 file in editor`. Replace the contents of `appscript.json` with
