@@ -5,40 +5,9 @@ Build.
 
 ## Create a workflow
 
-Create a [workflow.yaml](workflow.yaml):
-
-```yaml
-main:
-  steps:
-  - list_workflows:
-      call: gcloud
-      args:
-          args: "workflows list"
-      result: r
-  - done:
-      return: ${r}
-
-gcloud:
-  params: [args]
-  steps:
-  - gcloud:
-      call: googleapis.cloudbuild.v1.projects.builds.create
-      args:
-          projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-          parent: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
-          body:
-              serviceAccount: ${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
-              options:
-                  logging: CLOUD_LOGGING_ONLY
-              steps:
-              - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-                entrypoint: /bin/bash
-                # TODO: Should use $BUILDER_OUTPUT for "/builder/ouputs", but couldn't get substitution to work
-                args: ${["-c", "gcloud " + args + " > /builder/outputs/output"]}
-      result: r
-  - return:
-      return: ${text.decode(base64.decode(r.metadata.build.results.buildStepOutputs[0]))}
-```
+Create a [workflow.yaml](workflow.yaml) with a `gcloud` sub-workflow that
+executes a given `gcloud` command using Cloud Build and returns the output of
+`gcloud` command.
 
 ## Deploy the workflow
 
@@ -54,10 +23,22 @@ deploy the workflow defined in [workflow.yaml](workflow.yaml).
 
 ## Run the workflow
 
-You're now ready to test the end-to-end flow.
-
 Run the workflow from Google Cloud Console or `gcloud`:
 
 ```sh
 gcloud workflows run workflows-executes-gcloud
+```
+
+You should see a new build successfully running `gcloud` in Cloud Build:
+
+![Build in Cloud Build](images/image0.png)
+
+You should also see the output of the `gcloud` command when the workflow
+succeeds:
+
+```log
+result:
+'["NAME                                                                                        STATE   REVISION_ID  UPDATE_TIME",
+  "projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflows-executes-gcloud  ACTIVE  000021-e33   2022-10-03T14:59:56.375932228Z",
+""]'
 ```
