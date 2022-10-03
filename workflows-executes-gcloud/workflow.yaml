@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This example shows how to execute gcloud commands from Workflows via Cloud Build
+# This example shows how to execute gcloud commands from Workflows via Cloud
+# Build and return the output
 
 main:
   steps:
@@ -20,9 +21,9 @@ main:
       call: gcloud
       args:
           args: "workflows list"
-      result: r
-  - done:
-      return: ${r}
+      result: result_list_workflows
+  - return_list_workflows_result:
+      return: ${result_list_workflows}
 
 gcloud:
   params: [args]
@@ -30,17 +31,16 @@ gcloud:
   - gcloud:
       call: googleapis.cloudbuild.v1.projects.builds.create
       args:
-          projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
-          parent: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
-          body:
-              serviceAccount: ${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
-              options:
-                  logging: CLOUD_LOGGING_ONLY
-              steps:
-              - name: gcr.io/google.com/cloudsdktool/cloud-sdk
-                entrypoint: /bin/bash
-                # TODO: Should use $BUILDER_OUTPUT for "/builder/ouputs", but couldn't get substitution to work
-                args: ${["-c", "gcloud " + args + " > /builder/outputs/output"]}
-      result: r
-  - return:
-      return: ${text.decode(base64.decode(r.metadata.build.results.buildStepOutputs[0]))}
+        projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+        parent: ${"projects/" + sys.get_env("GOOGLE_CLOUD_PROJECT_ID") + "/locations/global"}
+        body:
+          serviceAccount: ${sys.get_env("GOOGLE_CLOUD_SERVICE_ACCOUNT_NAME")}
+          options:
+            logging: CLOUD_LOGGING_ONLY
+          steps:
+          - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+            entrypoint: /bin/bash
+            args: ${["-c", "gcloud " + args + " > $$BUILDER_OUTPUT/output"]}
+      result: result_builds_create
+  - return_gcloud_result:
+      return: ${text.split(text.decode(base64.decode(result_builds_create.metadata.build.results.buildStepOutputs[0])), "\n")}
