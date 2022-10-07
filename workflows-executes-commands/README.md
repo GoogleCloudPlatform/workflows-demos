@@ -45,7 +45,10 @@ You should also see the output of the `gcloud` command when the workflow
 succeeds:
 
 ```log
-result: '["NAME                                                                                        STATE   REVISION_ID  UPDATE_TIME","projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflows-executes-gcloud  ACTIVE  000021-e33   2022-10-03T14:59:56.375932228Z","projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflow-gcloud            ACTIVE  000001-7fa   2022-10-07T09:26:27.470230358Z","projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflow-kubectl           ACTIVE  000001-215   2022-10-07T09:26:32.511757767Z",""]'
+result: '["NAME                                                                                        STATE   REVISION_ID  UPDATE_TIME",
+"projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflow-gcloud            ACTIVE  000001-7fa   2022-10-07T09:26:27.470230358Z",
+"projects/atamel-workflows-gcloud/locations/us-central1/workflows/workflow-kubectl           ACTIVE  000001-215   2022-10-07T09:26:32.511757767Z",
+""]'
 ```
 
 ## Run the workflow for kubectl
