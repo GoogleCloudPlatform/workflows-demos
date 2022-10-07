@@ -29,7 +29,12 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member=serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
     --role=roles/cloudbuild.builds.editor
 
-WORKFLOW_NAME=workflows-executes-gcloud
+WORKFLOW_NAME=workflow-gcloud
 echo "Deploy the workflow: $WORKFLOW_NAME"
 gcloud workflows deploy $WORKFLOW_NAME \
-    --source=workflow.yaml
+    --source=$WORKFLOW_NAME.yaml
+
+WORKFLOW_NAME=workflow-kubectl
+echo "Deploy the workflow: $WORKFLOW_NAME"
+gcloud workflows deploy $WORKFLOW_NAME \
+    --source=$WORKFLOW_NAME.yaml

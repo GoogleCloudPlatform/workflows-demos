@@ -64,7 +64,7 @@ that explains Workflows.
   * [Triggering Workflows from Google Sheets](workspace-integration/sheets-to-workflows)
   * [Writing to Google Sheets from Workflows](workspace-integration/workflows-to-sheets)
   * [Workflows that pause and wait for human approvals from Google Sheets](workspace-integration/workflows-awaits-sheets-callback)
-* [Workflows executes gcloud commands](workflows-executes-gcloud)
+* [Workflows executes commands (gcloud, kubectl)](workflows-executes-commands)
 
 -------
 

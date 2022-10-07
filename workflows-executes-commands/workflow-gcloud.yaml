@@ -17,18 +17,18 @@
 
 main:
   steps:
-  - list_workflows:
+  - execute_command:
       call: gcloud
       args:
           args: "workflows list"
-      result: result_list_workflows
-  - return_list_workflows_result:
-      return: ${result_list_workflows}
+      result: result
+  - return_result:
+      return: ${result}
 
 gcloud:
   params: [args]
   steps:
-  - gcloud:
+  - create_build:
       call: googleapis.cloudbuild.v1.projects.builds.create
       args:
         projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
@@ -42,5 +42,5 @@ gcloud:
             entrypoint: /bin/bash
             args: ${["-c", "gcloud " + args + " > $$BUILDER_OUTPUT/output"]}
       result: result_builds_create
-  - return_gcloud_result:
+  - return_build_result:
       return: ${text.split(text.decode(base64.decode(result_builds_create.metadata.build.results.buildStepOutputs[0])), "\n")}
