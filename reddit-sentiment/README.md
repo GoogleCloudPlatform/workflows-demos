@@ -11,7 +11,7 @@ Reddit has an API to get top posts in a subreddit. Here's an example to get top
 4 posts in `googlecloud` subreddit:
 
 ```sh
-curl -X GET https://www.reddit.com/r/googlecloud/top.json?t=day&limit=4
+curl -X GET https://www.reddit.com/r/googlecloud/top.json?t=month&count=4&limit=100
 ```
 
 You will use this API to fetch top posts in a subreddit.
@@ -59,7 +59,7 @@ main:
     - init:
         assign:
           - subreddit: ${args.subreddit}
-          - limit: ${args.limit}
+          - count: ${args.count}
           - totalScore: 0
 ```
 
@@ -69,7 +69,7 @@ In the second step, fetch top posts using the Reddit API:
     - getTopPosts:
         call: http.get
         args:
-          url: ${"https://www.reddit.com/r/" + subreddit + "/top.json?t=day&limit=" + limit}
+          url: ${"https://www.reddit.com/r/" + subreddit + "/top.json?t=month&count=" + limit + "&limit=" + limit}
         result: topPostsResult
 ```
 
@@ -129,7 +129,7 @@ Execute workflow:
 
 ```sh
 gcloud workflows execute reddit-sentiment \
-    --data='{"subreddit":"googlecloud","limit":"4"}'
+    --data='{"subreddit":"googlecloud","count":"4"}'
 ```
 
 After a couple of seconds, you should see the see the average sentiment under `result`:
@@ -137,7 +137,7 @@ After a couple of seconds, you should see the see the average sentiment under `r
 ```sh
 gcloud workflows executions describe bcf52313-4ce9-4c4f-9b5e-2f461223923f --workflow reddit-sentiment --location us-central1
 
-argument: '{"limit":"4","subreddit":"googlecloud"}'
+argument: '{"count":"4","subreddit":"googlecloud"}'
 endTime: '2021-05-27T13:46:52.402307280Z'
 name: projects/1011272509317/locations/us-central1/workflows/reddit-sentiment/executions/bcf52313-4ce9-4c4f-9b5e-2f461223923f
 result: '-0.25'

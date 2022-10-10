@@ -4,16 +4,14 @@ main:
     - init:
         assign:
           - subreddit: ${args.subreddit}
-          # Set limit to low to avoid ResourceLimit issues
-          - limit: ${args.limit}
+          - count: ${args.count}
           - totalScore: 0
     - getTopPosts:
         call: http.get
         args:
-          url: ${"https://www.reddit.com/r/" + subreddit + "/top.json?t=day&limit=" + limit}
+          url: ${"https://www.reddit.com/r/" + subreddit + "/top.json?t=month&count=" + count + "&limit=100"}
         result: topPostsResult
     - processPosts:
-        # for-in syntax is currently in private preview
         for:
           value: post
           in: ${topPostsResult.body.data.children}
