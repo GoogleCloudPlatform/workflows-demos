@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# [START workflows_build_config]
 steps:
 # Deploy the test workflow with the commit sha
 - id: 'deploy-test-workflow'
@@ -39,3 +39,5 @@ steps:
 - id: 'deploy-workflow'
   name: 'gcr.io/cloud-builders/gcloud'
   args: ['workflows', 'deploy', '$_WORKFLOW_NAME-$BRANCH_NAME', '--source', 'gitops/workflow.yaml']
+# [END workflows_build_config]
+  

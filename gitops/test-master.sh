@@ -37,6 +37,7 @@ else
 fi
 
 # Check result
+# [START workflows_build_main_test]
 RESULT_EXPECTED="result: '\"Hello World\"'"
 RESULT_ACTUAL=$(grep "result: " $FILE)
 if [[ $RESULT_EXPECTED == $RESULT_ACTUAL ]]; then
@@ -44,3 +45,5 @@ if [[ $RESULT_EXPECTED == $RESULT_ACTUAL ]]; then
 else
   echo "Result test failed. Expected: $RESULT_EXPECTED Actual: $RESULT_ACTUAL"; exit 1;
 fi
+# [END workflows_build_main_test]
+
