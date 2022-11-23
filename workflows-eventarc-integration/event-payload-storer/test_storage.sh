@@ -27,6 +27,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SERVICE_ACCOUNT_STORAGE \
     --role roles/pubsub.publisher
 
+echo "Grant eventarc.eventReceiver role to service account: $SERVICE_ACCOUNT, needed for Cloud Storage trigger"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
+  --role roles/eventarc.eventReceiver
+
 echo "Create a Cloud Storage bucket"
 BUCKET=$PROJECT_ID-bucket
 gsutil mb -l $REGION gs://$BUCKET
