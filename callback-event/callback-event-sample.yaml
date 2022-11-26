@@ -68,12 +68,12 @@ await_callback_event:
                     call: sys.log
                     args:
                       severity: INFO
-                      data: ${"Started waiting for an event from source " + event_source}
+                      data: ${"Started waiting 1hr for an event from source " + event_source}
                 - await_callback:
                     call: events.await_callback
                     args:
                       callback: ${callback_details}
-                      timeout: 10
+                      timeout: 3600
                     result: callback_request
                 - log_await_stop:
                     call: sys.log
