@@ -55,6 +55,10 @@ gcloud iam service-accounts create $SERVICE_ACCOUNT \
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
+  --role roles/eventarc.eventReceiver
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member serviceAccount:$SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
   --role roles/workflows.invoker
 
 echo "Grant the pubsub.publisher role to the Cloud Storage service account needed for Eventarc's Cloud Storage trigger"
@@ -75,7 +79,7 @@ gcloud eventarc triggers create trigger-pubsub-events-listener \
 
 echo "Create an Eventarc trigger to listen for events from the Cloud Storage bucket and route to callback-event-listener"
 gcloud eventarc triggers create trigger-storage-events-listener \
-  --location=us-central1 \
+  --location=$REGION \
   --destination-workflow=$WORKFLOW_NAME \
   --destination-workflow-location=$REGION \
   --event-filters="type=google.cloud.storage.object.v1.finalized" \
