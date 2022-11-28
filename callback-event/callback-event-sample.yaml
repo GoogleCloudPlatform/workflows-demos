@@ -15,7 +15,7 @@
 # A sample workflow to wait for an event from a a Pub/Sub topic and a Cloud
 # Storage bucket by creating a callback, storing it to Firestore, waiting for
 # the callback and deleting it from Firestore.
-
+# [START workflows_callback_event_sample]
 main:
   steps:
     - init:
@@ -105,3 +105,4 @@ await_callback_event:
               data: ${callback_request.http_request.body.event}
         - return_event:
             return: ${callback_request.http_request.body.event}
+# [END workflows_callback_event_sample]
