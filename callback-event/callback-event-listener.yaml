@@ -15,7 +15,7 @@
 # Callback event listener listens for events from Eventarc, checks if Firestore
 # has registered callbacks for the event source and if so, calls those callbacks
 # with the event
-
+# [START workflows_callback_listener]
 main:
   params: [event]
   steps:
@@ -75,3 +75,4 @@ main:
                                   type: OAuth2
                               body:
                                   event: ${event}
+# [END workflows_callback_listener]
