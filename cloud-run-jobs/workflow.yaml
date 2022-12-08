@@ -1,0 +1,26 @@
+main:
+    params: [event]
+    steps:
+        - init:
+            assign:
+                - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                - event_bucket: ${event.data.bucket}
+                - event_object: ${event.data.name}
+                - target_bucket: ${"input-" + project_id}
+                - target_object: input_file.txt
+                - job_name: parallel-job
+                - job_location: us-central1
+        - check_input_object:
+            switch:
+                - condition: ${(event_bucket == target_bucket) and (event_object == target_object)}
+                  next: run_job
+                - condition: true
+                  next: end
+        - run_job:
+            call: googleapis.run.v1.namespaces.jobs.run
+            args:
+                name: ${"namespaces/" + project_id + "/jobs/" + job_name}
+                location: ${job_location}
+            result: job_execution
+        - finish:
+            return: ${job_execution}
