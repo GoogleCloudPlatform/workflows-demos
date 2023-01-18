@@ -156,10 +156,11 @@ main:
       - map_len: ${len(my_map)}
       - key_exists: ${"Key1" in my_map}
       - key_list: ${keys(my_map)}
-      - key_is_null: ${default(map.get(my_map, "Key1"), "Key not found.")}
+      - key_is_null: ${default(map.get(my_map, "Key1"), "Couldn't find key!")}
+      - key_with_special_char: '${"foo" + var.key["special!key"]}'
+      - key_str: "Key"
       - my_map.Key1: "Value1"
       - my_map["Key2"]: "Value2"
-      - key_str: "Key"
       - my_map[key_str + "3"]: "Value3"
       - my_nested_map: {"NestedMapKey": {"Key1":"Value1"}}
       - my_nested_map.NestedMapKey.Key2: "Value2"
