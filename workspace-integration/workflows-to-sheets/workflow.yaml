@@ -15,7 +15,7 @@
 # This workflow queries top names from a public dataset in BigQuery
 # and writes the results to a Google Sheets spreadsheet.
 
-# [START workflows_bigquery_sheets]
+# [START workflows_sheets_bigquery]
 main:
     steps:
     - init:
@@ -71,4 +71,4 @@ main:
         result: updateResult
     - returnResult:
         return: ${updateResult}
-# [END workflows_bigquery_sheets]
+# [END workflows_sheets_bigquery]
