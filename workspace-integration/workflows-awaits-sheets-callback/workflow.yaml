@@ -22,6 +22,7 @@
 # 3. A human sends his/her approval via the Google Sheets spreadsheet.
 # 4. The workflow receives the approval and runs the rest of the steps.
 
+# [START workflows_sheets_callbacks]
 main:
   steps:
     - init:
@@ -109,3 +110,4 @@ await_callback_sheets:
               data: ${"Approved by " + callback_request.http_request.body.approver}
         - return_await_result:
             return: ${callback_request.http_request.body}
+# [END workflows_sheets_callbacks]
