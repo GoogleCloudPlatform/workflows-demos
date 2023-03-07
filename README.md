@@ -67,6 +67,7 @@ that explains Workflows.
   * [Workflows that pause and wait for human approvals from Google Sheets](workspace-integration/workflows-awaits-sheets-callback)
 * Workflows executes commands (gcloud, kubectl)
   * [Workflows executes commands (gcloud, kubectl) - using Cloud Build API](workflows-executes-commands/using-cloudbuild-api/)
+  * [Workflows executes commands (gcloud, kubectl) - using standard library](workflows-executes-commands/using-standard-library/)
 
 -------
 

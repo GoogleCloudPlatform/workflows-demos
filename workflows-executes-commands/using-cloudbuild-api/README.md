@@ -1,5 +1,9 @@
 # Workflows executes commands (gcloud, kubectl) - using Cloud Build API
 
+> **Note:** There's a [newer version](../using-standard-library/) of this sample
+> that uses standard library for gcloud and kubectl instead of using Cloud Build
+> API directly.
+
 This example shows how to execute commands (such as gcluod, kubectl) from
 Workflows via Cloud Build.
 
