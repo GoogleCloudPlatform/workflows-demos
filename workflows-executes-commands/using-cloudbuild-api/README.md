@@ -1,4 +1,4 @@
-# Workflows executes commands (gcloud, kubectl)
+# Workflows executes commands (gcloud, kubectl) - using Cloud Build API
 
 This example shows how to execute commands (such as gcluod, kubectl) from
 Workflows via Cloud Build.
