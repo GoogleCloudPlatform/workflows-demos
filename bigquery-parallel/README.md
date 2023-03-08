@@ -1,7 +1,5 @@
 # Running BigQuery jobs against Wikipedia dataset with Workflows parallel iteration
 
-> **Note:** Parallel steps/iteration is a feature in *preview*.
-
 In this sample, you will see how to use parallel
 [iteration](https://cloud.google.com/workflows/docs/reference/syntax/iteration)
 to run BigQuery jobs against Wikipedia dataset in parallel.
@@ -163,4 +161,4 @@ Run the workflow:
 gcloud workflows run bigquery-serial
 ```
 
-This should take about 1 minute (5 x 20 seconds).
+This should take about 100 seconds (5 x 20 seconds).
