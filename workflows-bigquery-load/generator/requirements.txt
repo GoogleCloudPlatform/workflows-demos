@@ -1,0 +1,4 @@
+wheel
+avro-python3
+StringGenerator
+google-cloud-storage
