@@ -56,7 +56,7 @@ await_callback_event:
             args:
               name: ${doc_name}
               updateMask:
-                fieldPaths: [${firestore_key}]
+                fieldPaths: ["${firestore_key}"]
               body:
                 fields:
                   ${firestore_key}:
@@ -93,7 +93,7 @@ await_callback_event:
             args:
               name: ${doc_name}
               updateMask:
-                fieldPaths: [${firestore_key}]
+                fieldPaths: ["${firestore_key}"]
         - check_null_event:
             switch:
               - condition: ${callback_request == null}
