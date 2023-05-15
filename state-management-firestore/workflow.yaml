@@ -93,7 +93,7 @@ firestore_put:
             args:
                 name: ${doc_name}
                 updateMask:
-                    fieldPaths: [${key}]
+                    fieldPaths: ["${key}"]
                 body:
                     fields:
                         ${key}:
@@ -113,7 +113,7 @@ firestore_get:
             args:
                 name: ${doc_name}
                 mask:
-                    fieldPaths: [${key}]
+                    fieldPaths: ["${key}"]
             result: getResult
         - return_value:
             switch:
