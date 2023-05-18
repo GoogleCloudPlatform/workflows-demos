@@ -37,6 +37,7 @@ resource "google_workflows_workflow" "workflows_example" {
   name            = "sample-workflow"
   region          = "us-central1"
   description     = "A sample workflow"
+  crypto_key_name = "projects/PROJECT_NAME/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"
   service_account = google_service_account.workflows_service_account.id
   source_contents = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
