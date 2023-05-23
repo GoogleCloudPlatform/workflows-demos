@@ -46,7 +46,7 @@ resource "google_workflows_workflow" "workflows_example" {
   # - reads current time and date information from an external API and stores
   #   the response in currentTime variable
   # - retrieves a list of Wikipedia articles related to the day of the week
-  #   from CurrentDateTime
+  #   from currentTime
   # - returns the list of articles as an output of the workflow
   # FYI, In terraform you need to escape the $$ or it will cause errors.
 
