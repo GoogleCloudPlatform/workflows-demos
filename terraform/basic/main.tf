@@ -53,7 +53,7 @@ resource "google_workflows_workflow" "workflows_example" {
   - getCurrentTime:
       call: http.get
       args:
-          url: https://us-central1-workflowsample.cloudfunctions.net/datetime
+          url: https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam
       result: CurrentDateTime
   - readWikipedia:
       call: http.get
@@ -61,10 +61,10 @@ resource "google_workflows_workflow" "workflows_example" {
           url: https://en.wikipedia.org/w/api.php
           query:
               action: opensearch
-              search: $${CurrentDateTime.body.dayOfTheWeek}
-      result: WikiResult
+              search: $${currentTime.body.dayOfWeek}
+      result: wikiResult
   - returnOutput:
-      return: $${WikiResult.body[1]}
+      return: $${wikiResult.body[1]}
 EOF
 
   depends_on = [google_project_service.workflows]
