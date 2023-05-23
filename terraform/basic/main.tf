@@ -44,7 +44,7 @@ resource "google_workflows_workflow" "workflows_example" {
   #
   # This workflow does the following:
   # - reads current time and date information from an external API and stores
-  #   the response in CurrentDateTime variable
+  #   the response in currentTime variable
   # - retrieves a list of Wikipedia articles related to the day of the week
   #   from CurrentDateTime
   # - returns the list of articles as an output of the workflow
@@ -54,7 +54,7 @@ resource "google_workflows_workflow" "workflows_example" {
       call: http.get
       args:
           url: https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam
-      result: CurrentDateTime
+      result: currentTime
   - readWikipedia:
       call: http.get
       args:
