@@ -14,7 +14,9 @@ Let's see how to set this up.
 First, let's create a child workflow in
 [workflow-child.yaml](./workflow-child.yaml).
 
-The child workflow receives an `iteration` argument from the parent workflow:
+The child workflow receives some args from the parent workflow. In this case,
+it's a simple `iteration` integer but in a real workflow, it'd be some data
+chunk passed from the parent workflow:
 
 ```yaml
 main:
@@ -25,7 +27,8 @@ main:
           - iteration : ${args.iteration}
 ```
 
-It waits 10 seconds to simulate doing some work:
+It does some work. In this case, it simply waits 10 seconds to simulate doing
+some work:
 
 ```yaml
     - wait:
@@ -34,8 +37,8 @@ It waits 10 seconds to simulate doing some work:
             seconds: 10
 ```
 
-Returns a result or failure depending on whether the `iteration` is even or odd to simulate success and
-failure cases:
+Returns the result or failure of the work. In this case, it just uses whether
+the `iteration` is even or odd to simulate success and failure:
 
 ```yaml
     - check_iteration_even_or_odd:
@@ -56,7 +59,7 @@ gcloud workflows deploy workflow-child --source=workflow-child.yaml
 
 ## Create and deploy a parent workflow
 
-First, let's create a parent workflow in
+Let's create a parent workflow in
 [workflow-parent.yaml](./workflow-parent.yaml).
 
 The parent workflow first creates a map to store the results of successful and
@@ -72,8 +75,9 @@ main:
           - execution_results.failure: {} # failed executions saved under 'failure' key
 ```
 
-It then starts a parallel for-loop to call the child workflow with iteration 1
-through 4 as arguments. Parallel works here as each iteration is independent:
+It then starts a parallel for-loop to call the child workflow with data chunks.
+In this case, it's simply passing integers 1 to 4 to simulate data. Parallel
+works here as we assume each iteration is independent:
 
 ```yaml
     - execute_child_workflows:
@@ -86,7 +90,7 @@ through 4 as arguments. Parallel works here as each iteration is independent:
                 - iterate:
 ```
 
-In each iteration, the child workflow is execution with `iteration` argument.
+In each iteration, the child workflow is executed with the `iteration` argument.
 The parent workflow waits for the the success or failure of the child workflow
 execution and captures the results/failures in the map:
 
