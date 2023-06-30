@@ -1,0 +1,18 @@
+# A child workflow that is meant to be called from a parent workflow with an
+# iteration argument.
+# For even numbers, it raises an error.
+# For odd numbers, it returns a message.
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - iteration : ${args.iteration}
+    - check_iteration_even_or_odd:
+        switch:
+          - condition: ${iteration % 2 == 0}
+            next: raise_error
+    - return_message:
+        return: ${"Hello world"+iteration}
+    - raise_error:
+        raise: ${"Error with iteration "+iteration}

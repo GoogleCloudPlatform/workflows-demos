@@ -1,0 +1,37 @@
+# A parent workflow that calls child workflows and saves the results or failures
+# in a map.
+main:
+  steps:
+    - init:
+        assign:
+          - execution_results: {} # results from each execution
+          - execution_results.success: {} # successful executions saved under 'success' key
+          - execution_results.failure: {} # failed executions saved under 'failure' key
+    - execute_child_workflows:
+        for:
+          value: iteration
+          in: [1, 2, 3, 4]
+          steps:
+              - iterate:
+                  try:
+                    steps:
+                      - execute_child_workflow:
+                          call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+                          args:
+                            workflow_id: workflow-child
+                            #location: ...
+                            #project_id: ...
+                            argument:
+                              iteration: ${iteration}
+                          result: execution_result
+                      - save_successful_execution:
+                          assign:
+                            - execution_results.success[string(iteration)]: ${execution_result}
+                  except:
+                      as: e
+                      steps:
+                        - save_failed_execution:
+                            assign:
+                              - execution_results.failure[string(iteration)]: ${e}
+    - return_execution_results:
+        return: ${execution_results}
