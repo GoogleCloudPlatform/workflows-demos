@@ -1,5 +1,6 @@
 # A child workflow that is meant to be called from a parent workflow with an
-# iteration argument.
+# iteration argument. The workflow simulates work by sleeping 10 seconds. 
+# Afterwards:
 # For even numbers, it raises an error.
 # For odd numbers, it returns a message.
 main:
@@ -8,6 +9,10 @@ main:
     - init:
         assign:
           - iteration : ${args.iteration}
+    - wait:
+        call: sys.sleep
+        args:
+            seconds: 10
     - check_iteration_even_or_odd:
         switch:
           - condition: ${iteration % 2 == 0}
