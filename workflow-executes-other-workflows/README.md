@@ -7,6 +7,8 @@ from each workflow execution and return an uber results/failures map in the end.
 Since each batch is executed in a separate workflow execution, this makes it
 easy to see if there's a failure.
 
+![workflows executing other workflows](./images/image0.png)
+
 Let's see how to set this up.
 
 ## Create and deploy a child workflow
