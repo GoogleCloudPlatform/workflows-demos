@@ -15,7 +15,7 @@ your workflow quota.
 In this example, we show how a parent workflow can create tasks to execute a
 child workflow at a specified rate using a Cloud Tasks queue in the middle.
 
-TODO: Add a diagram
+![Workflow executing workflow with a queue in the middle](./images/image0.png)
 
 ## Create a Cloud Tasks queue
 
