@@ -70,6 +70,7 @@ that explains Workflows.
   * [Workflows executes commands (gcloud, kubectl) - using standard library](workflows-executes-commands/using-standard-library/)
 * [Load data from Cloud Storage to BigQuery using Workflows](/workflows-bigquery-load/)
 * [A workflow executes other workflows in parallel](./workflow-executes-other-workflows/)
+* [Use a Cloud Tasks queue to buffer workflow executions](./workflow-tasks-workflow/)
 
 -------
 

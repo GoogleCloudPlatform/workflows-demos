@@ -1,0 +1,14 @@
+# A child workflow that is meant to be called from a parent workflow with an
+# iteration argument. The workflow simulates work by sleeping 10 seconds.
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - iteration : ${args.iteration}
+    - wait:
+        call: sys.sleep
+        args:
+            seconds: 10
+    - return_message:
+        return: ${"Hello world"+iteration}
