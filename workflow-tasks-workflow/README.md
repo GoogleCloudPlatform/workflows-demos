@@ -1,4 +1,4 @@
-# Use a Cloud Tasks queue to buffer workflow executions
+# Buffer workflow executions with a Cloud Tasks queue
 
 When you receive a heavy burst of traffic, it's tempting to create a high number
 of concurrent executions and let Workflows deal with them. This works until you hit
@@ -32,9 +32,8 @@ gcloud tasks queues create queue-workflow-child --location=$LOCATION
 
 Next, let's create a child workflow in [workflow-child.yaml](./workflow-child.yaml).
 
-The child workflow receives some an `iteration` argument from the parent
-workflow. It simply waits 10 seconds to simulate doing some work and returns the
-result:
+The child workflow receives an `iteration` argument from the parent workflow. It
+waits 10 seconds to simulate doing work and returns a string as result:
 
 ```yaml
 main:
@@ -62,7 +61,7 @@ gcloud workflows deploy workflow-child --source=workflow-child.yaml --location=$
 Next, create a parent workflow in [workflow-parent.yaml](./workflow-parent.yaml).
 
 The workflow assigns some constants first. Note that it's referring to the child
-workflow and the queue in the middle:
+workflow and the queue name between the parent and child workflows:
 
 ```yaml
 main:
@@ -76,8 +75,8 @@ main:
           - queue_name: "queue-workflow-child"
 ```
 
-In the next step, it enqueues 100 executions of the child workflow using the
-Cloud Tasks queue:
+In the next step, it adds a high number of tasks to the Cloud Tasks queue to
+execute the child workflow:
 
 ```yaml
     - enqueue_tasks_to_execute_child_workflow:
@@ -113,7 +112,7 @@ gcloud workflows deploy workflow-parent --source=workflow-parent.yaml --location
 
 ## Execute the parent workflow with no rate limits
 
-It's time to execute the parent workflow:
+Time to execute the parent workflow:
 
 ```sh
 gcloud workflows run workflow-parent --location=$LOCATION
@@ -124,7 +123,9 @@ workflow, all executed roughly around the same:
 
 ![Parallel executions with no rate limits](./images/image1.png)
 
-This can run into Workflows quota issues, if you submit 1000s of executions.
+In this case, 100 executions is a piece of cake for Workflows, but you can run
+into quota issues, if you submit 1000s of executions all at once. This in when
+Cloud Tasks queue and its rate limits become useful.
 
 ## Execute the parent workflow with rate limits
 
@@ -145,6 +146,7 @@ This time, you see a more smooth execution rate (1 execution request per second)
 
 ![Parallel executions with rate limits](./images/image2.png)
 
-Playing with different rate limits, you can better utilize your quoata and stay
-below the limits without triggering unnecessary failures.
+Playing with different dispatch rates and concurrency settings of Cloud Tasks
+queues, you can better utilize your quota and stay below the limits without
+triggering unnecessary quota related failures.
 
