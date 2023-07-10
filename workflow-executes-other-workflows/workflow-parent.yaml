@@ -1,5 +1,20 @@
-# A parent workflow that calls child workflows in parallel and saves the results
-# or failures in a map.
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A parent workflow that calls child workflows in parallel
+# and saves the results or failures in a map.
+# [START workflows_parent_map]
 main:
   steps:
     - init:
@@ -7,6 +22,8 @@ main:
           - execution_results: {} # results from each execution
           - execution_results.success: {} # successful executions saved under 'success' key
           - execution_results.failure: {} # failed executions saved under 'failure' key
+# [END workflows_parent_map]
+# [START workflows_parent_parallel]
     - execute_child_workflows:
         parallel:
           shared: [execution_results]
@@ -15,6 +32,8 @@ main:
             in: [1, 2, 3, 4]
             steps:
                 - iterate:
+# [END workflows_parent_parallel]
+# [START workflows_parent_execute]
                     try:
                       steps:
                         - execute_child_workflow:
@@ -35,5 +54,8 @@ main:
                           - save_failed_execution:
                               assign:
                                 - execution_results.failure[string(iteration)]: ${e}
+# [END workflows_parent_execute]
+# [START workflows_parent_results]
     - return_execution_results:
         return: ${execution_results}
+# [END workflows_parent_results]
