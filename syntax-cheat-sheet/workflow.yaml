@@ -143,6 +143,10 @@ main:
                           assign:
                               - sum: ${sum + v}
     # Parallel branches
+    - init:
+        assign:
+          - user: {}
+          - notification: {}
     - parallel_branches:
         parallel:
           shared: [user, notification]
@@ -162,6 +166,9 @@ main:
                         url: ${"https://example.com/notification/" + args.notificationId}
                       result: notification
     # Parallel iteration
+    - init:
+        assign:
+          - total: 0
     - parallel_loop:
         parallel:
           shared: [total]
