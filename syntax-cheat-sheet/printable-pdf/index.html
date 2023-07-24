@@ -264,6 +264,10 @@ main:
   <tr><td class="blue_header td_lg">Parallel branches</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
+- init:
+    assign:
+      - user: {}
+      - notification: {}
 - parallel_branches:
     parallel:
       shared: [user, notification]
@@ -290,6 +294,9 @@ main:
   <tr><td class="red_header td_lg">Parallel iteration</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
+- init:
+    assign:
+      - total: 0
 - parallel_loop:
     parallel:
       shared: [total]
