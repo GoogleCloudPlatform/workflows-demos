@@ -1,5 +1,6 @@
 # A child workflow that is meant to be called from a parent workflow with an
 # iteration argument. The workflow simulates work by sleeping 10 seconds.
+# [START workflows_child_workflow]
 main:
   params: [args]
   steps:
@@ -12,3 +13,4 @@ main:
             seconds: 10
     - return_message:
         return: ${"Hello world"+iteration}
+# [END workflows_child_workflow]
