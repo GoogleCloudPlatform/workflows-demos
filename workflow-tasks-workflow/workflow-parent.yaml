@@ -1,3 +1,17 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # A parent workflow that calls a child workflow via a Cloud Tasks queue in the
 # middle. The queue enables you to apply rate limits to the child workflow
 # executions and stay below Workflows execution quotas (currently at 2000
@@ -13,7 +27,7 @@ main:
           - workflow_child_name: "workflow-child"
           - queue_name: "queue-workflow-child"
 # [END workflows_parent_assign_constants]
-# [START workflows_parent_parallel]
+# [START workflows_parent_enqueue_tasks]
     - enqueue_tasks_to_execute_child_workflow:
         for:
           value: iteration
@@ -26,7 +40,7 @@ main:
                     - exec:
                         # Need to wrap into argument for Workflows args.
                         argument: ${json.encode_to_string(data)}
-# [END workflows_parent_parallel]
+# [END workflows_parent_enqueue_tasks]
 # [START workflows_tasks_queue_execute]
               - create_task_to_execute_child_workflow:
                   call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.create
