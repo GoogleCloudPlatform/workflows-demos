@@ -1,8 +1,5 @@
 # Execute a Cloud Run job using Workflows
 
-> **Note:** The Cloud Run jobs feature is currently in the *preview* release
-> stage.
-
 This sample demonstrates how to execute a Cloud Run job from a workflow.
 
 ## Create a Cloud Run job
@@ -29,8 +26,8 @@ Create the Cloud Run job by running the deployment script:
 ./deploy-parallel-job.sh
 ```
 
-The job processes data from an input file in Cloud Storage in the location
-`gs://input-[PROJECT_ID]/input_file.txt`.
+The job processes data input files in a Cloud Storage bucket
+`gs://input-[PROJECT_ID]`.
 
 ## Deploy the workflow
 
@@ -57,8 +54,8 @@ uploaded or overwritten in the Cloud Storage bucket containing the input data
 file:
 
 ```sh
-export PROJECT_ID=$(gcloud config get project)
-export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+PROJECT_ID=$(gcloud config get project)
+PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
 gcloud eventarc triggers create cloud-run-job-workflow-trigger \
     --location=us \
     --destination-workflow=cloud-run-job-workflow  \
@@ -80,6 +77,5 @@ gsutil cp input_file.txt gs://input-$PROJECT_ID/input_file.txt
 Confirm that the Cloud Run job ran as expected by viewing the job executions:
 
 ```sh
-gcloud beta run jobs executions list --job=parallel-job
+gcloud run jobs executions list --job=parallel-job
 ```
-
