@@ -52,8 +52,10 @@ that explains Workflows.
 * [Retries and Saga Pattern in Workflows](retries-and-saga)
 * [Long running containers with Workflows and Compute Engine](long-running-container)
 * [Workflows state management with Firestore](state-management-firestore)
-* [Execute a Cloud Run job using Workflows](cloud-run-jobs)
-* [Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc](screenshot-jobs)
+* Cloud Run and Workflows samples
+  * [Execute a Cloud Run job using Workflows](cloud-run-jobs)
+  * [Execute a Cloud Run job using Workflows and event payload from Cloud Storage](cloud-run-jobs-payload-gcs)
+  * [Take screenshots of webpages with Cloud Run jobs, Workflows and Eventarc](screenshot-jobs)
 * Batch and Workflows samples
   * [Batch - simple container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/busybox)
   * [Batch - prime number generator container](https://github.com/GoogleCloudPlatform/batch-samples/tree/main/primegen)
