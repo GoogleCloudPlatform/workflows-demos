@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START workflows_cloud_run_jobs_payload]
 main:
     params: [event]
     steps:
@@ -52,3 +53,4 @@ main:
             result: job_execution
         - finish:
             return: ${job_execution}
+# [END workflows_cloud_run_jobs_payload]
