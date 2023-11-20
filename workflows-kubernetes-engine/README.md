@@ -69,9 +69,15 @@ assert_cluster_status:
 
 ## Create a Kubernetes deployment with the Kubernetes API connector
 
-Once you have the GKE cluster running, you can create a Kubernetes deployment.
-Here's an example of creating a NGINX deployment with 3 pods from the Kubernetes
-[documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/):
+You can use [Kubernetes
+API](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.27/) to
+read and write Kubernetes resources such as deployments and services and
+Workflows has a [Kubernetes API
+connector](https://cloud.google.com/workflows/docs/reference/connectors/gke/Overview)
+use that API.
+
+Here's an example of creating a Kubernetes deployment with 3 NGINX pods from the
+Kubernetes [documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/):
 
 ```yaml
     - create_deployment:
