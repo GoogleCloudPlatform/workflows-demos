@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START workflows_connect_kubernetes_service]
 # This workflow demonstrates how to:
-# 1- Use the Kubernetes Engine API Connector to create a GKE cluster.
-# 2- Use the Kubernetes API Connector to create a Kubernetes deployment and
+# 1- Use the Kubernetes Engine API connector to create a GKE cluster.
+# 2- Use the Kubernetes API connector to create a Kubernetes deployment and
 # a service.
 
 main:
@@ -114,3 +115,4 @@ assert_cluster_status:
             next: end
     - fail:
         raise: ${"Expected VM status is " + expected_status + ". Got " + cluster.status + " instead."}
+# [END workflows_connect_kubernetes_service]
