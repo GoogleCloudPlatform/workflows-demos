@@ -3,9 +3,9 @@
 This workflow demonstrates how to deploy a Kubernetes application with
 Workflows. More specifically:
 
-1- Create a GKE cluster with Kubernetes Engine API connector.
-2- Create a Kubernetes deployment with the Kubernetes API connector.
-3- Create a Kubernetes service with the Kubernetes API connector.
+1. Create a GKE cluster with Kubernetes Engine API connector.
+1. Create a Kubernetes deployment with the Kubernetes API connector.
+1. Create a Kubernetes service with the Kubernetes API connector.
 
 ## Create a GKE cluster with Kubernetes Engine API connector
 
