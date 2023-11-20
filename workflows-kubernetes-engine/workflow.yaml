@@ -1,0 +1,116 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This workflow demonstrates how to:
+# 1- Use the Kubernetes Engine API Connector to create a GKE cluster.
+# 2- Use the Kubernetes API Connector to create a Kubernetes deployment and
+# a service.
+
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - cluster_location: "us-central1"
+          - cluster_id: "workflows-cluster"
+          - cluster_full_name: ${"projects/" + project_id + "/locations/" + cluster_location + "/clusters/" + cluster_id}
+    - create_k8s_cluster:
+        call: googleapis.container.v1.projects.locations.clusters.create
+        args:
+          body:
+            cluster:
+              name: ${cluster_id}
+              initial_node_count: 1
+              autopilot:
+                enabled: true
+          parent: ${"projects/" + project_id + "/locations/" + cluster_location}
+    - assert_running:
+        call: assert_cluster_status
+        args:
+          expected_status: "RUNNING"
+          cluster_id: ${cluster_id}
+          cluster_full_name: ${cluster_full_name}
+    - create_deployment:
+        call: gke.request
+        args:
+          project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          cluster_id: ${cluster_id}
+          location: ${cluster_location}
+          method: "POST"
+          path: "/apis/apps/v1/namespaces/default/deployments"
+          body:
+            kind: Deployment
+            metadata:
+              name: nginx-deployment
+              labels:
+                app: nginx
+            spec:
+              replicas: 3
+              selector:
+                matchLabels:
+                  app: nginx
+              template:
+                metadata:
+                  labels:
+                    app: nginx
+                spec:
+                  containers:
+                  - name: nginx
+                    image: nginx:1.14.2
+                    ports:
+                    - containerPort: 80
+        result: create_deployment_result
+    - create_service:
+        call: gke.request
+        args:
+          project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          cluster_id: ${cluster_id}
+          location: ${cluster_location}
+          method: "POST"
+          path: "/api/v1/namespaces/default/services"
+          body:
+            kind: Service
+            apiVersion: v1
+            metadata:
+              name: nginx-service
+            spec:
+              ports:
+              - name: http
+                port: 80
+                targetPort: 80
+              selector:
+                app: nginx
+              type: LoadBalancer
+        result: create_service_result
+    - return_multiple_values:
+        return:
+          create_deployment_result: ${create_deployment_result}
+          create_service_result: ${create_service_result}
+
+assert_cluster_status:
+  params:
+    [expected_status, cluster_id, cluster_full_name]
+  steps:
+    - get_cluster:
+        call: googleapis.container.v1.projects.locations.clusters.get
+        args:
+          clusterId: ${cluster_id}
+          name: ${cluster_full_name}
+        result: cluster
+    - compare:
+        switch:
+          - condition: ${cluster.status == expected_status}
+            next: end
+    - fail:
+        raise: ${"Expected VM status is " + expected_status + ". Got " + cluster.status + " instead."}

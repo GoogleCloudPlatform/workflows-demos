@@ -73,6 +73,7 @@ that explains Workflows.
 * [Load data from Cloud Storage to BigQuery using Workflows](/workflows-bigquery-load/)
 * [A workflow executes other workflows in parallel](./workflow-executes-other-workflows/)
 * [Buffer workflow executions with a Cloud Tasks queue](./workflow-tasks-workflow/)
+* [Deploy a Kubernetes application with Workflows](./workflows-kubernetes-engine/)
 
 -------
 
