@@ -74,6 +74,8 @@ that explains Workflows.
 * [A workflow executes other workflows in parallel](./workflow-executes-other-workflows/)
 * [Buffer workflow executions with a Cloud Tasks queue](./workflow-tasks-workflow/)
 * [Deploy a Kubernetes application with Workflows](./workflows-kubernetes-engine/)
+* Vertex AI and Workflows
+  * [Call Vertex AI text-bison in parallel](./vertexai/text/)
 
 -------
 
