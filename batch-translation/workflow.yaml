@@ -23,8 +23,7 @@ main:
   - createOutputBucket:
         call: googleapis.storage.v1.buckets.insert
         args:
-          query:
-            project: ${projectId}
+          project: ${projectId}
           body:
             name: ${outputBucketName}
   - batchTranslateText:
