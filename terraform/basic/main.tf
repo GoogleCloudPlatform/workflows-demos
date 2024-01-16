@@ -39,6 +39,12 @@ resource "google_workflows_workflow" "workflows_example" {
   description     = "A sample workflow"
   crypto_key_name = "projects/PROJECT_NAME/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"
   service_account = google_service_account.workflows_service_account.id
+  labels = {
+    env = "test"
+  }
+  user_env_vars = {
+    url = "https://timeapi.io/api/Time/current/zone?timeZone=Europe/Amsterdam"
+  }
   source_contents = <<-EOF
   # This is a sample workflow, feel free to replace it with your source code
   #
