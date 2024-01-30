@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 # This workflow shows how to find capitals of a list of countries
 # by calling Vertex AI's text-bison model in parallel for each country.
 main:
+    params: [args]
     steps:
     - init:
         assign:
@@ -22,13 +23,14 @@ main:
             - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
             - model_id: "text-bison"
             - location_id: "us-central1"
-            - countries: ["Argentina", "Brazil", "Cyprus", "Denmark", "England",
-            "Finland", "Germany", "Honduras", "Italy", "Japan", "Korea",
-            "Latvia", "Morocco", "Nepal", "Oman"]
-            - capitals: {}
+            # - countries: ["Argentina", "Brazil", "Cyprus", "Denmark", "England",
+            # "Finland", "Greece", "Honduras", "Italy", "Japan", "Korea",
+            # "Latvia", "Morocco", "Nepal", "Oman"]
+            - countries: ${args.countries}
+            - histories: {}
     - loop_over_countries:
         parallel:
-            shared: [capitals]
+            shared: [histories]
             for:
                 value: country
                 in: ${countries}
@@ -41,19 +43,20 @@ main:
                                 type: OAuth2
                             body:
                                 instances:
-                                    - prompt: '${"What is the capital city of " + country}'
+                                    - prompt: '${"Can you  tell me about the
+                                    history of " + country}'
                                 parameters:
-                                    temperature: 0.2
-                                    maxOutputTokens: 1024
+                                    temperature: 0.5
+                                    maxOutputTokens: 2048
                                     topP: 0.8
                                     topK: 40
                         result: llm_response
-                    - add_to_capitals:
+                    - add_to_histories:
                         assign:
-                            - capital: ${llm_response.body.predictions[0].content}
+                            - history: ${llm_response.body.predictions[0].content}
                             # Get rid of the extra space at the beginning of content
-                            - capital: ${text.substring(capital, 1, len(capital))}
-                            - country_to_capital: ${country + ":" + capital}
-                            - capitals[country]: ${capital}
-    - return_capitals:
-        return: ${capitals}
+                            - history: ${text.substring(history, 1, len(history))}
+                            - country_to_history: ${country + ":" + history}
+                            - histories[country]: ${history}
+    - return_result:
+        return: ${histories}

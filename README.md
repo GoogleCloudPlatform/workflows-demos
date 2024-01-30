@@ -75,7 +75,7 @@ that explains Workflows.
 * [Buffer workflow executions with a Cloud Tasks queue](./workflow-tasks-workflow/)
 * [Deploy a Kubernetes application with Workflows](./workflows-kubernetes-engine/)
 * Vertex AI and Workflows
-  * [Calling VertexAI text models from Workflows](./vertexai/text/)
+  * [Call VertexAI PaLM 2 for Text (text-bison) model from Workflows in parallel](./vertexai/text-bison/)
 
 -------
 
