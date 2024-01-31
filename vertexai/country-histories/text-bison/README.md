@@ -1,4 +1,8 @@
-# Call VertexAI PaLM 2 for Text (text-bison) model from Workflows in parallel
+# Call VertexAI PaLM 2 for Text (text-bison) from Workflows in parallel
+
+In this sample, you'll see how to call Vertex AI's PaLM 2 for Text (text-bison)
+model in parallel from Workflows. More specifically, you'll gather histories of
+a list of countries in parallel and return the combined histories in a map.
 
 ## Before you start
 
@@ -14,11 +18,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role roles/aiplatform.user
 ```
 
-## Display histories of countries
+## Gather and display histories of countries
 
-See [countries.yaml](./countries.yaml). This workflow shows how to display histories
-of a list of countries by calling Vertex AI's PaLM 2 for Text (text-bison) model
-in parallel for each country.
+See [workflow.yaml](./workflow.yaml). This workflow gathers histories of
+a list of countries in parallel and return the combined histories in a map.
 
 Deploy:
 
