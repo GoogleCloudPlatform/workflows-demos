@@ -23,6 +23,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 See [workflow.yaml](./workflow.yaml). This workflow gathers histories of
 a list of countries in parallel and return the combined histories in a map.
 
+In Gemini, results are returned in parts and you need to combine the text of
+those parts to get the complete text.
+
 Deploy:
 
 ```sh
