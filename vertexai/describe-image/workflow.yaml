@@ -1,0 +1,59 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+main:
+    params: [args]
+    steps:
+    - init:
+        assign:
+            - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+            - location: "us-central1"
+            - model: "gemini-pro-vision"
+            - method: "streamGenerateContent"
+            - llm_api_endpoint: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":" + method}
+            - text_combined: ""
+    - ask_llm:
+        call: http.post
+        args:
+            url: ${llm_api_endpoint}
+            auth:
+                type: OAuth2
+            body:
+                contents:
+                    role: user
+                    parts:
+                    - fileData:
+                        mimeType: image/jpeg
+                        fileUri: ${args.image_url}
+                    - text: Describe this picture in detail
+                generation_config:
+                    temperature: 0.4
+                    max_output_tokens: 2048
+                    top_p: 1
+                    top_k: 32
+        result: llm_response
+    - extract_text_from_each_element:
+        for:
+            value: element
+            in: ${llm_response.body}
+            steps:
+            - extract_and_combine_text:
+                assign:
+                    - text: ${element.candidates[0].content.parts[0].text}
+                    - text_combined: ${text_combined + text}
+    - return_result:
+        return:
+            # Get rid of the extra space at the beginning of text
+            image_url: ${args.image_url}
+            image_description: ${text.substring(text_combined, 1, len(text_combined))}

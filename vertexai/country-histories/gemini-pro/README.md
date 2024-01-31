@@ -1,7 +1,7 @@
-# Call VertexAI Gemini Pro model from Workflows in parallel
+# Call VertexAI Gemini Pro from Workflows in parallel
 
-In this sample, you'll see how to call Vertex AI's Gemini Pro (text-bison)
-model in parallel from Workflows. More specifically, you'll gather histories of
+In this sample, you'll see how to call Vertex AI's Gemini Pro
+in parallel from Workflows. More specifically, you'll gather histories of
 a list of countries in parallel and return the combined histories in a map.
 
 ## Before you start
@@ -18,13 +18,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role roles/aiplatform.user
 ```
 
-## Display histories of countries
+## Workflow
 
-See [workflow.yaml](./workflow.yaml). This workflow gathers histories of
-a list of countries in parallel and return the combined histories in a map.
-
-In Gemini, results are returned in parts and you need to combine the text of
-those parts to get the complete text.
+See [workflow.yaml](./workflow.yaml) for details. In Gemini, results are
+returned in parts and you need to combine the text of those parts to get the
+complete text.
 
 Deploy:
 
