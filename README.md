@@ -76,6 +76,7 @@ that explains Workflows.
 * [Deploy a Kubernetes application with Workflows](./workflows-kubernetes-engine/)
 * Vertex AI and Workflows
   * [Call VertexAI PaLM 2 for Text (text-bison) model from Workflows in parallel](./vertexai/country-histories/text-bison/)
+  * [Call VertexAI Gemini Pro model from Workflows in parallel](./vertexai/country-histories/gemini-pro/)
 
 -------
 

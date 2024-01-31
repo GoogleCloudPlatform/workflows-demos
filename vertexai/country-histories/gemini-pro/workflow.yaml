@@ -19,8 +19,8 @@ main:
         assign:
             - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
             - location: "us-central1"
-            - model: "text-bison"
-            - method: "predict"
+            - model: "gemini-pro"
+            - method: "streamGenerateContent"
             - llm_api_endpoint: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":" + method}
             - histories: {}
     - loop_over_countries:
@@ -37,20 +37,32 @@ main:
                             auth:
                                 type: OAuth2
                             body:
-                                instances:
-                                    - prompt: '${"Can you  tell me about the
-                                    history of " + country}'
-                                parameters:
+                                contents:
+                                    role: "USER"
+                                    parts:
+                                        text: ${"Can you  tell me about the history of " + country}
+                                generation_config:
                                     temperature: 0.5
-                                    maxOutputTokens: 2048
-                                    topP: 0.8
-                                    topK: 40
+                                    max_output_tokens: 2048
+                                    top_p: 0.8
+                                    top_k: 40
                         result: llm_response
+                    - init_history:
+                        assign:
+                            - history: ""
+                    - extract_text_from_each_element:
+                        for:
+                            value: element
+                            in: ${llm_response.body}
+                            steps:
+                            - extract_text:
+                                assign:
+                                    - text: ${element.candidates[0].content.parts[0].text}
+                            - combine_text:
+                                assign:
+                                    - history: ${history + text}
                     - add_to_histories:
                         assign:
-                            - history: ${llm_response.body.predictions[0].content}
-                            # Get rid of the extra space at the beginning of content
-                            - history: ${text.substring(history, 1, len(history))}
                             - country_to_history: ${country + ":" + history}
                             - histories[country]: ${history}
     - return_result:

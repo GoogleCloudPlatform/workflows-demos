@@ -1,0 +1,247 @@
+{
+    "body": [
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": "The history of Cyprus is a long and complex one, dating back to the Neolithic period. The island has been ruled by many different empires and civilizations over the centuries, including the Greeks, Romans, Byzantines, Arabs, Crusaders, Venetians, Ottomans, and British.\n\n**Neolithic Period (10"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": ",000-5,800 BC)**\n\nThe first evidence of human habitation in Cyprus dates back to the Neolithic period. The earliest settlers were farmers and herders who lived in small villages. They made tools and pottery from stone and bone, and they grew crops such as wheat, barley, and lentils"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": ".\n\n**Bronze Age (2,500-1,050 BC)**\n\nDuring the Bronze Age, Cyprus became a major center of trade and commerce. The island was home to a number of powerful city-states, including Kition, Paphos, and Salamis. These city-states traded with other civilizations in the Mediterranean region, including Egypt, Greece, and Anatolia.\n\n**Greek and Roman Periods (1,050 BC-395 AD)**\n\nIn the 11th century BC, Greek settlers began to arrive in Cyprus. They founded a number of new cities, including Nicosia"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": ", Limassol, and Famagusta. The Greeks brought their language, culture, and religion to Cyprus, and they soon became the dominant population on the island.\n\nIn 58 BC, Cyprus was conquered by the Romans. The Romans ruled Cyprus for over 400 years, and they brought peace and prosperity to the island. During the Roman period, Cyprus became a major producer of wine, olive oil, and wheat.\n\n**Byzantine Period (395-1191 AD)**\n\nIn 395 AD, the Roman Empire was divided into two parts: the Eastern Roman Empire and the"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": " Western Roman Empire. Cyprus became part of the Eastern Roman Empire, which was later known as the Byzantine Empire.\n\nThe Byzantines ruled Cyprus for over 800 years, and they left a lasting legacy on the island. They built many churches and monasteries, and they introduced the Greek Orthodox religion to Cyprus.\n\n**Arab Period (649-965 AD)**\n\nIn 649 AD, Cyprus was conquered by the Arabs. The Arabs ruled Cyprus for over 300 years, and they brought Islam to the island. During the Arab period, Cyprus was a major center of trade and commerce.\n\n**Crusader Period (1191-1489 AD)**\n\nIn 1191, Cyprus was conquered by the Crusaders. The Crusaders were a group of Christian knights from Western Europe who were fighting to liberate the Holy Land from Muslim rule.\n\nThe Crusaders ruled Cyprus for over 3"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": "00 years, and they brought Western European culture and institutions to the island. They built castles and churches, and they introduced the feudal system to Cyprus.\n\n**Venetian Period (1489-1571 AD)**\n\nIn 1489, Cyprus was conquered by the Venetians. The Venetians were a powerful maritime republic from Italy. They ruled Cyprus for over 80 years, and they brought Renaissance culture and art to the island.\n\nThe Venetians built fortifications and canals, and they introduced new crops and industries to Cyprus. They also encouraged the settlement of Greek and Armenian refugees from the Ottoman Empire.\n\n**Ottoman Period (1571-1878 AD)**\n\nIn 1571, Cyprus was conquered by the Ottomans. The Ottomans were a powerful Muslim empire from Turkey. They ruled Cyprus for over 300 years, and they brought Islamic culture and institutions"
+                }
+              ],
+              "role": "model"
+            },
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "candidates": [
+          {
+            "content": {
+              "parts": [
+                {
+                  "text": " to the island.\n\nThe Ottomans built mosques and schools, and they introduced the Turkish language and culture to Cyprus. They also imposed heavy taxes on the Christian population.\n\n**British Period (1878-1960 AD)**\n\nIn 1878, Cyprus was placed under British administration. The British ruled Cyprus for over 80 years, and they brought peace and prosperity to the island.\n\nThe British built roads, railways, and schools, and they introduced modern agricultural methods. They also encouraged the development of tourism.\n\n**Independence (1960-Present)**\n\nIn 1960, Cyprus gained independence from the British. The island became a republic, and it was divided into two parts: a Greek Cypriot majority and a Turkish Cypriot minority.\n\nIn 1974, Turkey invaded Cyprus in response to a coup d'état by Greek Cypriot nationalists. The Turkish invasion led to the division of Cyprus into two parts: a Greek Cypriot-controlled south and a Turkish Cypriot-controlled north.\n\nThe division of Cyprus has continued to the present day. The Greek Cypriot-controlled south is a member of the European Union, while the Turkish Cypriot-controlled north is not."
+                }
+              ],
+              "role": "model"
+            },
+            "finishReason": "STOP",
+            "safetyRatings": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "probability": "NEGLIGIBLE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "probability": "NEGLIGIBLE"
+              }
+            ]
+          }
+        ],
+        "usageMetadata": {
+          "candidatesTokenCount": 1024,
+          "promptTokenCount": 10,
+          "totalTokenCount": 1034
+        }
+      }
+    ],
+    "code": 200,
+    "headers": {
+      "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "Cache-Control": "private",
+      "Content-Length": "9117",
+      "Content-Type": "application/json; charset=UTF-8",
+      "Date": "Tue, 30 Jan 2024 15:50:53 GMT",
+      "Server": "scaffolding on HTTPServer2",
+      "Vary": "Origin, X-Origin, Referer",
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "SAMEORIGIN",
+      "X-Xss-Protection": "0"
+    }
+  }

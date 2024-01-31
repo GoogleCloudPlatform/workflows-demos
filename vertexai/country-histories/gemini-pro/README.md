@@ -1,6 +1,6 @@
-# Call VertexAI PaLM 2 for Text (text-bison) from Workflows in parallel
+# Call VertexAI Gemini Pro model from Workflows in parallel
 
-In this sample, you'll see how to call Vertex AI's PaLM 2 for Text (text-bison)
+In this sample, you'll see how to call Vertex AI's Gemini Pro (text-bison)
 model in parallel from Workflows. More specifically, you'll gather histories of
 a list of countries in parallel and return the combined histories in a map.
 
@@ -18,7 +18,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --role roles/aiplatform.user
 ```
 
-## Gather and display histories of countries
+## Display histories of countries
 
 See [workflow.yaml](./workflow.yaml). This workflow gathers histories of
 a list of countries in parallel and return the combined histories in a map.
@@ -26,13 +26,13 @@ a list of countries in parallel and return the combined histories in a map.
 Deploy:
 
 ```sh
-gcloud workflows deploy country-histories-text-bison --source=workflow.yaml
+gcloud workflows deploy country-histories-gemini-pro --source=workflow.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run country-histories-text-bison --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
+gcloud workflows run country-histories-gemini-pro --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 ```
 
 You should see an output similar to the following:
