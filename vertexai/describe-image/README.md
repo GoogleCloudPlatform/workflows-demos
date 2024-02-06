@@ -20,20 +20,20 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## Workflow
 
-See [workflow.yaml](./workflow.yaml) for details. In Gemini, results are
+See [describe-image.yaml](./describe-image.yaml) for details. In Gemini, results are
 returned in parts and you need to combine the text of those parts to get the
 complete text.
 
 Deploy:
 
 ```sh
-gcloud workflows deploy describe-image-gemini-pro-vision --source=workflow.yaml
+gcloud workflows deploy describe-image --source=describe-image.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run describe-image-gemini-pro-vision --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
+gcloud workflows run describe-image --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
 ```
 
 You should see an output similar to the following:

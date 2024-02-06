@@ -20,20 +20,20 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## Workflow
 
-See [workflow.yaml](./workflow.yaml) for details. In Gemini, results are
-returned in parts and you need to combine the text of those parts to get the
-complete text.
+See [country-histories.yaml](./country-histories.yaml) for details. In
+Gemini, results are returned in parts and you need to combine the text of those
+parts to get the complete text.
 
 Deploy:
 
 ```sh
-gcloud workflows deploy country-histories-geminipro --source=country-histories-geminipro.yaml
+gcloud workflows deploy country-histories-gemini-pro --source=country-histories.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run country-histories-geminipro --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
+gcloud workflows run country-histories-gemini-pro --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 ```
 
 You should see an output similar to the following:

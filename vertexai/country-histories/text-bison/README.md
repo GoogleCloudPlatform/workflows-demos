@@ -20,18 +20,18 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## Workflow
 
-See [country-histories-text-bison.yaml](./country-histories-text-bison.yaml) for details.
+See [country-histories.yaml](./country-histories.yaml) for details.
 
 Deploy:
 
 ```sh
-gcloud workflows deploy country-histories-textbison --source=country-histories-textbison.yaml
+gcloud workflows deploy country-histories-text-bison --source=country-histories.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run country-histories-textbison --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
+gcloud workflows run country-histories-text-bison --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 ```
 
 You should see an output similar to the following:
