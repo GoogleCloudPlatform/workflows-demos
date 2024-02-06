@@ -27,13 +27,13 @@ complete text.
 Deploy:
 
 ```sh
-gcloud workflows deploy country-histories-gemini-pro --source=workflow.yaml
+gcloud workflows deploy country-histories-geminipro --source=country-histories-geminipro.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run country-histories-gemini-pro --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
+gcloud workflows run country-histories-geminipro --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 ```
 
 You should see an output similar to the following:

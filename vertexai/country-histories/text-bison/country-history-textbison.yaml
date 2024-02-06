@@ -1,0 +1,47 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+main:
+    params: [args]
+    steps:
+    - init:
+        assign:
+            - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+            - location: "us-central1"
+            - model: "text-bison"
+            - method: "predict"
+            - llm_api_endpoint: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":" + method}
+    - ask_llm:
+        call: http.post
+        args:
+            url: ${llm_api_endpoint}
+            auth:
+                type: OAuth2
+            body:
+                instances:
+                    - prompt: '${"Can you  tell me about the
+                    history of " + args.country}'
+                parameters:
+                    temperature: 0.5
+                    maxOutputTokens: 2048
+                    topP: 0.8
+                    topK: 40
+        result: llm_response
+    - extract_history:
+        assign:
+            - history: ${llm_response.body.predictions[0].content}
+            # Get rid of the extra space at the beginning of content
+            - history: ${text.substring(history, 1, len(history))}
+    - return_result:
+        return: '${history}'
