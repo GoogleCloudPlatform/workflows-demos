@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# [START workflows_vertexai_gemini_image]
 main:
     params: [args]
     steps:
@@ -57,3 +57,4 @@ main:
             # Get rid of the extra space at the beginning of text
             image_url: ${args.image_url}
             image_description: ${text.substring(text_combined, 1, len(text_combined))}
+# [END workflows_vertexai_gemini_image]
