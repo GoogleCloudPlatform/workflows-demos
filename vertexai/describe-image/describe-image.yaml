@@ -54,7 +54,7 @@ main:
                     - text_combined: ${text_combined + text}
     - return_result:
         return:
-            # Get rid of the extra space at the beginning of text
+            # Remove leading whitespace from start of text
             image_url: ${args.image_url}
             image_description: ${text.substring(text_combined, 1, len(text_combined))}
 # [END workflows_vertexai_gemini_image]
