@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+# [START workflows_vertexai_bison_text]
 main:
     params: [args]
     steps:
@@ -54,3 +54,4 @@ main:
                             - histories[country]: ${history}
     - return_result:
         return: ${histories}
+# [END workflows_vertexai_bison_text]
