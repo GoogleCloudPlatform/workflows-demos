@@ -1,0 +1,25 @@
+{
+  "project_id": "<GCP PROJECT ID>",
+  "location": "<Location/Region for Dataflow and Vertex>",
+  "dataflow": {
+    "temp_location": "<Cloud Storage Location to store temporary files (eg: gs://<bucket_name>/<folder_name>>/)>"
+  },
+  "gcs": {
+    "output_folder": "<Cloud Storage Location to store generated embeddings (eg: gs://<bucket_name>/<folder_name>/)>"
+  },
+  "bigtable": {
+    "instance_id": "<Bigtable Instance Id>",
+    "table_name": "<Bigtable Table Name>",
+    "id_column": "<The fully qualified column name where the ID is stored. In the format cf:col or _key>",
+    "embedding_column": "<The fully qualified column name where the embeddings are stored. In the format cf:col or _key>",
+    "crowding_tag_column": "<The fully qualified column name where the crowding tag is stored. In the format cf:col or _key>",
+    "allow_restricts_mappings": "<Columns to Export from Bigtable Table to allow restricts>",
+    "deny_restricts_mappings": "<Columns to Export from Bigtable Table to deny restricts>",
+    "int_numeric_restricts_mappings": "<Columns to Export from Bigtable Table to int numeric restricts>",
+    "float_numeric_restricts_mappings": "<Columns to Export from Bigtable Table to float numeric restricts>",
+    "double_numeric_restricts_mappings": "<Columns to Export from Bigtable Table to double numeric restricts>"
+  },
+  "vertex": {
+    "vector_search_index_id": "<Vertex Vector Search Index ID>"
+  }
+}
