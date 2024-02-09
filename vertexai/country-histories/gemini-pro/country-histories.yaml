@@ -40,7 +40,7 @@ main:
                                 contents:
                                     role: "USER"
                                     parts:
-                                        text: ${"Can you  tell me about the history of " + country}
+                                        text: ${"Can you tell me about the history of " + country}
                                 generation_config:
                                     temperature: 0.5
                                     max_output_tokens: 2048
