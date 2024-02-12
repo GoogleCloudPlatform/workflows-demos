@@ -1,12 +1,12 @@
 # Cloud Bigtable to Vertex Vector Search Export README
 
-[Cloud Bigtable](https://cloud.google.com/bigtable) is a fully managed,
-mission-critical, relational database service that offers transactional
-consistency at global scale. [Vertex AI Vector
+[Cloud Bigtable](https://cloud.google.com/bigtable) is a sparsely populated table that
+can scale to billions of rows and thousands of columns, enabling you
+to store terabytes or even petabytes of data. [Vertex AI Vector
 Search](https://cloud.google.com/vertex-ai/docs/vector-search/overview)
 allows users to search for semantically similar items using vector embeddings.
 
-You can integrate your Cloud Bigtable database with Vector Search to perform
+You can integrate your Cloud Bigtable table with Vector Search to perform
 vector similarity search on your Bigtable data. The general workflow is as follows:
 
 1.  Generate and store vector embeddings in Bigtable. You can manage
@@ -45,7 +45,7 @@ This tutorial uses billable components of Google Cloud, including:
 ## Before you begin
 
 1.  Ensure that your account has the required [permissions](#permissions).
-2.  Generate and store embeddings in your Bigtable database as `ARRAY<float64>`.
+2.  Generate and store embeddings in your Bigtable table as `float32` or `float64` array.
     For more details see [Bigtable schema](#bigtable-schema).
 
 ## Set up Cloud Workflow
