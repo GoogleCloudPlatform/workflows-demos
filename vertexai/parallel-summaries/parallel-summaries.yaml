@@ -1,0 +1,115 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+main:
+    params: [input]
+    steps:
+    - assign_file_vars:
+        assign:
+            - file_size: ${int(input.data.size)}
+            - chunk_size: 6000
+            - n_chunks: ${int(file_size / chunk_size) + 1}
+            - chunks: []
+            - summaries: []
+            - all_summaries_concatenated: ""
+    - dump_file_content:
+        call: googleapis.storage.v1.objects.get
+        args:
+            bucket: ${input.data.bucket}
+            object: ${input.data.name}
+            alt: "media"
+        result: text_content    
+    - loop_over_chunks:
+        for:
+            value: chunk_idx
+            range: ${[0, n_chunks]}
+            steps:
+                - assign_bounds:
+                    assign:
+                        - lower_bound: ${chunk_idx * chunk_size}
+                        - upper_bound: ${(chunk_idx + 1) * chunk_size}
+                        - chunk: ${text.substring(text_content, lower_bound, upper_bound)}
+                        - chunks: ${list.concat(chunks, chunk)}
+                        - summaries: ${list.concat(summaries, "")}
+    - parallel_summaries:
+        parallel:
+            shared: [chunks, summaries]
+            for:
+                value: chunk
+                index: chunk_idx
+                in: ${chunks}
+                steps:
+                    - generate_chunk_summary:
+                        call: ask_gemini_for_summary
+                        args:
+                            textToSummarize: ${chunk}
+                        result: summary
+                    - assign_summary:
+                        assign:
+                            - summaries[chunk_idx]: ${summary}
+    - concat_summaries:
+        for:
+            value: summary
+            in: ${summaries}
+            steps:
+                - append_summaries:
+                    assign:
+                        - all_summaries_concatenated: ${all_summaries_concatenated + "\n" + summary}
+    - reduce_summary:
+        call: ask_gemini_for_summary
+        args:
+            textToSummarize: ${all_summaries_concatenated}
+        result: final_summary
+    - return_result:
+        return: 
+            - chunks: ${chunks}
+            - summaries: ${summaries}
+            - final_summary: ${final_summary}
+
+ask_gemini_for_summary:
+    params: [textToSummarize]
+    steps:
+        - init:
+            assign:
+                - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+                - location: "us-central1"
+                - model: "gemini-pro"
+                - text_combined: ""
+        - call_gemini:
+            call: http.post
+            args:
+                url: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":streamGenerateContent"}
+                auth: 
+                    type: OAuth2
+                body:
+                    contents:
+                        role: user
+                        parts:
+                            - text: '${"Make a summary of the following text: " + textToSummarize}'
+                    generation_config:
+                        temperature: 0.2
+                        maxOutputTokens: 2000
+                        topK: 10
+                        topP: 0.9
+            result: gemini_response
+        - extract_text_from_each_element:
+            for:
+                value: element
+                in: ${gemini_response.body}
+                steps:
+                    - extract_and_combine_text:
+                        assign:
+                            - text: ${element.candidates[0].content.parts[0].text}
+                            - text_combined: ${text_combined + text}
+        - return_summary:
+            return: ${text_combined}
