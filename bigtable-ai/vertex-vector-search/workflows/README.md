@@ -179,10 +179,10 @@ The following roles are needed to complete the instructions on this page.
 ### Parameters in the input.json file
 
 Input to the workflow is provided using a JSON file. The included
-<code>[sample-batch-input.json](https://github.com/GoogleCloudPlatform/workflows-demos/bigtable-ai/blob/main/vertex-vector-search/workflows/sample-batch-input.json)</code>
+<code>[sample-batch-input.json](https://github.com/GoogleCloudPlatform/workflows-demos/blob/master/bigtable-ai/vertex-vector-search/workflows/sample-batch-input.json)</code>
 contains both required and optional parameters. The value for each field in the
 sample contains the description of the parameter. Copy the
-<code>[sample-batch-input.json](https://github.com/GoogleCloudPlatform/workflows-demos/bigtable-ai/blob/main/vertex-vector-search/workflows/sample-batch-input.json)</code>
+<code>[sample-batch-input.json](https://github.com/GoogleCloudPlatform/workflows-demos/blob/master/bigtable-ai/vertex-vector-search/workflows/sample-batch-input.json)</code>
 and customize it according to the descriptions in the file. Delete the optional
 parameters that you don’t want to pass.
 
