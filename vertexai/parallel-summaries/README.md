@@ -59,6 +59,13 @@ gcloud workflows deploy parallel-summaries --source=parallel-summaries.yaml
 You can follow the [steps from the documentation](https://cloud.google.com/eventarc/docs/workflows/quickstart-storage) 
 for creating an Eventarc trigger that will create a workflow execution when a new file is stored in a Google Cloud Storage bucket.
 
+## Result
+
+Once you have uploaded a text file in the GCS bucket, you should see in the list of workflow execution
+an output similiar to the screenshot below, with the list of _chunks_, the partial summaries, and the final summary:
+
+![](./gemini-workflows-mapreduce-summary.jpg)
+
 
 
 
