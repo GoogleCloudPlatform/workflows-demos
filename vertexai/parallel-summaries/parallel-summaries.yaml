@@ -112,6 +112,6 @@ ask_gemini_for_summary:
                         assign:
                             - text: ${element.candidates[0].content.parts[0].text}
                             - text_combined: ${text_combined + text}
-# [END workflows_vertexai_gemini_summary]
         - return_summary:
             return: ${text_combined}
+# [END workflows_vertexai_gemini_summary]
