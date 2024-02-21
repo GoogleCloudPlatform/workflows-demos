@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START workflows_vertexai_gemini_image]
+
 main:
     params: [args]
     steps:
@@ -20,15 +20,12 @@ main:
             - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
             - location: "us-central1"
             - model: "gemini-1.0-pro-vision"
-            - method: "streamGenerateContent"
-            - llm_api_endpoint: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":" + method}
             - text_combined: ""
     - ask_llm:
-        call: http.post
+        call: googleapis.aiplatform.v1.projects.locations.endpoints.streamGenerateContent
         args:
-            url: ${llm_api_endpoint}
-            auth:
-                type: OAuth2
+            model: ${"projects/" + project + "/locations/" + location + "/publishers/google/models/" + model}
+            region: ${location}
             body:
                 contents:
                     role: user
@@ -46,7 +43,7 @@ main:
     - extract_text_from_each_element:
         for:
             value: element
-            in: ${llm_response.body}
+            in: ${llm_response}
             steps:
             - extract_and_combine_text:
                 assign:
@@ -57,4 +54,4 @@ main:
             # Remove leading whitespace from start of text
             image_url: ${args.image_url}
             image_description: ${text.substring(text_combined, 1, len(text_combined))}
-# [END workflows_vertexai_gemini_image]
+
