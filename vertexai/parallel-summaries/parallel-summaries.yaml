@@ -18,8 +18,8 @@ main:
     - assign_file_vars:
         assign:
             - file_size: ${int(input.data.size)}
-            - chunk_size: 6000
-            - n_chunks: ${int(file_size / chunk_size) + 1}
+            - chunk_size: 5000
+            - n_chunks: ${int(file_size / chunk_size)}
             - chunks: []
             - summaries: []
             - all_summaries_concatenated: ""
@@ -80,38 +80,32 @@ main:
 ask_gemini_for_summary:
     params: [textToSummarize]
     steps:
+        - log_text:
+            call: sys.log
+            args:
+                text: ${textToSummarize}
         - init:
             assign:
                 - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
                 - location: "us-central1"
                 - model: "gemini-pro"
-                - text_combined: ""
         - call_gemini:
             call: http.post
             args:
-                url: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":streamGenerateContent"}
+                url: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":generateContent"}
                 auth: 
                     type: OAuth2
                 body:
                     contents:
                         role: user
                         parts:
-                            - text: '${"Make a summary of the following text: " + textToSummarize}'
+                            - text: '${"Make a summary of the following text:\n\n" + textToSummarize}'
                     generation_config:
                         temperature: 0.2
                         maxOutputTokens: 2000
                         topK: 10
                         topP: 0.9
             result: gemini_response
-        - extract_text_from_each_element:
-            for:
-                value: element
-                in: ${gemini_response.body}
-                steps:
-                    - extract_and_combine_text:
-                        assign:
-                            - text: ${element.candidates[0].content.parts[0].text}
-                            - text_combined: ${text_combined + text}
         - return_summary:
-            return: ${text_combined}
+            return: ${gemini_response.body.candidates[0].content.parts[0].text}
 # [END workflows_vertexai_gemini_summary]
