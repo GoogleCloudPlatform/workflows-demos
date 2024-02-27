@@ -80,10 +80,6 @@ main:
 ask_gemini_for_summary:
     params: [textToSummarize]
     steps:
-        - log_text:
-            call: sys.log
-            args:
-                text: ${textToSummarize}
         - init:
             assign:
                 - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
