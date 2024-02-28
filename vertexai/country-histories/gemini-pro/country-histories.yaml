@@ -20,7 +20,7 @@ main:
             - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
             - location: "us-central1"
             - model: "gemini-1.0-pro"
-            - method: "streamGenerateContent"
+            - method: "generateContent"
             - llm_api_endpoint: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":" + method}
             - histories: {}
     - loop_over_countries:
@@ -47,27 +47,9 @@ main:
                                     top_p: 0.8
                                     top_k: 40
                         result: llm_response
-                    - init_history:
-                        assign:
-                            - history: ""
-                    - extract_text_from_each_element:
-                        for:
-                            value: element
-                            in: ${llm_response.body}
-                            steps:
-                            - check_text_exists:
-                                switch:
-                                - condition: ${not("parts" in element.candidates[0].content)}
-                                  next: continue
-                            - extract_text:
-                                assign:
-                                    - text: ${element.candidates[0].content.parts[0].text}
-                            - combine_text:
-                                assign:
-                                    - history: ${history + text}
                     - add_to_histories:
                         assign:
-                            - histories[country]: ${history}
+                            - histories[country]: ${llm_response.body.candidates[0].content.parts[0].text}
     - return_result:
         return: ${histories}
 # [END workflows_vertexai_gemini_text]
