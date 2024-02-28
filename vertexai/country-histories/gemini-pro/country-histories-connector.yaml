@@ -29,7 +29,7 @@ main:
                 in: ${args.countries}
                 steps:
                     - ask_llm:
-                        call: googleapis.aiplatform.v1.projects.locations.endpoints.streamGenerateContent
+                        call: googleapis.aiplatform.v1.projects.locations.endpoints.generateContent
                         args:
                             model: ${"projects/" + project + "/locations/" + location + "/publishers/google/models/" + model}
                             region: ${location}
@@ -44,27 +44,9 @@ main:
                                     top_p: 0.8
                                     top_k: 40
                         result: llm_response
-                    - init_history:
-                        assign:
-                            - history: ""
-                    - extract_text_from_each_element:
-                        for:
-                            value: element
-                            in: ${llm_response}
-                            steps:
-                            - check_text_exists:
-                                switch:
-                                - condition: ${not("parts" in element.candidates[0].content)}
-                                  next: continue
-                            - extract_text:
-                                assign:
-                                    - text: ${element.candidates[0].content.parts[0].text}
-                            - combine_text:
-                                assign:
-                                    - history: ${history + text}
                     - add_to_histories:
                         assign:
-                            - histories[country]: ${history}
+                            - histories[country]: ${llm_response.candidates[0].content.parts[0].text}
     - return_result:
         return: ${histories}
 # [END workflows_vertexai_connector_gemini_text]

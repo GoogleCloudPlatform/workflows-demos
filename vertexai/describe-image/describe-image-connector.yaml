@@ -22,7 +22,7 @@ main:
             - model: "gemini-1.0-pro-vision"
             - text_combined: ""
     - ask_llm:
-        call: googleapis.aiplatform.v1.projects.locations.endpoints.streamGenerateContent
+        call: googleapis.aiplatform.v1.projects.locations.endpoints.generateContent
         args:
             model: ${"projects/" + project + "/locations/" + location + "/publishers/google/models/" + model}
             region: ${location}
@@ -40,18 +40,8 @@ main:
                     top_p: 1
                     top_k: 32
         result: llm_response
-    - extract_text_from_each_element:
-        for:
-            value: element
-            in: ${llm_response}
-            steps:
-            - extract_and_combine_text:
-                assign:
-                    - text: ${element.candidates[0].content.parts[0].text}
-                    - text_combined: ${text_combined + text}
     - return_result:
         return:
-            # Remove leading whitespace from start of text
             image_url: ${args.image_url}
-            image_description: ${text.substring(text_combined, 1, len(text_combined))}
+            image_description: ${llm_response.candidates[0].content.parts[0].text}
 # [END workflows_vertexai_connector_gemini_image]
