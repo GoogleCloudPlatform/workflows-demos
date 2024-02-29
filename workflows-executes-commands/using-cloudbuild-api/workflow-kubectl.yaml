@@ -11,9 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# This example shows how to execute gcloud commands from Workflows via Cloud
-# Build and return the output
+# [START workflows_cloud_build_run_kubectl]
+# This example shows how to execute kubectl commands from Workflows
+# using Cloud Build and returns the output
 
 main:
   steps:
@@ -44,3 +44,4 @@ kubectl:
       result: result_builds_create
   - return_build_result:
       return: ${text.split(text.decode(base64.decode(result_builds_create.metadata.build.results.buildStepOutputs[0])), "\n")}
+# [END workflows_cloud_build_run_kubectl]
