@@ -12,7 +12,9 @@ create a summary of each part, and then creating a final summary of all the part
 
 This pattern is following the _map/reduce_ pattern. The LangChain project explains this 
 [map/reduce summarization](https://python.langchain.com/docs/use_cases/summarization#option-2.-map-reduce) 
-technique in its documentation.
+technique in its documentation. And the diagram below illustrates the approach:
+
+![](./map-reduce-summary.png)
 
 Thanks to Workflows parallel step capability, it is possible to create the parts' summaries in parallel,
 and then combine all the summaries at the end with a final step to make the summary of summaries.
