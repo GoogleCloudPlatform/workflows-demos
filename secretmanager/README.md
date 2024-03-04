@@ -6,7 +6,7 @@ More specifically, you will use Secret Manager's [create](https://cloud.google.c
 
 ## Create a Secret
 
-First, you need to specify the GCP project where you want to store the secret. You can use the `GOOGLE_CLOUD_PROJECT_ID` environment variable to get the current project ID.
+First, you need to specify the GCP project where you want to store the secret. You can use the `${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}` expression to get the current project ID.
 
 ```yaml
 - Get Project ID:
