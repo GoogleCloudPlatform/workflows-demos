@@ -22,17 +22,20 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## Workflow
 
-See [describe-image.yaml](./describe-image.yaml) for details.
+See [describe-image.yaml](./describe-image.yaml) or
+[describe-image-connector.yaml](./describe-image-connector.yaml) for details.
 
 Deploy:
 
 ```sh
+gcloud workflows deploy describe-image --source=describe-image.yaml
 gcloud workflows deploy describe-image-connector --source=describe-image-connector.yaml
 ```
 
 Run:
 
 ```sh
+gcloud workflows run describe-image  --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
 gcloud workflows run describe-image-connector  --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
 ```
 

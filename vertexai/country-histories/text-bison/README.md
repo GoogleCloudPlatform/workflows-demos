@@ -35,7 +35,7 @@ Run:
 ```sh
 gcloud workflows run country-history-text-bison --data='{"country":"Cyprus"}'
 gcloud workflows run country-history-connector-text-bison --data='{"country":"Cyprus"}'
-
+```
 
 ## Multiple countries in parallel
 
@@ -44,12 +44,14 @@ See [country-histories-connector.yaml](./country-histories-connector.yaml) for d
 Deploy:
 
 ```sh
+gcloud workflows deploy country-histories-text-bison --source=country-histories.yaml
 gcloud workflows deploy country-histories-connector-text-bison --source=country-histories-connector.yaml
 ```
 
 Run:
 
 ```sh
+gcloud workflows run country-histories-text-bison --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 gcloud workflows run country-histories-connector-text-bison --data='{"countries":["Argentina", "Brazil", "Cyprus", "Denmark", "England","Finland", "Greece", "Honduras", "Italy", "Japan", "Korea","Latvia", "Morocco", "Nepal", "Oman"]}'
 ```
 

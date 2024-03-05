@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# [START workflows_vertexai_gemini_summary]
+
 main:
     params: [input]
     steps:
@@ -29,7 +29,7 @@ main:
             bucket: ${input.data.bucket}
             object: ${input.data.name}
             alt: "media"
-        result: text_content
+        result: text_content    
     - loop_over_chunks:
         for:
             value: chunk_idx
@@ -87,30 +87,28 @@ ask_gemini_for_summary:
                 - model: "gemini-pro"
                 - summary: ""
         - call_gemini:
-            call: http.post
+            call: googleapis.aiplatform.v1.projects.locations.endpoints.generateContent
             args:
-                url: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":generateContent"}
-                auth: 
-                    type: OAuth2
+                model: ${"projects/" + project + "/locations/" + location + "/publishers/google/models/" + model}
+                region: ${location}
                 body:
                     contents:
                         role: user
                         parts:
-                            - text: '${"Make a summary of the following text:\n\n" + textToSummarize}'
+                        - text: '${"Make a summary of the following text:\n\n" + textToSummarize}'
                     generation_config:
                         temperature: 0.2
-                        maxOutputTokens: 2000
-                        topK: 10
-                        topP: 0.9
+                        max_output_tokens: 2048
+                        top_p: 0.9
+                        top_k: 10
             result: gemini_response
         # Sometimes, there's no text, for example, due to safety settings
         - check_text_exists:
             switch:
-            - condition: ${not("parts" in gemini_response.body.candidates[0].content)}
+            - condition: ${not("parts" in gemini_response.candidates[0].content)}
               next: return_summary
         - extract_text:
             assign:
-                - summary: ${gemini_response.body.candidates[0].content.parts[0].text}
+                - summary: ${gemini_response.candidates[0].content.parts[0].text}
         - return_summary:
             return: ${summary}
-# [END workflows_vertexai_gemini_summary]
