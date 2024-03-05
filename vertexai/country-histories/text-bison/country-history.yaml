@@ -30,7 +30,7 @@ main:
                 type: OAuth2
             body:
                 instances:
-                    - prompt: '${"Can you  tell me about the history of " + args.country}'
+                    - prompt: '${"Can you tell me about the history of " + args.country}'
                 parameters:
                     temperature: 0.5
                     maxOutputTokens: 2048
