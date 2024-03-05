@@ -26,6 +26,7 @@ that explains Workflows.
 * [Send an email with SendGrid from a workflow](send-email)
 * [Data Loss Prevention workflow](gcs-dlp)
 * [Service chaining](service-chaining)
+* [Create and Access Secrets in Secret Manager](secretmanager)
 * Eventarc and Workflows
   * [Eventarc (Cloud Storage) and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-storage)
   * [Eventarc (AuditLog-Cloud Storage), Cloud Run and Workflows](https://github.com/GoogleCloudPlatform/eventarc-samples/blob/main/eventarc-workflows-integration/eventarc-auditlog-storage-cloudrun)
