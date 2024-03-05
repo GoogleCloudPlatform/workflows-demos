@@ -4,6 +4,8 @@ In this sample, you'll see how to call Vertex AI's Gemini Pro Vision
 from Workflows. More specifically, you'll use Gemini Pro Vision to describe an
 image in a Cloud Storage bucket.
 
+![scones](./scones.jpg)
+
 ## Before you start
 
 Make sure you have the right IAM permissions for the default compute service
@@ -20,20 +22,18 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 ## Workflow
 
-See [describe-image.yaml](./describe-image.yaml) for details. In Gemini, results are
-returned in parts and you need to combine the text of those parts to get the
-complete text.
+See [describe-image.yaml](./describe-image.yaml) for details.
 
 Deploy:
 
 ```sh
-gcloud workflows deploy describe-image --source=describe-image.yaml
+gcloud workflows deploy describe-image-connector --source=describe-image-connector.yaml
 ```
 
 Run:
 
 ```sh
-gcloud workflows run describe-image --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
+gcloud workflows run describe-image-connector  --data='{"image_url":"gs://generativeai-downloads/images/scones.jpg"}'
 ```
 
 You should see an output similar to the following:
