@@ -63,7 +63,7 @@ as shown in this [example](gcs-read-write-json/gcs-env-var-workflow.yaml).
 
 You can define a reusable subworkflow tha reads and loads the JSON file from GCS:
 
-``` yaml
+```yaml
 read_env_from_gcs:
     params: [bucket, object]
     steps:
