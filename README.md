@@ -79,7 +79,7 @@ that explains Workflows.
   * [Call VertexAI PaLM 2 for Text (text-bison) from Workflows in parallel](./vertexai/country-histories/text-bison/)
   * [Call VertexAI Gemini Pro from Workflows in parallel](./vertexai/country-histories/gemini-pro/)
   * [Call VertexAI Gemini Pro Vision from Workflows to describe an image](./vertexai/describe-image/)
-  * [Call VertexAI Gemini Pro from Workflows to summarize a long document in GCS using a map/reduce approach](./vertexai/parallel-summaries)
+  * [Summarize a long document with Workflows and Gemini Pro](./vertexai/parallel-summaries)
 * [Export from Bigtable to Vertex Vector Search](./bigtable-ai/vertex-vector-search/workflows/)
 
 -------

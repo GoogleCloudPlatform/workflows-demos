@@ -18,36 +18,38 @@ main:
     - assign_file_vars:
         assign:
             - file_size: ${int(input.data.size)}
-            - chunk_size: 64000
+            - chunk_size: 5000
             - n_chunks: ${int(file_size / chunk_size)}
-            #- chunks: []
+            - chunks: []
             - summaries: []
             - all_summaries_concatenated: ""
+    - dump_file_content:
+        call: googleapis.storage.v1.objects.get
+        args:
+            bucket: ${input.data.bucket}
+            object: ${input.data.name}
+            alt: "media"
+        result: text_content
     - loop_over_chunks:
+        for:
+            value: chunk_idx
+            range: ${[0, n_chunks]}
+            steps:
+                - assign_bounds:
+                    assign:
+                        - lower_bound: ${chunk_idx * chunk_size}
+                        - upper_bound: ${(chunk_idx + 1) * chunk_size}
+                        - chunk: ${text.substring(text_content, lower_bound, upper_bound)}
+                        - chunks: ${list.concat(chunks, chunk)}
+                        - summaries: ${list.concat(summaries, "")}
+    - parallel_summaries:
         parallel:
-            #shared: [chunks, summaries]
-            shared: [summaries]
+            shared: [chunks, summaries]
             for:
-                value: chunk_idx
-                range: ${[0, n_chunks]}
+                value: chunk
+                index: chunk_idx
+                in: ${chunks}
                 steps:
-                    - assign_bounds:
-                        assign:
-                            - lower_bound: ${chunk_idx * chunk_size}
-                            - upper_bound: ${(chunk_idx + 1) * chunk_size}
-                            - summaries: ${list.concat(summaries, "")}
-                    - dump_file_content:
-                        call: http.get
-                        args:
-                            url: ${"https://storage.googleapis.com/storage/v1/b/" + input.data.bucket + "/o/" + input.data.name + "?alt=media"}
-                            auth:
-                                type: OAuth2
-                            headers:
-                                Range: ${"bytes=" + lower_bound + "-" + upper_bound}
-                        result: file_content
-                    - assign_chunk:
-                        assign:
-                            - chunk: ${file_content.body}
                     - generate_chunk_summary:
                         call: ask_gemini_for_summary
                         args:
@@ -55,7 +57,6 @@ main:
                         result: summary
                     - assign_summary:
                         assign:
-                            #- chunks: ${list.concat(chunks, chunk)}
                             - summaries[chunk_idx]: ${summary}
     - concat_summaries:
         for:
@@ -71,8 +72,8 @@ main:
             textToSummarize: ${all_summaries_concatenated}
         result: final_summary
     - return_result:
-        return:
-            #- chunks: ${chunks}
+        return: 
+            - chunks: ${chunks}
             - summaries: ${summaries}
             - final_summary: ${final_summary}
 
@@ -89,7 +90,7 @@ ask_gemini_for_summary:
             call: http.post
             args:
                 url: ${"https://" + location + "-aiplatform.googleapis.com" + "/v1/projects/" + project + "/locations/" + location + "/publishers/google/models/" + model + ":generateContent"}
-                auth:
+                auth: 
                     type: OAuth2
                 body:
                     contents:
@@ -112,4 +113,3 @@ ask_gemini_for_summary:
                 - summary: ${gemini_response.body.candidates[0].content.parts[0].text}
         - return_summary:
             return: ${summary}
-
