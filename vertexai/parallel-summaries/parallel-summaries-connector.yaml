@@ -90,12 +90,24 @@ ask_gemini_for_summary:
                     contents:
                         role: user
                         parts:
-                        - text: '${"Make a summary of the following text:\n\n" + textToSummarize}'
+                        - text: '${"Make a summary of the following text. Make
+                        sure the output starts with summary: and the output has
+                        only plain text with no newline or return characters.
+                        Here is the text to summarize: " + textToSummarize}'
                     generation_config:
                         temperature: 0.2
                         max_output_tokens: 2048
                         top_p: 0.9
                         top_k: 10
+                    safety_settings:
+                        - category: "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                          threshold: "BLOCK_NONE"
+                        - category: "HARM_CATEGORY_HATE_SPEECH"
+                          threshold: "BLOCK_NONE"
+                        - category: "HARM_CATEGORY_HARASSMENT"
+                          threshold: "BLOCK_NONE"
+                        - category: "HARM_CATEGORY_DANGEROUS_CONTENT"
+                          threshold: "BLOCK_NONE"
             result: gemini_response
         # Sometimes, there's no text, for example, due to safety settings
         - check_text_exists:
