@@ -105,6 +105,7 @@ main:
             parameters:
               bigtableProjectId: ${params.bigtable.project_id}
               bigtableInstanceId: ${params.bigtable.instance_id}
+              bigtableAppProfileId: ${params.bigtable.app_profile_id}
               bigtableTableId: ${params.bigtable.table_name}              
               idColumn: ${params.bigtable.id_column}
               embeddingColumn: ${params.bigtable.embedding_column}

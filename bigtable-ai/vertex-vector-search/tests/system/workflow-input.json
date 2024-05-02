@@ -12,6 +12,7 @@
   "bigtable": {
     "instance_id": "{{instance_id}}",
     "table_name": "{{table_name}}",
+    "app_profile_id": "{{app_profile_id}}",
     "id_column": "_key",
     "embedding_column": "cf:embeddings",
     "crowding_tag_column": "cf:crowding_tag",
