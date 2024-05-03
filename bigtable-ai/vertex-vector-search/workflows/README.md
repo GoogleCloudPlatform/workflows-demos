@@ -198,6 +198,7 @@ resources from different projects.
 ##### Bigtable Parameters
 
 Enter the `instance_id` and `table_name`. 
+To use a non-default Application Profile, enter the desired Application Profile ID in `app_profile_id`.
 The following parameters: `id_column`, `embedding_column`, `crowding_tag_column`
 help map which column in Bigtable (cf:col or `_key` for rowkey) to map into id, embedding and crowding_tag respecively.
 `id_column` and `embedding_column` are mandatory.

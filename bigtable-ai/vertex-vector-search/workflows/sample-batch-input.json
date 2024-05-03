@@ -9,6 +9,7 @@
   },
   "bigtable": {
     "instance_id": "<Bigtable Instance Id>",
+    "app_profile_id": "<Bigtable App Profile Id>",
     "table_name": "<Bigtable Table Name>",
     "id_column": "<The fully qualified column name where the ID is stored. In the format cf:col or _key>",
     "embedding_column": "<The fully qualified column name where the embeddings are stored. In the format cf:col or _key>",

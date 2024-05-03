@@ -315,6 +315,7 @@ def execute_workflow(
     json_arguments["location"] = location
     json_arguments["bigtable"]["instance_id"] = bigtable_arguments["instance_id"]
     json_arguments["bigtable"]["table_name"] = bigtable_arguments["table_name"]
+    json_arguments["bigtable"]["app_profile_id"] = bigtable_arguments["app_profile_id"]
     json_arguments["vertex"]["vector_search_index_id"] = vertex_index_id
 
     workflow_execution_request = Execution()
@@ -663,6 +664,7 @@ def test_bigtable_vertex_vector_search_integration(
         {
             "instance_id": instance_id,
             "table_name": BIGTABLE_TABLE_NAME,
+            "app_profile_id": "default",
         },
         VERTEX_VECTOR_SEARCH_INDEX,
     )
@@ -759,6 +761,7 @@ def test_concurrent_workflow_execution(
             {
                 "instance_id": instance_id,
                 "table_name": BIGTABLE_TABLE_NAME + "_first",
+                "app_profile_id": "default",
             },
             VERTEX_VECTOR_SEARCH_INDEX,
             result_list1,
@@ -779,6 +782,7 @@ def test_concurrent_workflow_execution(
             {
                 "instance_id": instance_id,
                 "table_name": BIGTABLE_TABLE_NAME + "_second",
+                "app_profile_id": "default",
             },
             VERTEX_VECTOR_SEARCH_INDEX,
             result_list2,
