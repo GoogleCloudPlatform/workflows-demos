@@ -14,9 +14,9 @@
 
 # A parent workflow that calls a child workflow via a Cloud Tasks queue in the
 # middle. The queue enables you to apply rate limits to the child workflow
-# executions and stay below Workflows execution quotas (currently at 2000
-# concurrent executions)
-# [START workflows_parent_assign_constants]
+# executions and stay below Workflows execution quotas
+# (see https://cloud.google.com/workflows/quotas).
+# [START workflows_tasks_queue_execute]
 main:
   steps:
     - init:
@@ -26,8 +26,6 @@ main:
           - location: ${sys.get_env("GOOGLE_CLOUD_LOCATION")}
           - workflow_child_name: "workflow-child"
           - queue_name: "queue-workflow-child"
-# [END workflows_parent_assign_constants]
-# [START workflows_parent_enqueue_tasks]
     - enqueue_tasks_to_execute_child_workflow:
         for:
           value: iteration
@@ -38,10 +36,8 @@ main:
                     - data:
                         iteration: ${iteration}
                     - exec:
-                        # Need to wrap into argument for Workflows args.
+                        # Encode object to JSON string in expression for workflow argument
                         argument: ${json.encode_to_string(data)}
-# [END workflows_parent_enqueue_tasks]
-# [START workflows_tasks_queue_execute]
               - create_task_to_execute_child_workflow:
                   call: googleapis.cloudtasks.v2.projects.locations.queues.tasks.create
                   args:
