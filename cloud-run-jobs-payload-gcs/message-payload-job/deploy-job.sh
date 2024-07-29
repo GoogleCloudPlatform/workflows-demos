@@ -20,7 +20,9 @@ export REGION=${REGION:=us-central1} # default us-central1 region if not defined
 JOB_NAME=message-payload-job
 NUM_TASKS=1
 
-IMAGE_NAME=gcr.io/${PROJECT_ID}/${JOB_NAME}
+gcloud artifacts repositories create cloud-run-jobs --repository-format=docker --location=$REGION
+gcloud auth configure-docker $REGION-docker.pkg.dev
+IMAGE_NAME=$REGION-docker.pkg.dev/${PROJECT_ID}/cloud-run-jobs/${JOB_NAME}:latest
 
 INPUT_BUCKET=message-payload-${PROJECT_ID}
 
