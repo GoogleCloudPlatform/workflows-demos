@@ -79,7 +79,7 @@ ask_gemini_for_summary:
             assign:
                 - project: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
                 - location: "us-central1"
-                - model: "gemini-pro"
+                - model: "gemini-2.5-pro"
                 - summary: ""
         - call_gemini:
             call: http.post
