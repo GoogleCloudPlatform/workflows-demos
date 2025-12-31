@@ -80,7 +80,7 @@ Create a bucket for users to upload job requests:
 
 ```sh
 BUCKET=screenshot-jobs-$PROJECT_ID
-gsutil mb gs://$BUCKET
+gcloud storage buckets create gs://$BUCKET
 ```
 
 ## Setup service accounts
@@ -112,7 +112,7 @@ Grant the `pubsub.publisher` role to the Cloud Storage service account. This is 
 
 ```sh
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
-SERVICE_ACCOUNT=$(gsutil kms serviceaccount -p $PROJECT_NUMBER)
+SERVICE_ACCOUNT=$(gcloud storage service-agent --project=$PROJECT_NUMBER)
 
 gcloud projects add-iam-policy-binding $PROJECT_NUMBER \
     --role roles/pubsub.publisher \
@@ -263,8 +263,8 @@ To test the application, upload some job files to the bucket. You can use the
 repo):
 
 ```sh
-gsutil cp job1.txt gs://$BUCKET
-gsutil cp job2.txt gs://$BUCKET
+gcloud storage cp job1.txt gs://$BUCKET
+gcloud storage cp job2.txt gs://$BUCKET
 ```
 
 This should trigger executions of the workflow:

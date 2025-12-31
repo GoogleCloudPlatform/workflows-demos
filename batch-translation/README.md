@@ -21,7 +21,7 @@ Create a Cloud Storage bucket that will hold the files to translate:
 
 ```sh
 export BUCKET_INPUT=${GOOGLE_CLOUD_PROJECT}-input-files
-gsutil mb gs://${BUCKET_INPUT}
+gcloud storage buckets create gs://${BUCKET_INPUT}
 ```
 
 Create two files in English to translate (or you can use your own files) and
@@ -29,9 +29,9 @@ upload to the input bucket:
 
 ```sh
 echo "Dr. Watson, come here" > file1.txt
-gsutil cp file1.txt gs://${BUCKET_INPUT}
+gcloud storage cp file1.txt gs://${BUCKET_INPUT}
 echo "Hello World" > file2.txt
-gsutil cp file2.txt gs://${BUCKET_INPUT}
+gcloud storage cp file2.txt gs://${BUCKET_INPUT}
 ```
 
 ## Define workflow

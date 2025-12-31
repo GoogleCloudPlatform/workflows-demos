@@ -33,7 +33,7 @@ gcloud workflows deploy $WORKFLOW_NAME \
 
 BUCKET=$PROJECT_ID-$WORKFLOW_NAME
 echo "Create bucket: $BUCKET"
-gsutil mb -l $REGION gs://$BUCKET
+gcloud storage buckets create gs://$BUCKET --location=$REGION
 
 SERVICE_ACCOUNT=eventarc-workflows
 echo "Create service account for Eventarc triggers to use to invoke Workflows: $SERVICE_ACCOUNT"

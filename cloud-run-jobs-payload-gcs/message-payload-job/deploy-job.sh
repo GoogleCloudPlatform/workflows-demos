@@ -38,7 +38,7 @@ echo "Build sample into a container"
 gcloud builds submit --pack image=$IMAGE_NAME
 
 echo "Creating input bucket $INPUT_BUCKET"
-gsutil mb gs://${INPUT_BUCKET}
+gcloud storage buckets create gs://${INPUT_BUCKET}
 
 # Delete job if it already exists.
 gcloud run jobs delete ${JOB_NAME} --quiet

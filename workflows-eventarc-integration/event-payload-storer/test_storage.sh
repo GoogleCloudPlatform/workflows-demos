@@ -22,7 +22,7 @@ echo "Get the project id"
 PROJECT_ID=$(gcloud config get-value project)
 
 echo "Grant the pubsub.publisher role to the Cloud Storage service account needed for Eventarc's Cloud Storage trigger"
-SERVICE_ACCOUNT_STORAGE="$(gsutil kms serviceaccount -p $PROJECT_ID)"
+SERVICE_ACCOUNT_STORAGE="$(gcloud storage service-agent --project $PROJECT_ID)"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SERVICE_ACCOUNT_STORAGE \
     --role roles/pubsub.publisher
@@ -34,7 +34,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 echo "Create a Cloud Storage bucket"
 BUCKET=$PROJECT_ID-bucket
-gsutil mb -l $REGION gs://$BUCKET
+gcloud storage buckets create gs://$BUCKET --location=$REGION
 
 echo "Create an Eventarc trigger to listen for events from a Cloud Storage bucket and route to $WORKFLOW_NAME workflow"
 TRIGGER_NAME=$WORKFLOW_NAME-storage
@@ -48,4 +48,4 @@ gcloud eventarc triggers create $TRIGGER_NAME \
 
 echo "Upload a file to the bucket: $BUCKET"
 echo "Hello World" > random.txt
-gsutil cp random.txt gs://$BUCKET/random.txt
+gcloud storage cp random.txt gs://$BUCKET/random.txt

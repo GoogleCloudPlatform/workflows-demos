@@ -39,7 +39,7 @@ gcloud pubsub topics create $TOPIC
 
 echo "Create a Cloud Storage bucket"
 BUCKET=$PROJECT_ID-bucket-callback
-gsutil mb -l $REGION gs://$BUCKET
+gcloud storage buckets create --location=$REGION gs://$BUCKET
 
 echo "Deploy a callback-event-listener workflow"
 WORKFLOW_NAME=callback-event-listener
@@ -62,7 +62,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role roles/workflows.invoker
 
 echo "Grant the pubsub.publisher role to the Cloud Storage service account needed for Eventarc's Cloud Storage trigger"
-SERVICE_ACCOUNT_STORAGE="$(gsutil kms serviceaccount -p $PROJECT_ID)"
+SERVICE_ACCOUNT_STORAGE="$(gcloud storage service-agent --project=$PROJECT_ID)"
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SERVICE_ACCOUNT_STORAGE \

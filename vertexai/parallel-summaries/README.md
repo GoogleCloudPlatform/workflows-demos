@@ -72,7 +72,7 @@ in a Google Cloud Storage bucket.
 Create the Google Cloud Stroage bucket:
 
 ```sh
-gsutil mb -l us-central1 gs://${PROJECT_ID}-parallel-summaries-bucket/
+gcloud storage buckets create --location=us-central1 gs://${PROJECT_ID}-parallel-summaries-bucket/
 ```
 
 Create the Eventarc trigger:
@@ -91,7 +91,7 @@ gcloud eventarc triggers create parallel-summaries-trigger \
 Upload a text file:
 
 ```sh
-gsutil cp pride_and_prejudice_short.txt gs://${PROJECT_ID}-parallel-summaries-bucket/
+gcloud storage cp pride_and_prejudice_short.txt gs://${PROJECT_ID}-parallel-summaries-bucket/
 ```
 
 Once you have uploaded a text file in the bucket, you should see a new workflow

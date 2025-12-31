@@ -97,7 +97,7 @@ To test Cloud Storage events, upload a new file to Cloud Storage:
 ```sh
 BUCKET=$PROJECT_ID-bucket-callback
 echo "Hello World" > random.txt
-gsutil cp random.txt gs://$BUCKET/random.txt
+gcloud storage cp random.txt gs://$BUCKET/random.txt
 ```
 
 You should see that the workflow started and stopped waiting for the event. It

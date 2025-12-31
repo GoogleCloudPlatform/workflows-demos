@@ -71,7 +71,7 @@ Test the end-to-end system by updating the input data file in Cloud Storage:
 
 ```sh
 base64 /dev/urandom | head -c 100000 >input_file.txt
-gsutil cp input_file.txt gs://input-$PROJECT_ID/input_file.txt
+gcloud storage cp input_file.txt gs://input-$PROJECT_ID/input_file.txt
 ```
 
 Confirm that the Cloud Run job ran as expected by viewing the job executions:
