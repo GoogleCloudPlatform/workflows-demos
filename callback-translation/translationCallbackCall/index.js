@@ -15,18 +15,45 @@
 const cors = require('cors')({origin: true});
 const fetch = require('node-fetch');
 
+function isValidCallbackUrl(urlString) {
+  try {
+    const parsed = new URL(urlString);
+    if (parsed.protocol !== 'https:') {
+      return false;
+    }
+    if (parsed.username || parsed.password) {
+      return false;
+    }
+    const isGoogleWorkflowsHost =
+      parsed.hostname === 'workflowexecutions.googleapis.com' ||
+      /^[a-z0-9-]+-workflowexecutions\.googleapis\.com$/.test(parsed.hostname);
+    if (!isGoogleWorkflowsHost) {
+      return false;
+    }
+    const callbackPathRegex = /^\/v1\/projects\/[a-zA-Z0-9_-]+\/locations\/[a-zA-Z0-9_-]+\/workflows\/[a-zA-Z0-9_-]+\/executions\/[a-zA-Z0-9_-]+\/callbacks\/[a-zA-Z0-9_-]+$/;
+    return callbackPathRegex.test(parsed.pathname);
+  } catch {
+    return false;
+  }
+}
+
+exports.isValidCallbackUrl = isValidCallbackUrl;
 exports.translationCallbackCall = async (req, res) => {
   cors(req, res, async () => {
     res.set('Access-Control-Allow-Origin', '*');
     
-    const {url, approved} = req.body;
+    const {url, approved} = req.body || {};
+    if (!url || !isValidCallbackUrl(url)) {
+      res.status(400).json({error: 'Invalid or unauthorized callback URL'});
+      return;
+    }
+
     console.log("Approved? ", approved);
     console.log("URL = ", url);
     // [START workflows_oauth_token]
     const {GoogleAuth} = require('google-auth-library');
     const auth = new GoogleAuth();
     const token = await auth.getAccessToken();
-    console.log("Token", token);
 
     try {
       const resp = await fetch(url, {
@@ -36,7 +63,7 @@ exports.translationCallbackCall = async (req, res) => {
               'content-type': 'application/json',
               'authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ approved })
+          body: JSON.stringify({ approved: Boolean(approved) })
       });
       console.log("Response = ", JSON.stringify(resp));
       
@@ -48,7 +75,7 @@ exports.translationCallbackCall = async (req, res) => {
     } catch(e) {
       console.error(e);
 
-      res.status(200).json({status: 'error'});
+      res.status(500).json({status: 'error'});
     }
   });
 };
