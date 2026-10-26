@@ -45,7 +45,7 @@
       style="width:42px;height:42px;padding:0px 10px 0px 0px;"/><h1 class="cheat_title">Cheat sheet</h1></td>
     </tr>
     <tr>
-      <td class="link_url">https://cloud.google.com/workflows/docs/reference/syntax/
+      <td class="link_url">https://docs.cloud.google.com/workflows/docs/reference/syntax/
       </td>
     </tr>
 </table>
@@ -152,12 +152,12 @@ main:
   <pre class="pre">
 - map_ops:
     assign:
-      - my_map: {"Key1": "hello"}
+      - my_map: {"Key1": "hello", "special!key": "world"}
       - map_len: ${len(my_map)}
       - key_exists: ${"Key1" in my_map}
       - key_list: ${keys(my_map)}
       - key_is_null: ${default(map.get(my_map, "Key1"), "Couldn't find key!")}
-      - key_with_special_char: '${"foo" + var.key["special!key"]}'
+      - key_with_special_char: '${"fruit" + my_map["special!key"]}'
       - key_str: "Key"
       - my_map.Key1: "Value1"
       - my_map["Key2"]: "Value2"
@@ -294,7 +294,7 @@ main:
   <tr><td class="red_header td_lg">Parallel iteration</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
-- init:
+- init_loop:
     assign:
       - total: 0
 - parallel_loop:
@@ -388,7 +388,7 @@ subworkflow_name_message:
   <tr><td class="blue_header td_lg">Connectors</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
-<code class="comment"># https://cloud.google.com/workflows/docs/reference/googleapis</code>
+<code class="comment"># https://docs.cloud.google.com/workflows/docs/reference/googleapis</code>
 <code class="comment">## googleapis.compute.v1</code>
 - insert_machine:
     call: googleapis.compute.v1.instances.insert
@@ -413,7 +413,7 @@ subworkflow_name_message:
   <tr><td class="red_header td_lg">Standard library</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
-<code class="comment"># https://cloud.google.com/workflows/docs/reference/stdlib/overview</code>
+<code class="comment"># https://docs.cloud.google.com/workflows/docs/reference/stdlib/overview</code>
 <code class="comment">## http</code>
 - http_get:
     call: http.get
@@ -462,7 +462,7 @@ subworkflow_name_message:
 <div style="text-align:center; margin-top:40px">
 <img src="images/logo_cloud_horizontal_0120.png" alt="Google Cloud icon"
           style="width:40%;height:40%;"/>
-<p class="link_url" style="font-size:14px">https://cloud.google.com/workflows/docs/reference/syntax/</p>
+<p class="link_url" style="font-size:14px">https://docs.cloud.google.com/workflows/docs/reference/syntax/</p>
 
 <!-- Continue... -->
 <table style="margin: 3px 0px; float: right">
@@ -565,7 +565,7 @@ subworkflow_name_message:
 <div style="text-align:center; margin-top:40px">
 <img src="images/logo_cloud_horizontal_0120.png" alt="Google Cloud icon"
           style="width:40%;height:40%;"/>
-<p class="link_url" style="font-size:14px">https://cloud.google.com/workflows/docs/reference/syntax/</p>
+<p class="link_url" style="font-size:14px">https://docs.cloud.google.com/workflows/docs/reference/syntax/</p>
 
 </section>
 
