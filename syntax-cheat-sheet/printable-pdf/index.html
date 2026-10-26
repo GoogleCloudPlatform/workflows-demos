@@ -152,12 +152,12 @@ main:
   <pre class="pre">
 - map_ops:
     assign:
-      - my_map: {"Key1": "hello"}
+      - my_map: {"Key1": "hello", "special!key": "world"}
       - map_len: ${len(my_map)}
       - key_exists: ${"Key1" in my_map}
       - key_list: ${keys(my_map)}
       - key_is_null: ${default(map.get(my_map, "Key1"), "Couldn't find key!")}
-      - key_with_special_char: '${"foo" + var.key["special!key"]}'
+      - key_with_special_char: '${"fruit" + my_map["special!key"]}'
       - key_str: "Key"
       - my_map.Key1: "Value1"
       - my_map["Key2"]: "Value2"
@@ -294,7 +294,7 @@ main:
   <tr><td class="red_header td_lg">Parallel iteration</td></tr>
   <tr><td class="codeblock">
   <pre class="pre">
-- init:
+- init_loop:
     assign:
       - total: 0
 - parallel_loop:
