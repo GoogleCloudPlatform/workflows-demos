@@ -38,6 +38,10 @@ an `Approved` column with a checkbox:
 
 This checkbox will be used to trigger a workflow to create the VM.
 
+> **Security note:** Restrict edit access to the spreadsheet and protect the
+> `Approved?` column (`Data` > `Protect sheets and ranges`) so only authorized
+> approvers can check the box and trigger VM creation.
+
 ## Create an Apps Script
 
 Create an Apps Script to watch for the `Approved` checkbox.
@@ -69,7 +73,11 @@ gcloud config set project $PROJECT_ID
 
 Run [setup.sh](setup.sh) to enable required services, grant necessary roles and
 deploy the workflow defined in [workflow.yaml](workflow.yaml). This workflow
-creates a Compute Engine VM with the supplied parameters.
+validates the inputs against allow-lists (`zone`, `machineType`, `imageFamily`
+mapped to trusted `imageProject`s, `diskSize`, and `vmName`) and creates a
+Compute Engine VM with the supplied parameters. If you customize the options in
+your Google Form, update the allow-lists in [workflow.yaml](workflow.yaml) to
+match.
 
 ## Test
 

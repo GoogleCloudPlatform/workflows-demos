@@ -3,24 +3,39 @@ const REGION = "us-central1";
 const WORKFLOW = "create-vm-from-form";
 
 function handleEdit(e) {
-  var range = e.range.getA1Notation();
-  var sheet = e.source;
+  if (!e || !e.range) {
+    return;
+  }
 
-  if (range.length > 1 && range[0] === 'H') {
+  var sheet = e.source;
+  var col = e.range.getColumn();
+  var row = e.range.getRow();
+
+  if (col === 8 && row > 1) {
     if (e.value == "TRUE") {
       Logger.log("Approved checkbox: true");
 
-      var row = range.slice(1)
-      var email = sheet.getRange('B' + row).getCell(1, 1).getValue()
-      var vmName = sheet.getRange('c' + row).getCell(1, 1).getValue()
-      var zone = sheet.getRange('D' + row).getCell(1, 1).getValue()
-      var machineType = sheet.getRange('E' + row).getCell(1, 1).getValue()
-      var diskSize = sheet.getRange('F' + row).getCell(1, 1).getValue()
-      var imageFamily = sheet.getRange('G' + row).getCell(1, 1).getValue()
-      var imageProject = imageFamily.substring(0, imageFamily.indexOf('-')) + "-cloud"
+      var email = String(sheet.getRange('B' + row).getCell(1, 1).getValue());
+      var vmName = String(sheet.getRange('C' + row).getCell(1, 1).getValue());
+      var zone = String(sheet.getRange('D' + row).getCell(1, 1).getValue());
+      var machineType = String(sheet.getRange('E' + row).getCell(1, 1).getValue());
+      var diskSize = sheet.getRange('F' + row).getCell(1, 1).getValue();
+      var imageFamily = String(sheet.getRange('G' + row).getCell(1, 1).getValue());
+      var dashIndex = imageFamily.indexOf('-');
+      var imageProject = dashIndex > 0 ? imageFamily.substring(0, dashIndex) + "-cloud" : "";
+
+      const argument = {
+        diskSize: diskSize,
+        email: email,
+        imageFamily: imageFamily,
+        imageProject: imageProject,
+        machineType: machineType,
+        vmName: vmName,
+        zone: zone
+      };
 
       const executionPayload = {
-        "argument": "{\"diskSize\": \"" + diskSize + "\", \"email\": \"" + email + "\", \"imageFamily\": \"" + imageFamily + "\", \"imageProject\": \"" + imageProject + "\", \"machineType\": \"" + machineType + "\", \"vmName\": \"" + vmName + "\", \"zone\": \"" + zone +  "\"}"
+        "argument": JSON.stringify(argument)
       };
 
       approve(executionPayload);
