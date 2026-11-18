@@ -1,14 +1,20 @@
-function handleEdit(e) {
-  var range = e.range.getA1Notation();
-  var sheet = e.source;
+const CALLBACK_URL_PATTERN = /^https:\/\/workflowexecutions\.googleapis\.com\/v1\/projects\/[a-z0-9-]+\/locations\/[a-z0-9-]+\/workflows\/[A-Za-z0-9_-]+\/executions\/[A-Za-z0-9_-]+\/callbacks\/[A-Za-z0-9_-]+$/;
 
-  if (range.length > 1 && range[0] === 'G') {
+function handleEdit(e) {
+  if (!e || !e.range) {
+    return;
+  }
+
+  var sheet = e.source;
+  var col = e.range.getColumn();
+  var row = e.range.getRow();
+
+  if (col === 7 && row > 1) {
     if (e.value == "TRUE") {
       Logger.log("Approved: TRUE");
 
-      var row = range.slice(1);
-      var url = sheet.getRange('E' + row).getCell(1, 1).getValue();
-      var approver = sheet.getRange('F' + row).getCell(1, 1).getValue();
+      var url = String(sheet.getRange('E' + row).getCell(1, 1).getValue()).trim();
+      var approver = String(sheet.getRange('F' + row).getCell(1, 1).getValue());
 
       callback(url, approver);
     }
@@ -19,6 +25,10 @@ function handleEdit(e) {
 }
 
 function callback(url, approver) {
+  if (!CALLBACK_URL_PATTERN.test(url)) {
+    throw new Error("Invalid workflow callback URL: " + url);
+  }
+
   const headers = {
     "Authorization": "Bearer " + ScriptApp.getOAuthToken()
   };

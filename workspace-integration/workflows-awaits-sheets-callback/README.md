@@ -26,6 +26,11 @@ Here's an example spreadsheet:
 
 The `Approved` column will be used to initiate a callback to the workflow.
 
+> **Security note:** Restrict edit access to the spreadsheet and protect the
+> callback URL (`E`) and `Approved` (`G`) columns (`Data` > `Protect sheets and ranges`)
+> so only authorized approvers can trigger callbacks and prevent callback URL
+> tampering.
+
 Once the sheet is created, note the spreadsheet id that you will need in the workflow
 later. You can find the sheet id in the url of the spreadsheet:
 
@@ -50,8 +55,9 @@ Script editor. Replace the default code in `Code.gs` with the code in
 [Code.gs](Code.gs) and press the `Save` button.
 
 This code watches for changes for the `Approved` column. When
-it's set to `TRUE`, calls back workflow's callback URL with the approver
-information.
+it's set to `TRUE`, it validates that the callback URL matches a Workflows
+callback endpoint (`https://workflowexecutions.googleapis.com/v1/.../callbacks/...`)
+and calls back the workflow's callback URL with the approver information.
 
 In App Script editor, go to `Settings` and check `Show appsscript.json manifest
 file in editor`. Replace the contents of `appscript.json` with
